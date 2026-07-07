@@ -83,8 +83,15 @@ version_ge() {
 
 build_sdl3_from_source() {
     step "🏗️  Building SDL3 >= ${MIN_SDL3_VERSION} from source..."
+    # X11 dev headers are required for CMake's window-backend sanity check to
+    # pass (it hard-fails if neither X11 nor Wayland dev libs are found, even
+    # though KMSDRM already works on Jetson). libxtst-dev is intentionally
+    # omitted — the XTEST extension is typically absent on Jetson and we
+    # disable it explicitly below via -DSDL_X11_XTEST=OFF.
     $SUDO apt-get install -y --no-install-recommends \
         build-essential cmake git \
+        libx11-dev libxext-dev libxrandr-dev libxcursor-dev libxfixes-dev \
+        libxi-dev libxss-dev libxkbcommon-dev \
         >>"$LOG_FILE" 2>&1 || die "Failed to install SDL3 build prerequisites."
 
     local tmp
