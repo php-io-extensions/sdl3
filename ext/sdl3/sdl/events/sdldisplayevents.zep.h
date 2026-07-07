@@ -1,0 +1,89 @@
+
+extern zend_class_entry *sdl3_sdl_events_sdldisplayevents_ce;
+
+ZEPHIR_INIT_CLASS(Sdl3_SDL_Events_SDLDisplayEvents);
+
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLReadDisplayEvent);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplays);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetPrimaryDisplay);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayName);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayBounds);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayForWindow);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetNaturalDisplayOrientation);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetCurrentDisplayOrientation);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayContentScale);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetFullscreenDisplayModes);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDesktopDisplayMode);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetCurrentDisplayMode);
+PHP_METHOD(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetClosestFullscreenDisplayMode);
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlreaddisplayevent, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, ptr, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplays, 0, 0, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetprimarydisplay, 0, 0, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplayname, 0, 1, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplaybounds, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplayforwindow, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, window, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetnaturaldisplayorientation, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetcurrentdisplayorientation, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplaycontentscale, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetfullscreendisplaymodes, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdesktopdisplaymode, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetcurrentdisplaymode, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetclosestfullscreendisplaymode, 0, 3, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, display_id, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, refresh_rate, IS_DOUBLE, 0)
+	ZEND_ARG_TYPE_INFO(0, include_high_density_modes, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEPHIR_INIT_FUNCS(sdl3_sdl_events_sdldisplayevents_method_entry) {
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLReadDisplayEvent, arginfo_sdl3_sdl_events_sdldisplayevents_sdlreaddisplayevent, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplays, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplays, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetPrimaryDisplay, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetprimarydisplay, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayName, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplayname, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayBounds, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplaybounds, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayForWindow, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplayforwindow, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetNaturalDisplayOrientation, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetnaturaldisplayorientation, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetCurrentDisplayOrientation, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetcurrentdisplayorientation, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDisplayContentScale, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdisplaycontentscale, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetFullscreenDisplayModes, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetfullscreendisplaymodes, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetDesktopDisplayMode, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetdesktopdisplaymode, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetCurrentDisplayMode, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetcurrentdisplaymode, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLDisplayEvents, SDLGetClosestFullscreenDisplayMode, arginfo_sdl3_sdl_events_sdldisplayevents_sdlgetclosestfullscreendisplaymode, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_FE_END
+};

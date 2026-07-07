@@ -1,0 +1,30 @@
+{
+    "name": "php-io-extensions/sdl3",
+    "type": "php-ext",
+    "description": "PHP-Controllable SDL3 Rendering Extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Project Saturn Studios, LLC",
+            "email": "info@projectsaturnstudios.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "php-ext": {
+        "extension-name": "sdl3",
+        "priority": 30,
+        "build-path": "ext",
+        "support-zts": true,
+        "support-nts": true,
+        "os-families-exclude": ["windows"],
+        "configure-options": [
+            {
+                "name": "enable-sdl3",
+                "description": "Enable the sdl3 extension",
+                "needs-value": false
+            }
+        ]
+    }
+}

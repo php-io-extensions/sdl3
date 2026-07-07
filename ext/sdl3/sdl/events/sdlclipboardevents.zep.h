@@ -1,0 +1,63 @@
+
+extern zend_class_entry *sdl3_sdl_events_sdlclipboardevents_ce;
+
+ZEPHIR_INIT_CLASS(Sdl3_SDL_Events_SDLClipboardEvents);
+
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLReadClipboardEvent);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLSetClipboardText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetClipboardText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasClipboardText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLSetPrimarySelectionText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetPrimarySelectionText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasPrimarySelectionText);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetClipboardMimeTypes);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasClipboardData);
+PHP_METHOD(Sdl3_SDL_Events_SDLClipboardEvents, SDLClearClipboardData);
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlreadclipboardevent, 0, 1, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, ptr, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlsetclipboardtext, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetclipboardtext, 0, 0, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasclipboardtext, 0, 0, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlsetprimaryselectiontext, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, text, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetprimaryselectiontext, 0, 0, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasprimaryselectiontext, 0, 0, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetclipboardmimetypes, 0, 0, IS_ARRAY, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasclipboarddata, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, mime_type, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlclipboardevents_sdlclearclipboarddata, 0, 0, IS_VOID, 0)
+ZEND_END_ARG_INFO()
+
+ZEPHIR_INIT_FUNCS(sdl3_sdl_events_sdlclipboardevents_method_entry) {
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLReadClipboardEvent, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlreadclipboardevent, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLSetClipboardText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlsetclipboardtext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetClipboardText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetclipboardtext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasClipboardText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasclipboardtext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLSetPrimarySelectionText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlsetprimaryselectiontext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetPrimarySelectionText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetprimaryselectiontext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasPrimarySelectionText, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasprimaryselectiontext, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLGetClipboardMimeTypes, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlgetclipboardmimetypes, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLHasClipboardData, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlhasclipboarddata, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_ME(Sdl3_SDL_Events_SDLClipboardEvents, SDLClearClipboardData, arginfo_sdl3_sdl_events_sdlclipboardevents_sdlclearclipboarddata, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	PHP_FE_END
+};
