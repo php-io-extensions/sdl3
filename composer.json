@@ -3,6 +3,7 @@
     "type": "php-ext",
     "description": "PHP-Controllable SDL3 Rendering Extension",
     "license": "MIT",
+    "version": "0.5.0",
     "authors": [
         {
             "name": "Project Saturn Studios, LLC",
