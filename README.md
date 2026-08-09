@@ -182,7 +182,7 @@ See `examples/proof_of_work.php` for a headless surface/renderer example.
 ## API reference
 
 All classes live under the `Sdl3\SDL` namespace. The PHP stubs that drive your
-IDE's autocomplete are published under `ide/0.2.0/` — this reference mirrors
+IDE's autocomplete are published under `ide/0.7.0/` — this reference mirrors
 them exactly.
 
 ### `Sdl3\SDL\SDL` — lifecycle, version, platform

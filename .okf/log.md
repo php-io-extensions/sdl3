@@ -1,0 +1,6 @@
+# Directory Update Log
+
+## 2026-08-09
+* **Initialization**: Created OKF v0.2 knowledge bundle for `php-io-extensions/sdl3` at package root `.okf/`, grounded in `composer.json` / `config.json` / `ext/php_sdl3.h` (**0.7.0**), `sdl3/sdl/**/*.zep`, `ext/config.m4`, README, installers (`install-macos.sh`, `install-macos-herd.sh`, `install-debian-trixie.sh`, `install-jetpack6.sh`), and `examples/proof_of_work.php`.
+* **Creation**: Orientation (overview, stack segmentation), architecture (stack, Zephir inline C, handle/struct model), API index + module concepts (SDL, error, properties, video, surface, render, timer, events, input, audio, dialog, GPU, reserved/scaffolds), build/packaging, conventions, traps, playbooks; package-root `AGENTS.md`; `.gitattributes` `export-ignore` for `.okf/` and `AGENTS.md`.
+* **Note**: All concepts marked `status: draft` pending Angel human verification. API concepts summarize module scope and point at README/`ide/0.7.0` for full method tables — they do not invent APIs beyond `.zep` on disk. Empty dirs (`camera`, `cpuinfo`, `filesystem`, `haptic`, `io`) and empty reserved classes documented as scaffolds only. Downstream `microscrap/sdl3` and `microscrap/sdl3-gfx` mentioned only as composition boundaries.
