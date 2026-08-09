@@ -55,6 +55,7 @@ Cross-platform (Linux + macOS) PHP extension: Zephir static classes under `Sdl3\
 * [GCC 14 warning-as-error](traps/gcc14-warning-flags.md) - `config.m4` demotes Zephir-hostile errors
 * [IDE stub path lag](traps/ide-stub-paths.md) - Prefer `ide/0.7.0/`; README may cite older
 * [Destroy opaque handles](traps/destroy-opaque-handles.md) - PHP GC does not free SDL objects
+* [Herd extension_dir](traps/herd-extension-dir.md) - Flat Herd `extensions` dir ≠ Zend API; codesign after install
 
 # Playbooks
 

@@ -157,24 +157,34 @@ resolve_build_toolchain() {
     [ -n "$PHP_CONFIG" ] && [ -x "$PHP_CONFIG" ] || die "php-config not found. Install Homebrew PHP dev headers: brew install php"
     [ -n "$PHP_PHPIZE" ] && [ -x "$PHP_PHPIZE" ] || die "phpize not found. Install Homebrew PHP dev headers: brew install php"
 
-    local herd_ver build_ver herd_ext_suffix build_ext_suffix
+    local herd_ver build_ver herd_api build_api
     herd_ver="$("$PHP_BIN" -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
     build_ver="$("$PHP_CONFIG" --version 2>/dev/null | awk '{print $NF}' | cut -d. -f1,2)"
-    herd_ext_suffix="$(basename "$("$PHP_BIN" -r 'echo ini_get("extension_dir");')")"
-    build_ext_suffix="$(basename "$("$PHP_CONFIG" --extension-dir)")"
-    herd_api="${herd_ext_suffix##*-}"
-    build_api="${build_ext_suffix##*-}"
+
+    # Herd overrides ini extension_dir to …/config/php/NN/extensions (basename
+    # "extensions"). Use the compile-time PHP_EXTENSION_DIR / PHP API number for
+    # ABI checks — that still ends in no-debug-non-zts-YYYYMMDD.
+    herd_api="$("$PHP_BIN" -r 'echo substr(PHP_EXTENSION_DIR, (int) strrpos(PHP_EXTENSION_DIR, "-") + 1);')"
+    if ! [[ "$herd_api" =~ ^[0-9]{8}$ ]]; then
+        herd_api="$("$PHP_BIN" -i 2>/dev/null | awk -F'=> *' '/^PHP API/{gsub(/ /,"",$2); print $2; exit}')"
+    fi
+
+    build_api="$(basename "$("$PHP_CONFIG" --extension-dir)")"
+    if ! [[ "$build_api" =~ ^[0-9]{8}$ ]]; then
+        build_api="$("$PHP_CONFIG" --extension-dir | grep -oE '[0-9]{8}$' || true)"
+    fi
 
     ok "Herd PHP       : $("$PHP_BIN" -r 'echo PHP_VERSION;') ($PHP_BIN)"
     ok "Build php-config: $($PHP_CONFIG --version 2>/dev/null | head -1)"
     ok "Build phpize    : $PHP_PHPIZE"
+    ok "PHP API        : Herd=${herd_api}, php-config=${build_api}"
 
     if [ "$herd_ver" != "$build_ver" ]; then
         die "Herd PHP ${herd_ver} does not match php-config ${build_ver}. Install matching Homebrew PHP or set PHP_CONFIG."
     fi
 
-    if [ "$herd_api" != "$build_api" ]; then
-        die "Extension API suffix mismatch: Herd=${herd_api}, php-config=${build_api}."
+    if [ -z "$herd_api" ] || [ -z "$build_api" ] || [ "$herd_api" != "$build_api" ]; then
+        die "Extension API mismatch: Herd=${herd_api:-unknown}, php-config=${build_api:-unknown}."
     fi
 }
 
@@ -242,9 +252,20 @@ echo ""
 
 step "📦 Installing binary into Herd config..."
 mkdir -p "$PHP_EXT_DIR"
-cp -f "$BUILD_SO" "${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
-chmod 755 "${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
-ok "Copied to: ${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
+TARGET_SO="${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
+cp -f "$BUILD_SO" "$TARGET_SO"
+chmod 755 "$TARGET_SO"
+# Fresh .so copies often keep a linker-signed page that macOS rejects on dlopen
+# (EXC_BAD_ACCESS / Code Signature Invalid → PHP exit 137). Re-sign ad-hoc.
+if command -v codesign >/dev/null 2>&1; then
+    codesign --force --sign - "$TARGET_SO"
+    xattr -cr "$TARGET_SO" 2>/dev/null || true
+    sleep 2  # allow amfid to finish validating the freshly codesigned binary
+    ok "Ad-hoc codesigned: ${TARGET_SO}"
+else
+    echo "   ⚠️  codesign not found — load may fail with Code Signature Invalid"
+fi
+ok "Copied to: ${TARGET_SO}"
 echo ""
 
 step "⚙️  Enabling extension for Herd PHP ${PHP_VER_MM}..."

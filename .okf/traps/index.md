@@ -6,3 +6,4 @@
 * [GCC 14 warning-as-error](gcc14-warning-flags.md) - `config.m4` demotes Zephir-hostile errors
 * [IDE stub path lag](ide-stub-paths.md) - Prefer `ide/0.7.0/`; README may cite older
 * [Destroy opaque handles](destroy-opaque-handles.md) - PHP GC does not free SDL objects
+* [Herd extension_dir](herd-extension-dir.md) - Do not parse Herd's flat `extensions` dir for the Zend API
