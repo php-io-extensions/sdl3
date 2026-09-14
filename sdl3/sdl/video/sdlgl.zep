@@ -193,6 +193,10 @@ class SDLGL
         bool result;
         var p;
 
+        if typeof path != "null" && typeof path != "string" {
+            throw new \TypeError("SDLGLLoadLibrary() expects ?string $path, got " . gettype(path));
+        }
+
         let p = path;
 
         %{

@@ -5,7 +5,7 @@ description: What sdl3 is, version targets, and what it deliberately is not
 resource: /composer.json
 tags: [sdl3, orientation, php-ext]
 status: draft
-generated: { by: okf-documentation-generator/cursor-grok-4.5, at: 2026-08-09T16:47:00Z }
+generated: { by: claude-opus-5/claude-code, at: 2026-09-14T00:00:00Z }
 sources:
   - id: composer
     resource: /composer.json
@@ -32,7 +32,7 @@ sources:
 |------|--------|
 | Package | `php-io-extensions/sdl3` |
 | Extension name | `sdl3` |
-| Version | `0.7.0` |
+| Version | `0.8.0` |
 | PHP | `>= 8.2` (ZTS + NTS) |
 | OS | Linux + macOS; Windows excluded |
 | Namespace | `Sdl3\SDL\*` |

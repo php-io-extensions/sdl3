@@ -7,7 +7,7 @@ Method counts below are `public static function` entries in the named `.zep` fil
 * [Sdl3\\SDL\\SDL](sdl.md) - Lifecycle, version, platform, pixel helpers (~22)
 * [Sdl3\\SDL\\SDLError](sdlerror.md) - Error get/set/clear (~4)
 * [Sdl3\\SDL\\SDLProperties](sdlproperties.md) - Property bags (~20)
-* [Video (SDLVideo, SDLGL)](video.md) - Windows (~83) + GL/EGL (~20)
+* [Video (SDLVideo, SDLGL, SDLMetal, SDLVulkan)](video.md) - Windows (~83) + GL/EGL (~20) + Metal (3) + Vulkan (7)
 * [Surface\\SDLSurface](surface.md) - Surfaces & pixels (~72)
 * [Render\\SDLRender](render.md) - Renderer & textures (~94)
 * [Timer\\SDLTimer](timer.md) - Delay / ticks (~2)

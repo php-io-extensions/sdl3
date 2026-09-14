@@ -36,8 +36,8 @@ ZEPHIR_INIT_CLASS(Sdl3_SDL_Events_SDLEvents)
 PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLReadEvent)
 {
 	zephir_method_globals *ZEPHIR_METHOD_GLOBALS_PTR = NULL;
-	zval key, _13$$15;
-	zval *ptr_param = NULL, *key_param = NULL, result, _0$$3, _1$$4, _2$$5, _3$$6, _4$$7, _5$$8, _6$$9, _7$$10, _8$$11, _9$$12, _10$$13, _11$$14, _12$$15;
+	zval key, _14$$16;
+	zval *ptr_param = NULL, *key_param = NULL, result, _0$$3, _1$$4, _2$$5, _3$$6, _4$$7, _5$$8, _6$$9, _7$$10, _8$$11, _9$$12, _10$$13, _11$$14, _12$$15, _13$$16;
 	zend_long ptr, ZEPHIR_LAST_CALL_STATUS;
 
 	ZVAL_UNDEF(&result);
@@ -54,8 +54,9 @@ PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLReadEvent)
 	ZVAL_UNDEF(&_10$$13);
 	ZVAL_UNDEF(&_11$$14);
 	ZVAL_UNDEF(&_12$$15);
+	ZVAL_UNDEF(&_13$$16);
 	ZVAL_UNDEF(&key);
-	ZVAL_UNDEF(&_13$$15);
+	ZVAL_UNDEF(&_14$$16);
 	ZEND_PARSE_PARAMETERS_START(2, 2)
 		Z_PARAM_LONG(ptr)
 		Z_PARAM_STR(key)
@@ -137,16 +138,22 @@ PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLReadEvent)
 			zephir_check_call_status();
 			break;
 		}
+		if (ZEPHIR_IS_STRING(&key, "window")) {
+			ZVAL_LONG(&_12$$15, ptr);
+			ZEPHIR_CALL_CE_STATIC(&result, sdl3_sdl_events_sdlwindowevents_ce, "sdlreadwindowevent", NULL, 0, &_12$$15);
+			zephir_check_call_status();
+			break;
+		}
 		
                     efree((SDL_Event *)(uintptr_t) ptr);
                 
-		ZEPHIR_INIT_VAR(&_12$$15);
-		object_init_ex(&_12$$15, spl_ce_RuntimeException);
-		ZEPHIR_INIT_VAR(&_13$$15);
-		ZEPHIR_CONCAT_SVS(&_13$$15, "SDL event property '", &key, "' is not supported yet");
-		ZEPHIR_CALL_METHOD(NULL, &_12$$15, "__construct", NULL, 1, &_13$$15);
+		ZEPHIR_INIT_VAR(&_13$$16);
+		object_init_ex(&_13$$16, spl_ce_RuntimeException);
+		ZEPHIR_INIT_VAR(&_14$$16);
+		ZEPHIR_CONCAT_SVS(&_14$$16, "SDL event property '", &key, "' is not supported yet");
+		ZEPHIR_CALL_METHOD(NULL, &_13$$16, "__construct", NULL, 1, &_14$$16);
 		zephir_check_call_status();
-		zephir_throw_exception_debug(&_12$$15, "sdl3/sdl/events/sdlevents.zep", 55);
+		zephir_throw_exception_debug(&_13$$16, "sdl3/sdl/events/sdlevents.zep", 58);
 		ZEPHIR_MM_RESTORE();
 		return;
 	} while(0);

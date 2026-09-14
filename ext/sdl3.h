@@ -32,6 +32,8 @@
 #include "sdl3/sdl/surface/sdlsurface.zep.h"
 #include "sdl3/sdl/timer/sdltimer.zep.h"
 #include "sdl3/sdl/video/sdlgl.zep.h"
+#include "sdl3/sdl/video/sdlmetal.zep.h"
 #include "sdl3/sdl/video/sdlvideo.zep.h"
+#include "sdl3/sdl/video/sdlvulkan.zep.h"
 
 #endif

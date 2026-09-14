@@ -4,7 +4,7 @@ title: Sibling patterns
 description: Shared php-io-extensions packaging style (not dependencies)
 tags: [sdl3, convention, packaging]
 status: draft
-generated: { by: okf-documentation-generator/cursor-grok-4.5, at: 2026-08-09T16:47:00Z }
+generated: { by: claude-opus-5/claude-code, at: 2026-09-14T00:00:00Z }
 sources:
   - id: composer
     resource: /composer.json
@@ -25,7 +25,7 @@ sources:
 | Opaque int handles | SDL pointers as PHP `int` |
 | PIE `type: php-ext`, `build-path: ext` | Same layout in `composer.json`[^composer] |
 | Platform installers | `install-macos*.sh`, debian, jetpack |
-| Version `0.7.0`, PHP ≥ 8.2 | Aligned with sibling extensions |
+| Version `0.8.0`, PHP ≥ 8.2 | Aligned with sibling extensions |
 | Windows excluded | `os-families-exclude: ["windows"]` |
 | IDE stubs path | `ide/0.7.0/Sdl3/SDL/` |
 | No FFI | Native extension only |

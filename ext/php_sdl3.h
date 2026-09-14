@@ -11,7 +11,7 @@
 #include "kernel/globals.h"
 
 #define PHP_SDL3_NAME        "sdl3"
-#define PHP_SDL3_VERSION     "0.7.0"
+#define PHP_SDL3_VERSION     "0.8.0"
 #define PHP_SDL3_EXTNAME     "sdl3"
 #define PHP_SDL3_AUTHOR      "Project Saturn Studios, LLC"
 #define PHP_SDL3_ZEPVERSION  "0.19.0-$Id$"

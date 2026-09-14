@@ -1,15 +1,18 @@
 ---
 type: CoreType
 title: Events/*
-description: Event queue, keyboard, mouse, display, clipboard, drop, watch, quit
+description: Event queue, keyboard, mouse, display, clipboard, drop, watch, quit, window
 resource: /sdl3/sdl/events/sdlevents.zep
 tags: [sdl3, api, events]
 status: draft
-generated: { by: okf-documentation-generator/cursor-grok-4.5, at: 2026-08-09T16:47:00Z }
+generated: { by: claude-opus-5/claude-code, at: 2026-09-14T00:00:00Z }
 sources:
   - id: events-zep
     resource: /sdl3/sdl/events/sdlevents.zep
     title: sdlevents.zep
+  - id: window-zep
+    resource: /sdl3/sdl/events/sdlwindowevents.zep
+    title: sdlwindowevents.zep
   - id: readme
     resource: /README.md
     title: Package README
@@ -32,24 +35,36 @@ Event subsystem split across classes under `Sdl3\SDL\Events\`. Polled events are
 | `SDLDropEvents` | `SDLReadDropEvent` | 1 |
 | `SDLEventWatch` | Filters/watches (PHP callbacks) | 5 |
 | `SDLQuit` | `SDLReadQuitEvent` | 1 |
+| `SDLWindowEvents` | `SDLReadWindowEvent` (0.8.0) | 1 |
 
 # Reserved empty event classes
 
-`SDLKeymap`, `SDLScancodeTables`, `SDLWindowEvents` ship as empty class shells — see [Reserved & empty scaffolds](/api/reserved-and-scaffolds.md).
+`SDLKeymap`, `SDLScancodeTables` ship as empty class shells — see [Reserved & empty scaffolds](/api/reserved-and-scaffolds.md).
 
-# Loop sketch
+# Reading events
+
+`SDLPollEvent()` / `SDLWaitEvent()` → `['ptr' => int, 'event_type' => int]` or `null`; `ptr` = emalloc'd `SDL_Event`.
+
+`SDLReadEvent($ptr, $key)` decodes by key: `key`, `text`, `edit`, `edit_candidates`, `kdevice`, `display`, `quit`, `drop`, `mdevice`, `motion`, `button`, `wheel`, `window`. Unknown key → frees, throws `RuntimeException`.[^events-zep]
+
+**Rule:** every `SDLReadEvent` reader frees the event — never `SDLFreeEvent` after it. Unread events → `SDLFreeEvent`.
+
+`window` → `SDLWindowEvents::SDLReadWindowEvent`: `['type', 'timestamp', 'window_id', 'data1', 'data2']` for any `SDL_EVENT_WINDOW_*`.[^window-zep]
 
 ```php
 use Sdl3\SDL\Events\SDLEvents;
 
-while (($ev = SDLEvents::SDLPollEvent()) !== null) {
-    if (($ev['type'] ?? 0) === $SDL_EVENT_QUIT) {
-        break;
+while (! is_null($ev = SDLEvents::SDLPollEvent())) {
+    if ($ev['event_type'] === 514) {                    // SDL_EVENT_WINDOW_SHOWN
+        $window = SDLEvents::SDLReadEvent($ev['ptr'], 'window');   // freed
+        continue;
     }
+    SDLEvents::SDLFreeEvent($ev['ptr']);
 }
 ```
 
 Define `SDL_EVENT_*` in app code or microscrap — not as extension class constants.[^readme]
 
 [^events-zep]: sdlevents.zep
+[^window-zep]: sdlwindowevents.zep
 [^readme]: Package README

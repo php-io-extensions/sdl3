@@ -19,7 +19,7 @@ if (PHP_SDL3 != "no") {
 	ADD_SOURCES(configure_module_dirname + "/sdl3/sdl", "sdl.zep.c sdlassert.zep.c sdlerror.zep.c sdllist.zep.c sdllog.zep.c sdlproperties.zep.c sdlutils.zep.c", "sdl3");
 	ADD_SOURCES(configure_module_dirname + "/sdl3/sdl/surface", "sdlsurface.zep.c", "sdl3");
 	ADD_SOURCES(configure_module_dirname + "/sdl3/sdl/timer", "sdltimer.zep.c", "sdl3");
-	ADD_SOURCES(configure_module_dirname + "/sdl3/sdl/video", "sdlgl.zep.c sdlvideo.zep.c", "sdl3");
+	ADD_SOURCES(configure_module_dirname + "/sdl3/sdl/video", "sdlgl.zep.c sdlmetal.zep.c sdlvideo.zep.c sdlvulkan.zep.c", "sdl3");
   ADD_FLAG("CFLAGS_SDL3", "/D ZEPHIR_RELEASE /Oi /Ot /Oy /Ob2 /Gs /GF /Gy /GL");
   ADD_FLAG("CFLAGS", "/D ZEPHIR_RELEASE /Oi /Ot /Oy /Ob2 /Gs /GF /Gy /GL");
   ADD_FLAG("LDFLAGS", "/LTCG");

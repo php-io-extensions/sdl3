@@ -10,6 +10,10 @@ class SDLRender
     {
         int ptr;
 
+        if typeof name != "null" && typeof name != "string" {
+            throw new \TypeError("SDLCreateRenderer() expects ?string $name, got " . gettype(name));
+        }
+
         %{
             SDL_Window *win = (SDL_Window *)(uintptr_t) window;
             const char *renderer_name = (Z_TYPE_P(name) == IS_NULL) ? NULL : Z_STRVAL_P(name);

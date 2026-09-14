@@ -5,7 +5,7 @@ description: Empty classes and empty subsystem directories
 resource: /sdl3/sdl/sdlassert.zep
 tags: [sdl3, api, scaffold, reserved]
 status: draft
-generated: { by: okf-documentation-generator/cursor-grok-4.5, at: 2026-08-09T16:47:00Z }
+generated: { by: claude-opus-5/claude-code, at: 2026-09-14T00:00:00Z }
 sources:
   - id: assert
     resource: /sdl3/sdl/sdlassert.zep
@@ -36,7 +36,6 @@ These ship in the public namespace but currently have **no methods**:[^readme]
 | `Sdl3\SDL\SDLUtils` | `sdl3/sdl/sdlutils.zep` |
 | `Sdl3\SDL\Events\SDLKeymap` | `sdl3/sdl/events/sdlkeymap.zep` |
 | `Sdl3\SDL\Events\SDLScancodeTables` | `sdl3/sdl/events/sdlscancodetables.zep` |
-| `Sdl3\SDL\Events\SDLWindowEvents` | `sdl3/sdl/events/sdlwindowevents.zep` |
 
 # Empty subsystem directories
 
@@ -49,6 +48,8 @@ Present on disk with **no `.zep` files**:
 - `sdl3/sdl/io/`
 
 # Agent rule
+
+`SDLWindowEvents` left this list in 0.8.0 (`SDLReadWindowEvent`).
 
 Do **not** invent APIs for these scaffolds. Document only what exists; when filled, add methods to the matching `.zep`, regenerate `ext/` + `ide/0.7.0/`, and update this OKF.
 

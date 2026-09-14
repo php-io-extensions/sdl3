@@ -3,7 +3,7 @@
     "name": "sdl3",
     "description": "PHP-Controllable SDL3 Rendering Extension",
     "author": "Project Saturn Studios, LLC",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "package-dependencies": {
         "sdl3": "*"
     },

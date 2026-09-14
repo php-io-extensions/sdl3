@@ -14,9 +14,9 @@
 #include "kernel/main.h"
 #include "kernel/exception.h"
 #include "kernel/memory.h"
-#include "ext/spl/spl_exceptions.h"
 #include "kernel/fcall.h"
 #include "kernel/concat.h"
+#include "ext/spl/spl_exceptions.h"
 #include "kernel/operators.h"
 #include "kernel/object.h"
 #include "kernel/array.h"
@@ -35,15 +35,19 @@ ZEPHIR_INIT_CLASS(Sdl3_SDL_Render_SDLRender)
 
 PHP_METHOD(Sdl3_SDL_Render_SDLRender, SDLCreateRenderer)
 {
+	zend_bool _0;
 	zephir_method_globals *ZEPHIR_METHOD_GLOBALS_PTR = NULL;
-	zval *window_param = NULL, *name = NULL, name_sub, __$null, _0$$3, _1$$3, _2$$3;
+	zval *window_param = NULL, *name = NULL, name_sub, __$null, _1$$3, _2$$3, _3$$3, _4$$4, _5$$4, _6$$4;
 	zend_long window, ZEPHIR_LAST_CALL_STATUS, ptr = 0;
 
 	ZVAL_UNDEF(&name_sub);
 	ZVAL_NULL(&__$null);
-	ZVAL_UNDEF(&_0$$3);
 	ZVAL_UNDEF(&_1$$3);
 	ZVAL_UNDEF(&_2$$3);
+	ZVAL_UNDEF(&_3$$3);
+	ZVAL_UNDEF(&_4$$4);
+	ZVAL_UNDEF(&_5$$4);
+	ZVAL_UNDEF(&_6$$4);
 	bool is_null_true = 1;
 	ZEND_PARSE_PARAMETERS_START(1, 2)
 		Z_PARAM_LONG(window)
@@ -57,6 +61,23 @@ PHP_METHOD(Sdl3_SDL_Render_SDLRender, SDLCreateRenderer)
 		name = &name_sub;
 		name = &__$null;
 	}
+	_0 = Z_TYPE_P(name) != IS_NULL;
+	if (_0) {
+		_0 = Z_TYPE_P(name) != IS_STRING;
+	}
+	if (_0) {
+		ZEPHIR_INIT_VAR(&_1$$3);
+		object_init_ex(&_1$$3, zend_ce_type_error);
+		ZEPHIR_INIT_VAR(&_2$$3);
+		zephir_gettype(&_2$$3, name);
+		ZEPHIR_INIT_VAR(&_3$$3);
+		ZEPHIR_CONCAT_SV(&_3$$3, "SDLCreateRenderer() expects ?string $name, got ", &_2$$3);
+		ZEPHIR_CALL_METHOD(NULL, &_1$$3, "__construct", NULL, 2, &_3$$3);
+		zephir_check_call_status();
+		zephir_throw_exception_debug(&_1$$3, "sdl3/sdl/render/sdlrender.zep", 13);
+		ZEPHIR_MM_RESTORE();
+		return;
+	}
 	
             SDL_Window *win = (SDL_Window *)(uintptr_t) window;
             const char *renderer_name = (Z_TYPE_P(name) == IS_NULL) ? NULL : Z_STRVAL_P(name);
@@ -64,15 +85,15 @@ PHP_METHOD(Sdl3_SDL_Render_SDLRender, SDLCreateRenderer)
             ptr = (zend_long)(uintptr_t) renderer;
         
 	if (ptr == 0) {
-		ZEPHIR_INIT_VAR(&_0$$3);
-		object_init_ex(&_0$$3, spl_ce_RuntimeException);
-		ZEPHIR_CALL_CE_STATIC(&_1$$3, sdl3_sdl_sdlerror_ce, "sdlgeterror", NULL, 0);
+		ZEPHIR_INIT_VAR(&_4$$4);
+		object_init_ex(&_4$$4, spl_ce_RuntimeException);
+		ZEPHIR_CALL_CE_STATIC(&_5$$4, sdl3_sdl_sdlerror_ce, "sdlgeterror", NULL, 0);
 		zephir_check_call_status();
-		ZEPHIR_INIT_VAR(&_2$$3);
-		ZEPHIR_CONCAT_SV(&_2$$3, "SDL_CreateRenderer failed: ", &_1$$3);
-		ZEPHIR_CALL_METHOD(NULL, &_0$$3, "__construct", NULL, 1, &_2$$3);
+		ZEPHIR_INIT_VAR(&_6$$4);
+		ZEPHIR_CONCAT_SV(&_6$$4, "SDL_CreateRenderer failed: ", &_5$$4);
+		ZEPHIR_CALL_METHOD(NULL, &_4$$4, "__construct", NULL, 1, &_6$$4);
 		zephir_check_call_status();
-		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/render/sdlrender.zep", 20);
+		zephir_throw_exception_debug(&_4$$4, "sdl3/sdl/render/sdlrender.zep", 24);
 		ZEPHIR_MM_RESTORE();
 		return;
 	}
@@ -108,7 +129,7 @@ PHP_METHOD(Sdl3_SDL_Render_SDLRender, SDLCreateSoftwareRenderer)
 		ZEPHIR_CONCAT_SV(&_2$$3, "SDL_CreateSoftwareRenderer failed: ", &_1$$3);
 		ZEPHIR_CALL_METHOD(NULL, &_0$$3, "__construct", NULL, 1, &_2$$3);
 		zephir_check_call_status();
-		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/render/sdlrender.zep", 37);
+		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/render/sdlrender.zep", 41);
 		ZEPHIR_MM_RESTORE();
 		return;
 	}
@@ -1450,7 +1471,7 @@ PHP_METHOD(Sdl3_SDL_Render_SDLRender, SDLCreateRendererWithProperties)
 		ZEPHIR_CONCAT_SV(&_2$$3, "SDL_CreateRendererWithProperties failed: ", &_1$$3);
 		ZEPHIR_CALL_METHOD(NULL, &_0$$3, "__construct", NULL, 1, &_2$$3);
 		zephir_check_call_status();
-		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/render/sdlrender.zep", 872);
+		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/render/sdlrender.zep", 876);
 		ZEPHIR_MM_RESTORE();
 		return;
 	}

@@ -969,7 +969,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, packSurfaceFromPtr)
 	ZVAL_LONG(&_6, pitch);
 	ZVAL_LONG(&_7, pixels_ptr);
 	ZVAL_LONG(&_8, refcount);
-	ZEPHIR_RETURN_CALL_SELF("buildsurfacearray", &_0, 2, &_1, &_2, &_3, &_4, &_5, &_6, &_7, &pixels_data, &_8);
+	ZEPHIR_RETURN_CALL_SELF("buildsurfacearray", &_0, 3, &_1, &_2, &_3, &_4, &_5, &_6, &_7, &pixels_data, &_8);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1042,7 +1042,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, packPaletteFromPtr)
 	ZVAL_LONG(&_2, ncolors);
 	ZVAL_LONG(&_3, version);
 	ZVAL_LONG(&_4, refcount);
-	ZEPHIR_RETURN_CALL_SELF("buildpalettearray", &_0, 3, &_1, &_2, &colors, &_3, &_4);
+	ZEPHIR_RETURN_CALL_SELF("buildpalettearray", &_0, 4, &_1, &_2, &colors, &_3, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1095,7 +1095,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLCreateSurfaceFrom)
 		return;
 	}
 	ZVAL_LONG(&_4, surf_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 4, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 5, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1186,7 +1186,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLCreateSurfacePalette)
 		return;
 	}
 	ZVAL_LONG(&_4, pal_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packpalettefromptr", &_3, 5, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packpalettefromptr", &_3, 6, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1335,7 +1335,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLLoadSurface)
 		return;
 	}
 	ZVAL_LONG(&_4, surf_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 4, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 5, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1770,7 +1770,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLRotateSurface)
 		return;
 	}
 	ZVAL_LONG(&_4, surf_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 4, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 5, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1814,7 +1814,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLScaleSurface)
 		return;
 	}
 	ZVAL_LONG(&_4, surf_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 4, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 5, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -1882,7 +1882,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLConvertSurfaceAndColorspace)
 		return;
 	}
 	ZVAL_LONG(&_4, surf_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 4, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packsurfacefromptr", &_3, 5, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }
@@ -2625,7 +2625,7 @@ PHP_METHOD(Sdl3_SDL_Surface_SDLSurface, SDLCreatePalette)
 		return;
 	}
 	ZVAL_LONG(&_4, pal_ptr);
-	ZEPHIR_RETURN_CALL_SELF("packpalettefromptr", &_3, 5, &_4);
+	ZEPHIR_RETURN_CALL_SELF("packpalettefromptr", &_3, 6, &_4);
 	zephir_check_call_status();
 	RETURN_MM();
 }

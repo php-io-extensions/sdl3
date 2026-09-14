@@ -5,7 +5,7 @@ description: config.m4, GCC 14 flags, stubs, and what belongs in git
 resource: /ext/config.m4
 tags: [sdl3, build, packaging]
 status: draft
-generated: { by: okf-documentation-generator/cursor-grok-4.5, at: 2026-08-09T16:47:00Z }
+generated: { by: claude-opus-5/claude-code, at: 2026-09-14T00:00:00Z }
 sources:
   - id: config-m4
     resource: /ext/config.m4
@@ -30,7 +30,7 @@ Notable pieces:
 | Artifact | Role |
 |----------|------|
 | `ext/config.m4` | `--enable-sdl3`, pkg-config for SDL3, GCC 14 warning demotion |
-| `ext/php_sdl3.h` | `PHP_SDL3_VERSION` (`0.7.0`) |
+| `ext/php_sdl3.h` | `PHP_SDL3_VERSION` (`0.8.0`) |
 | `ext/sdl3/` + kernel | Zephir-generated sources |
 
 # GCC 14

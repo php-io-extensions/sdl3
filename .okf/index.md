@@ -24,11 +24,11 @@ Cross-platform (Linux + macOS) PHP extension: Zephir static classes under `Sdl3\
 * [Sdl3\\SDL\\SDL](api/sdl.md) - Init/quit, version, platform, pixel helpers
 * [Sdl3\\SDL\\SDLError](api/sdlerror.md) - Error get/set/clear
 * [Sdl3\\SDL\\SDLProperties](api/sdlproperties.md) - Property bags (`SDL_PropertiesID` as int)
-* [Video (SDLVideo, SDLGL)](api/video.md) - Windows + OpenGL/EGL context helpers
+* [Video (SDLVideo, SDLGL, SDLMetal, SDLVulkan)](api/video.md) - Windows, GL/EGL, Metal views, Vulkan loader + surfaces
 * [Surface\\SDLSurface](api/surface.md) - Surfaces, pixels, blit/fill
 * [Render\\SDLRender](api/render.md) - Renderer, textures, draw primitives
 * [Timer\\SDLTimer](api/timer.md) - Delay and ticks
-* [Events/\*](api/events.md) - Event queue, keyboard, mouse, display, clipboard, …
+* [Events/\*](api/events.md) - Event queue, keyboard, mouse, display, clipboard, window, …
 * [Input (Joystick, Gamepad)](api/input.md) - Joystick + gamepad APIs
 * [Audio\\SDLAudio](api/audio.md) - Devices, streams, WAV/mix
 * [Dialog\\SDLDialog](api/dialog.md) - Async native file dialogs

@@ -12,14 +12,14 @@
 #include <Zend/zend_interfaces.h>
 
 #include "kernel/main.h"
+#include "kernel/exception.h"
 #include "kernel/memory.h"
+#include "kernel/fcall.h"
+#include "kernel/concat.h"
 #include "kernel/object.h"
 #include "kernel/operators.h"
 #include "kernel/array.h"
-#include "kernel/exception.h"
 #include "ext/spl/spl_exceptions.h"
-#include "kernel/fcall.h"
-#include "kernel/concat.h"
 
 #include <SDL3/SDL.h>
 #include <stdio.h>
@@ -216,13 +216,17 @@ ZEPHIR_INIT_CLASS(Sdl3_SDL_Video_SDLGL)
 
 PHP_METHOD(Sdl3_SDL_Video_SDLGL, SDLGLLoadLibrary)
 {
-	zend_bool result = 0;
+	zend_bool result = 0, _0;
 	zephir_method_globals *ZEPHIR_METHOD_GLOBALS_PTR = NULL;
-	zval *path = NULL, path_sub, __$null, p;
+	zend_long ZEPHIR_LAST_CALL_STATUS;
+	zval *path = NULL, path_sub, __$null, p, _1$$3, _2$$3, _3$$3;
 
 	ZVAL_UNDEF(&path_sub);
 	ZVAL_NULL(&__$null);
 	ZVAL_UNDEF(&p);
+	ZVAL_UNDEF(&_1$$3);
+	ZVAL_UNDEF(&_2$$3);
+	ZVAL_UNDEF(&_3$$3);
 	bool is_null_true = 1;
 	ZEND_PARSE_PARAMETERS_START(0, 1)
 		Z_PARAM_OPTIONAL
@@ -234,6 +238,23 @@ PHP_METHOD(Sdl3_SDL_Video_SDLGL, SDLGLLoadLibrary)
 	if (!path) {
 		path = &path_sub;
 		path = &__$null;
+	}
+	_0 = Z_TYPE_P(path) != IS_NULL;
+	if (_0) {
+		_0 = Z_TYPE_P(path) != IS_STRING;
+	}
+	if (_0) {
+		ZEPHIR_INIT_VAR(&_1$$3);
+		object_init_ex(&_1$$3, zend_ce_type_error);
+		ZEPHIR_INIT_VAR(&_2$$3);
+		zephir_gettype(&_2$$3, path);
+		ZEPHIR_INIT_VAR(&_3$$3);
+		ZEPHIR_CONCAT_SV(&_3$$3, "SDLGLLoadLibrary() expects ?string $path, got ", &_2$$3);
+		ZEPHIR_CALL_METHOD(NULL, &_1$$3, "__construct", NULL, 2, &_3$$3);
+		zephir_check_call_status();
+		zephir_throw_exception_debug(&_1$$3, "sdl3/sdl/video/sdlgl.zep", 196);
+		ZEPHIR_MM_RESTORE();
+		return;
 	}
 	ZEPHIR_CPY_WRT(&p, path);
 	
@@ -380,7 +401,7 @@ PHP_METHOD(Sdl3_SDL_Video_SDLGL, SDLGLCreateContext)
 		ZEPHIR_CONCAT_SV(&_2$$3, "SDL_GL_CreateContext failed: ", &_1$$3);
 		ZEPHIR_CALL_METHOD(NULL, &_0$$3, "__construct", NULL, 1, &_2$$3);
 		zephir_check_call_status();
-		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/video/sdlgl.zep", 283);
+		zephir_throw_exception_debug(&_0$$3, "sdl3/sdl/video/sdlgl.zep", 287);
 		ZEPHIR_MM_RESTORE();
 		return;
 	}

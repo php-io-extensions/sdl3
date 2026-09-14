@@ -51,7 +51,9 @@ zend_class_entry *sdl3_sdl_sdlutils_ce;
 zend_class_entry *sdl3_sdl_surface_sdlsurface_ce;
 zend_class_entry *sdl3_sdl_timer_sdltimer_ce;
 zend_class_entry *sdl3_sdl_video_sdlgl_ce;
+zend_class_entry *sdl3_sdl_video_sdlmetal_ce;
 zend_class_entry *sdl3_sdl_video_sdlvideo_ce;
+zend_class_entry *sdl3_sdl_video_sdlvulkan_ce;
 
 ZEND_DECLARE_MODULE_GLOBALS(sdl3)
 
@@ -91,7 +93,9 @@ static PHP_MINIT_FUNCTION(sdl3)
 	ZEPHIR_INIT(Sdl3_SDL_Surface_SDLSurface);
 	ZEPHIR_INIT(Sdl3_SDL_Timer_SDLTimer);
 	ZEPHIR_INIT(Sdl3_SDL_Video_SDLGL);
+	ZEPHIR_INIT(Sdl3_SDL_Video_SDLMetal);
 	ZEPHIR_INIT(Sdl3_SDL_Video_SDLVideo);
+	ZEPHIR_INIT(Sdl3_SDL_Video_SDLVulkan);
 	
 	return SUCCESS;
 }

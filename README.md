@@ -281,7 +281,7 @@ Proof: `php examples/proof_surface.php` (headless create/mutate/save/reload roun
 
 | Method                                                                                                       | Returns |
 | ------------------------------------------------------------------------------------------------------------ | ------- |
-| `SDLCreateRenderer(int $window, mixed $name = null)`                                                         | `int`   |
+| `SDLCreateRenderer(int $window, ?string $name = null)`                                                       | `int`   |
 | `SDLCreateSoftwareRenderer(int $surface)`                                                                    | `int`   |
 | `SDLRenderClear(int $renderer)`                                                                              | `void`  |
 | `SDLRenderPresent(int $renderer)`                                                                            | `bool`  |
@@ -332,6 +332,39 @@ Proof: `php examples/proof_surface.php` (headless create/mutate/save/reload roun
 
 `SDLCreateWindowAndRenderer` returns `['window' => int, 'renderer' => int, …]`.
 
+### `Sdl3\SDL\Video\SDLMetal` — Metal views (macOS)
+
+| Method                               | Returns |
+| ------------------------------------ | ------- |
+| `SDLMetalCreateView(int $window)`    | `int`   |
+| `SDLMetalDestroyView(int $view)`     | `void`  |
+| `SDLMetalGetLayer(int $view)`        | `int`   |
+
+`SDLMetalCreateView` throws `RuntimeException` on failure (always, off Apple).
+`SDLMetalGetLayer` returns the `CAMetalLayer` as raw pointer bits. The layer is
+borrowed: valid until `SDLMetalDestroyView`; never release it.
+
+### `Sdl3\SDL\Video\SDLVulkan` — Vulkan loader & surfaces
+
+| Method                                                                                        | Returns |
+| --------------------------------------------------------------------------------------------- | ------- |
+| `SDLVulkanLoadLibrary(?string $path = null)`                                                  | `bool`  |
+| `SDLVulkanUnloadLibrary()`                                                                    | `void`  |
+| `SDLVulkanGetVkGetInstanceProcAddr()`                                                         | `int`   |
+| `SDLVulkanGetInstanceExtensions()`                                                            | `array` |
+| `SDLVulkanCreateSurface(int $window, int $instance, int $allocator)`                          | `int`   |
+| `SDLVulkanDestroySurface(int $instance, int $surface, int $allocator)`                        | `void`  |
+| `SDLVulkanGetPresentationSupport(int $instance, int $physical_device, int $queue_family_index)` | `bool`  |
+
+Vulkan handles are raw pointer bits in an `int` (`0` = `VK_NULL_HANDLE`).
+`SDLVulkanCreateSurface` returns the `VkSurfaceKHR` bits, `0` on failure — read
+`SDLError::SDLGetError()`. `SDLVulkanGetInstanceExtensions` returning `[]` is
+failure — read `SDLError::SDLGetError()`. `VkSurfaceKHR` is 64-bit: the surface
+calls are unsupported on 32-bit PHP builds.
+
+`?string` parameters (`SDLVulkanLoadLibrary`, `SDLGL::SDLGLLoadLibrary`,
+`SDLRender::SDLCreateRenderer`'s `$name`) throw `TypeError` for any other type.
+
 ### `Sdl3\SDL\Timer\SDLTimer` — timing utilities
 
 | Method                | Returns |
@@ -359,6 +392,26 @@ Proof: `php examples/proof_surface.php` (headless create/mutate/save/reload roun
 
 Each event array always carries a numeric `type` key matching the
 `SDL_EVENT_*` enum.
+
+`SDLReadEvent($ptr, $key)` decodes **and frees** the event — never call
+`SDLFreeEvent` after it. An unknown key frees the event and throws
+`RuntimeException`.
+
+| Key               | Reader                                           |
+| ----------------- | ------------------------------------------------ |
+| `key`             | `SDLKeyboard::SDLReadKeyboardEvent`              |
+| `text`            | `SDLKeyboard::SDLReadTextInputEvent`             |
+| `edit`            | `SDLKeyboard::SDLReadTextEditingEvent`           |
+| `edit_candidates` | `SDLKeyboard::SDLReadTextEditingCandidatesEvent` |
+| `kdevice`         | `SDLKeyboard::SDLReadKeyboardDeviceEvent`        |
+| `display`         | `SDLDisplayEvents::SDLReadDisplayEvent`          |
+| `quit`            | `SDLQuit::SDLReadQuitEvent`                      |
+| `drop`            | `SDLDropEvents::SDLReadDropEvent`                |
+| `mdevice`         | `SDLMouse::SDLReadMouseDeviceEvent`              |
+| `motion`          | `SDLMouse::SDLReadMouseMotionEvent`              |
+| `button`          | `SDLMouse::SDLReadMouseButtonEvent`              |
+| `wheel`           | `SDLMouse::SDLReadMouseWheelEvent`               |
+| `window`          | `SDLWindowEvents::SDLReadWindowEvent`            |
 
 ### `Sdl3\SDL\Events\SDLCategories` — event filtering & metadata
 
@@ -489,6 +542,15 @@ Each event array always carries a numeric `type` key matching the
 | Method                         | Returns |
 | ------------------------------ | ------- |
 | `SDLReadQuitEvent(int $ptr)`   | `array` |
+
+### `Sdl3\SDL\Events\SDLWindowEvents` — window event payload
+
+| Method                           | Returns |
+| -------------------------------- | ------- |
+| `SDLReadWindowEvent(int $ptr)`   | `array` |
+
+Returns `['type', 'timestamp', 'window_id', 'data1', 'data2']` for any
+`SDL_EVENT_WINDOW_*`; frees the event.
 
 ### `Sdl3\SDL\SDLProperties` — property bags
 
@@ -884,7 +946,6 @@ methods; they are reserved for upcoming SDL3 subsystem bindings:
 - `Sdl3\SDL\SDLUtils`
 - `Sdl3\SDL\Events\SDLKeymap`
 - `Sdl3\SDL\Events\SDLScancodeTables`
-- `Sdl3\SDL\Events\SDLWindowEvents`
 
 ---
 

@@ -48,6 +48,9 @@ class SDLEvents
             case "wheel":
                 let result = SDLMouse::SDLReadMouseWheelEvent(ptr);
                 break;
+            case "window":
+                let result = SDLWindowEvents::SDLReadWindowEvent(ptr);
+                break;
 
             default:
                 %{

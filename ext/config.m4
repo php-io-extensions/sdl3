@@ -72,7 +72,9 @@ if test "$PHP_SDL3" = "yes"; then
 	sdl3/sdl/surface/sdlsurface.zep.c
 	sdl3/sdl/timer/sdltimer.zep.c
 	sdl3/sdl/video/sdlgl.zep.c
-	sdl3/sdl/video/sdlvideo.zep.c "
+	sdl3/sdl/video/sdlmetal.zep.c
+	sdl3/sdl/video/sdlvideo.zep.c
+	sdl3/sdl/video/sdlvulkan.zep.c "
 	PHP_NEW_EXTENSION(sdl3, $sdl3_sources, $ext_shared,, -I/opt/homebrew/include/SDL3 -I/usr/local/include/SDL3 $PHP_SDL3_INCS )
 	PHP_ADD_BUILD_DIR([$ext_builddir/kernel/])
 	for dir in "sdl3/sdl sdl3/sdl/audio sdl3/sdl/dialog sdl3/sdl/events sdl3/sdl/gpu sdl3/sdl/input sdl3/sdl/render sdl3/sdl/surface sdl3/sdl/timer sdl3/sdl/video"; do
