@@ -89,23 +89,30 @@ class SDLEvents
         return ["ptr": ptr, "event_type": event_type];
     }
 
-    public static function SDLWaitEventTimeout(int timeout_ms) -> int
+    public static function SDLWaitEventTimeout(int timeout_ms) -> array | null
     {
         int ptr;
+        int event_type;
 
         %{
             SDL_Event *event = emalloc(sizeof(SDL_Event));
             bool has_event = SDL_WaitEventTimeout(event, (Sint32) timeout_ms);
 
             if (has_event) {
-                ptr = (zend_long)(uintptr_t) event;
+                ptr        = (zend_long)(uintptr_t) event;
+                event_type = (zend_long) event->type;
             } else {
                 efree(event);
-                ptr = 0;
+                ptr        = 0;
+                event_type = 0;
             }
         }%
 
-        return ptr;
+        if ptr == 0 {
+            return null;
+        }
+
+        return ["ptr": ptr, "event_type": event_type];
     }
 
     public static function SDLWaitEvent() -> array | null

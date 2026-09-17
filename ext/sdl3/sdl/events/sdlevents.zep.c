@@ -200,25 +200,41 @@ PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLPollEvent)
 
 PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLWaitEventTimeout)
 {
-	zval *timeout_ms_param = NULL;
-	zend_long timeout_ms, ptr = 0;
+	zephir_method_globals *ZEPHIR_METHOD_GLOBALS_PTR = NULL;
+	zval *timeout_ms_param = NULL, _0;
+	zend_long timeout_ms, ptr = 0, event_type = 0;
 
+	ZVAL_UNDEF(&_0);
 	ZEND_PARSE_PARAMETERS_START(1, 1)
 		Z_PARAM_LONG(timeout_ms)
 	ZEND_PARSE_PARAMETERS_END();
-	zephir_fetch_params_without_memory_grow(1, 0, &timeout_ms_param);
+	ZEPHIR_METHOD_GLOBALS_PTR = pecalloc(1, sizeof(zephir_method_globals), 0);
+	zephir_memory_grow_stack(ZEPHIR_METHOD_GLOBALS_PTR, __func__);
+	zephir_fetch_params(1, 1, 0, &timeout_ms_param);
 	
             SDL_Event *event = emalloc(sizeof(SDL_Event));
             bool has_event = SDL_WaitEventTimeout(event, (Sint32) timeout_ms);
 
             if (has_event) {
-                ptr = (zend_long)(uintptr_t) event;
+                ptr        = (zend_long)(uintptr_t) event;
+                event_type = (zend_long) event->type;
             } else {
                 efree(event);
-                ptr = 0;
+                ptr        = 0;
+                event_type = 0;
             }
         
-	RETURN_LONG(ptr);
+	if (ptr == 0) {
+		RETURN_MM_NULL();
+	}
+	zephir_create_array(return_value, 2, 0);
+	ZEPHIR_INIT_VAR(&_0);
+	ZVAL_LONG(&_0, ptr);
+	zephir_array_update_string(return_value, SL("ptr"), &_0, PH_COPY | PH_SEPARATE);
+	ZEPHIR_INIT_NVAR(&_0);
+	ZVAL_LONG(&_0, event_type);
+	zephir_array_update_string(return_value, SL("event_type"), &_0, PH_COPY | PH_SEPARATE);
+	RETURN_MM();
 }
 
 PHP_METHOD(Sdl3_SDL_Events_SDLEvents, SDLWaitEvent)

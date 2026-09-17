@@ -378,7 +378,7 @@ calls are unsupported on 32-bit PHP builds.
 | ------------------------------------------------------------------------------------- | -------------- |
 | `SDLPollEvent()`                                                                      | `array\|null`  |
 | `SDLWaitEvent()`                                                                      | `array\|null`  |
-| `SDLWaitEventTimeout(int $timeout_ms)`                                                | `int`          |
+| `SDLWaitEventTimeout(int $timeout_ms)`                                                | `?array`       |
 | `SDLReadEvent(int $ptr, string $key)`                                                 | `array`        |
 | `SDLPeepEvents(int $action, int $min_type, int $max_type, int $numevents = 1)`        | `array`        |
 | `SDLHasEvent(int $type)`                                                              | `bool`         |

@@ -25,7 +25,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlevents_sdlpollevent, 0, 0, IS_ARRAY, 1)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlevents_sdlwaiteventtimeout, 0, 1, IS_LONG, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_sdl3_sdl_events_sdlevents_sdlwaiteventtimeout, 0, 1, IS_ARRAY, 1)
 	ZEND_ARG_TYPE_INFO(0, timeout_ms, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
