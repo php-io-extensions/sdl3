@@ -1,0 +1,13 @@
+# Agent guidance — php-io-extensions/sdl3
+
+1. **Read [`.okf/index.md`](.okf/index.md) first** before changing the API, the C, or packaging. Open only the concepts the change touches.
+2. **Bindings are 1:1 at the SDL 3.2 API.** Function and constant names are the C names. No defaults, no composites. Nothing that exists only in 3.4: `SDL_GPUMultisampleState.enable_alpha_to_coverage` and `SDL_GPUDepthStencilTargetInfo.mip_level` / `layer` are not bound, so this tree still compiles against the Pi's distro 3.2.10.
+3. **Translations, the only ones.** A pointer and a count are one PHP list. `const Uint8 *` plus `size_t` is one `string`. An out-parameter is by-reference. A `void *` is an `int` address. A C `bool` stays `bool`; failure is `SDL_GetError()`.
+4. **Handles.** `final`, private `__construct`, not cloneable, not serializable, `pointer(): int`, `static fromPointer(int $pointer): static`. One PHP object per native pointer per thread (`sdl3_box`). `fromPointer(0)` throws `ValueError`. Any other address is trusted. Say so on the stub.
+5. **Released handles.** `SDL_Destroy*`, `SDL_Release*`, `SDL_CloseIO`, ending a pass, and submitting or cancelling a command buffer call `sdl3_release`. A released handle throws `ValueError` naming the class. Dropping the PHP object does not destroy the native object. `keep` holds what the native object borrows: a surface's pixel string, a window's surface, or a command buffer's swapchain textures.
+6. **Structs.** `final`, public properties named as the C fields, zero by default, nested structs built in the constructor. `sdl3_<Struct>_from()` fills the C struct and refuses a bad list element or a released handle before the SDL call. List storage lives in `sdl3_scratch` until the caller frees it.
+7. **The stub is the declaration.** Edit `stubs/*.stub.php`, regenerate with `php84 /opt/homebrew/opt/php@8.4/lib/php/build/gen_stub.php stubs`, and commit both. Never hand-edit `*_arginfo.h`. Each stub's functions register from the C file that includes that arginfo (`zend_register_functions`, `MODULE_PERSISTENT`), because every stub emits its own `ext_functions` table.
+8. **Build.** `./install-macos.sh` into Homebrew `php@8.4` and `php@8.4-zts`. On the Pi, copy the tree with `fnk` and `./install-debian-trixie.sh` (distro SDL, not `/usr/local`). Pest at `-d memory_limit=128M`. On the Pi export `WAYLAND_DISPLAY=wayland-0` and `XDG_RUNTIME_DIR=/run/user/$(id -u)`. Gate a commit on the suite's exit code.
+9. **Video stays on the thread that called `SDL_Init`.** The binding does not guard this. Cocoa enforces it.
+10. **Durable facts go in `.okf`.** Update the matching concept and append `.okf/log.md`.
+11. **Version** is `PHP_SDL3_VERSION` in `php_sdl3.h`: 0.10.0. `os-families`: linux, darwin.

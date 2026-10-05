@@ -1,0 +1,207 @@
+/* This is a generated file, edit the .stub.php file instead.
+ * Stub hash: cf21e67c7713a451a729949e506b3a6ba553beb2 */
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateWindow, 0, 4, SDL_Window, 1)
+	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateWindowWithProperties, 0, 1, SDL_Window, 1)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_DestroyWindow, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetWindowID, 0, 1, IS_LONG, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_GetWindowFromID, 0, 1, SDL_Window, 1)
+	ZEND_ARG_TYPE_INFO(0, id, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetWindowTitle, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetWindowTitle, 0, 1, IS_STRING, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetWindowSize, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+	ZEND_ARG_TYPE_INFO(1, w, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(1, h, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_GetWindowSizeInPixels arginfo_SDL_GetWindowSize
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetWindowPixelDensity, 0, 1, IS_DOUBLE, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_GetWindowDisplayScale arginfo_SDL_GetWindowPixelDensity
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ShowWindow, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_HideWindow arginfo_SDL_ShowWindow
+
+#define arginfo_SDL_RaiseWindow arginfo_SDL_ShowWindow
+
+#define arginfo_SDL_GetWindowFlags arginfo_SDL_GetWindowID
+
+#define arginfo_SDL_GetWindowProperties arginfo_SDL_GetWindowID
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_CreateProperties, 0, 0, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_DestroyProperties, 0, 1, IS_VOID, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetPointerProperty, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetNumberProperty, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetStringProperty, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, value, IS_STRING, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetBooleanProperty, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, value, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetPointerProperty, 0, 3, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, default, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetNumberProperty, 0, 3, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, props, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, default, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_Window___construct, 0, 0, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_class_SDL_Window_pointer arginfo_SDL_CreateProperties
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Window_fromPointer, 0, 1, IS_STATIC, 0)
+	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_FUNCTION(SDL_CreateWindow);
+ZEND_FUNCTION(SDL_CreateWindowWithProperties);
+ZEND_FUNCTION(SDL_DestroyWindow);
+ZEND_FUNCTION(SDL_GetWindowID);
+ZEND_FUNCTION(SDL_GetWindowFromID);
+ZEND_FUNCTION(SDL_SetWindowTitle);
+ZEND_FUNCTION(SDL_GetWindowTitle);
+ZEND_FUNCTION(SDL_GetWindowSize);
+ZEND_FUNCTION(SDL_GetWindowSizeInPixels);
+ZEND_FUNCTION(SDL_GetWindowPixelDensity);
+ZEND_FUNCTION(SDL_GetWindowDisplayScale);
+ZEND_FUNCTION(SDL_ShowWindow);
+ZEND_FUNCTION(SDL_HideWindow);
+ZEND_FUNCTION(SDL_RaiseWindow);
+ZEND_FUNCTION(SDL_GetWindowFlags);
+ZEND_FUNCTION(SDL_GetWindowProperties);
+ZEND_FUNCTION(SDL_CreateProperties);
+ZEND_FUNCTION(SDL_DestroyProperties);
+ZEND_FUNCTION(SDL_SetPointerProperty);
+ZEND_FUNCTION(SDL_SetNumberProperty);
+ZEND_FUNCTION(SDL_SetStringProperty);
+ZEND_FUNCTION(SDL_SetBooleanProperty);
+ZEND_FUNCTION(SDL_GetPointerProperty);
+ZEND_FUNCTION(SDL_GetNumberProperty);
+ZEND_METHOD(SDL_Window, __construct);
+ZEND_METHOD(SDL_Window, pointer);
+ZEND_METHOD(SDL_Window, fromPointer);
+
+static const zend_function_entry ext_functions[] = {
+	ZEND_FE(SDL_CreateWindow, arginfo_SDL_CreateWindow)
+	ZEND_FE(SDL_CreateWindowWithProperties, arginfo_SDL_CreateWindowWithProperties)
+	ZEND_FE(SDL_DestroyWindow, arginfo_SDL_DestroyWindow)
+	ZEND_FE(SDL_GetWindowID, arginfo_SDL_GetWindowID)
+	ZEND_FE(SDL_GetWindowFromID, arginfo_SDL_GetWindowFromID)
+	ZEND_FE(SDL_SetWindowTitle, arginfo_SDL_SetWindowTitle)
+	ZEND_FE(SDL_GetWindowTitle, arginfo_SDL_GetWindowTitle)
+	ZEND_FE(SDL_GetWindowSize, arginfo_SDL_GetWindowSize)
+	ZEND_FE(SDL_GetWindowSizeInPixels, arginfo_SDL_GetWindowSizeInPixels)
+	ZEND_FE(SDL_GetWindowPixelDensity, arginfo_SDL_GetWindowPixelDensity)
+	ZEND_FE(SDL_GetWindowDisplayScale, arginfo_SDL_GetWindowDisplayScale)
+	ZEND_FE(SDL_ShowWindow, arginfo_SDL_ShowWindow)
+	ZEND_FE(SDL_HideWindow, arginfo_SDL_HideWindow)
+	ZEND_FE(SDL_RaiseWindow, arginfo_SDL_RaiseWindow)
+	ZEND_FE(SDL_GetWindowFlags, arginfo_SDL_GetWindowFlags)
+	ZEND_FE(SDL_GetWindowProperties, arginfo_SDL_GetWindowProperties)
+	ZEND_FE(SDL_CreateProperties, arginfo_SDL_CreateProperties)
+	ZEND_FE(SDL_DestroyProperties, arginfo_SDL_DestroyProperties)
+	ZEND_FE(SDL_SetPointerProperty, arginfo_SDL_SetPointerProperty)
+	ZEND_FE(SDL_SetNumberProperty, arginfo_SDL_SetNumberProperty)
+	ZEND_FE(SDL_SetStringProperty, arginfo_SDL_SetStringProperty)
+	ZEND_FE(SDL_SetBooleanProperty, arginfo_SDL_SetBooleanProperty)
+	ZEND_FE(SDL_GetPointerProperty, arginfo_SDL_GetPointerProperty)
+	ZEND_FE(SDL_GetNumberProperty, arginfo_SDL_GetNumberProperty)
+	ZEND_FE_END
+};
+
+static const zend_function_entry class_SDL_Window_methods[] = {
+	ZEND_ME(SDL_Window, __construct, arginfo_class_SDL_Window___construct, ZEND_ACC_PRIVATE)
+	ZEND_ME(SDL_Window, pointer, arginfo_class_SDL_Window_pointer, ZEND_ACC_PUBLIC)
+	ZEND_ME(SDL_Window, fromPointer, arginfo_class_SDL_Window_fromPointer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+static void register_SDL_video_symbols(int module_number)
+{
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_HIDDEN", SDL_WINDOW_HIDDEN, CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_RESIZABLE", SDL_WINDOW_RESIZABLE, CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_HIGH_PIXEL_DENSITY", SDL_WINDOW_HIGH_PIXEL_DENSITY, CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_OPENGL", SDL_WINDOW_OPENGL, CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_VULKAN", SDL_WINDOW_VULKAN, CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("SDL_WINDOW_METAL", SDL_WINDOW_METAL, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_TITLE_STRING", SDL_PROP_WINDOW_CREATE_TITLE_STRING, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER", SDL_PROP_WINDOW_CREATE_WIDTH_NUMBER, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER", SDL_PROP_WINDOW_CREATE_HEIGHT_NUMBER, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN", SDL_PROP_WINDOW_CREATE_HIGH_PIXEL_DENSITY_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN", SDL_PROP_WINDOW_CREATE_RESIZABLE_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN", SDL_PROP_WINDOW_CREATE_OPENGL_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN", SDL_PROP_WINDOW_CREATE_VULKAN_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN", SDL_PROP_WINDOW_CREATE_METAL_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN", SDL_PROP_WINDOW_CREATE_HIDDEN_BOOLEAN, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER", SDL_PROP_WINDOW_CREATE_COCOA_VIEW_POINTER, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER", SDL_PROP_WINDOW_CREATE_WAYLAND_WL_SURFACE_POINTER, CONST_PERSISTENT);
+	REGISTER_STRING_CONSTANT("SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER", SDL_PROP_WINDOW_CREATE_X11_WINDOW_NUMBER, CONST_PERSISTENT);
+}
+
+static zend_class_entry *register_class_SDL_Window(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_Window", class_SDL_Window_methods);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	return class_entry;
+}
