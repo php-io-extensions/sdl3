@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 52647254c4461791a10246d031bc29342fd8c765 */
+ * Stub hash: 9b4c72554f9848d79ddcb989817af567d279ca9e */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GL_SetAttribute, 0, 2, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, attr, IS_LONG, 0)
@@ -21,6 +21,13 @@ ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GL_SetSwapInterval, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, interval, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GL_GetSwapInterval, 0, 1, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(1, interval, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_EGL_GetCurrentDisplay, 0, 0, IS_LONG, 1)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GL_DestroyContext, 0, 1, _IS_BOOL, 0)
@@ -76,6 +83,8 @@ ZEND_FUNCTION(SDL_GL_CreateContext);
 ZEND_FUNCTION(SDL_GL_MakeCurrent);
 ZEND_FUNCTION(SDL_GL_SwapWindow);
 ZEND_FUNCTION(SDL_GL_SetSwapInterval);
+ZEND_FUNCTION(SDL_GL_GetSwapInterval);
+ZEND_FUNCTION(SDL_EGL_GetCurrentDisplay);
 ZEND_FUNCTION(SDL_GL_DestroyContext);
 ZEND_FUNCTION(SDL_Metal_CreateView);
 ZEND_FUNCTION(SDL_Metal_GetLayer);
@@ -96,6 +105,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_GL_MakeCurrent, arginfo_SDL_GL_MakeCurrent)
 	ZEND_FE(SDL_GL_SwapWindow, arginfo_SDL_GL_SwapWindow)
 	ZEND_FE(SDL_GL_SetSwapInterval, arginfo_SDL_GL_SetSwapInterval)
+	ZEND_FE(SDL_GL_GetSwapInterval, arginfo_SDL_GL_GetSwapInterval)
+	ZEND_FE(SDL_EGL_GetCurrentDisplay, arginfo_SDL_EGL_GetCurrentDisplay)
 	ZEND_FE(SDL_GL_DestroyContext, arginfo_SDL_GL_DestroyContext)
 	ZEND_FE(SDL_Metal_CreateView, arginfo_SDL_Metal_CreateView)
 	ZEND_FE(SDL_Metal_GetLayer, arginfo_SDL_Metal_GetLayer)

@@ -190,11 +190,24 @@ function SDL_ClaimWindowForGPUDevice(SDL_GPUDevice $device, SDL_Window $window):
 
 function SDL_ReleaseWindowFromGPUDevice(SDL_GPUDevice $device, SDL_Window $window): void {}
 
+function SDL_WindowSupportsGPUPresentMode(SDL_GPUDevice $device, SDL_Window $window, int $present_mode): bool {}
+
+function SDL_WindowSupportsGPUSwapchainComposition(SDL_GPUDevice $device, SDL_Window $window, int $swapchain_composition): bool {}
+
+/** 1 to 3 frames the device may have in flight; fewer lowers latency, more raises throughput. SDL checks the range only in its GPU debug mode: a release build answers true for any value. */
+function SDL_SetGPUAllowedFramesInFlight(SDL_GPUDevice $device, int $allowed_frames_in_flight): bool {}
+
+/** Blocks until a swapchain texture of $window is free to acquire. */
+function SDL_WaitForGPUSwapchain(SDL_GPUDevice $device, SDL_Window $window): bool {}
+
 function SDL_SetGPUSwapchainParameters(SDL_GPUDevice $device, SDL_Window $window, int $swapchain_composition, int $present_mode): bool {}
 
 function SDL_GetGPUSwapchainTextureFormat(SDL_GPUDevice $device, SDL_Window $window): int {}
 
 /** A null texture with true is SDL's "none available yet". The texture, when present, is released when this command buffer is submitted or cancelled. */
+/** As SDL_AcquireGPUSwapchainTexture, blocking until a texture is free. A null texture with true: the window is not shown. Released with the command buffer. */
+function SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer $command_buffer, SDL_Window $window, ?SDL_GPUTexture &$swapchain_texture, ?int &$swapchain_texture_width, ?int &$swapchain_texture_height): bool {}
+
 function SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer $command_buffer, SDL_Window $window, ?SDL_GPUTexture &$swapchain_texture, ?int &$swapchain_texture_width, ?int &$swapchain_texture_height): bool {}
 
 

@@ -28,6 +28,7 @@ A handle is `sdl3_handle { void *ptr; zval keep; zend_object std; }`. `ptr` is t
 | Call | PHP handle released | `keep` |
 |---|---|---|
 | `SDL_DestroyWindow` | the window, and the window surface if `SDL_GetWindowSurface` boxed one | the surface object |
+| `SDL_DestroyWindowSurface` | the window surface if `SDL_GetWindowSurface` boxed one; the window stays live | the surface object |
 | `SDL_DestroySurface` | the surface | the pixel string from `SDL_CreateSurfaceFrom` |
 | `SDL_CloseIO` | the stream | |
 | `SDL_GL_DestroyContext` | the context | |
@@ -38,5 +39,9 @@ A handle is `sdl3_handle { void *ptr; zval keep; zend_object std; }`. `ptr` is t
 | `SDL_SubmitGPUCommandBuffer`, `SDL_SubmitGPUCommandBufferAndAcquireFence`, `SDL_CancelGPUCommandBuffer` | the command buffer, and any swapchain texture it acquired | the texture list |
 
 `SDL_CreateSurfaceFrom` with a string stores a reference in the surface's `keep`, so the pixels outlive the caller's variable. An address stores nothing.
+
+# Hit tests
+
+Module global `hit_tests` maps a window address to the entry SDL holds as `callback_data`: the callable's `zend_fcall_info_cache`, the `$callback_data` zval, and a reference count. The trampoline-safe `zend_fcc_dup`/`zend_fcc_dtor` pair owns the callable. A call takes a reference for its duration, so a callback that replaces or removes its own hit test frees the entry after it returns. `SDL_DestroyWindow` drops the window's entry. `SDL_Quit` and RSHUTDOWN clear SDL's callback on every window in the table and empty it, so SDL never calls into request memory that is gone.
 
 [^runtime]: `src/runtime.h`

@@ -18,6 +18,8 @@ it('sets a hint and reads errors as strings', function (): void {
 
 it('pumps and polls events into an SDL_Event', function (): void {
     video();
+    // Windows shown by earlier tests can still deliver compositor events; let them land first.
+    pumpEvents();
     $event = new SDL_Event();
     SDL_PumpEvents();
 

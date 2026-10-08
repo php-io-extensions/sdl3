@@ -130,6 +130,11 @@ function SDL_GL_SwapWindow(SDL_Window $window): bool {}
 
 function SDL_GL_SetSwapInterval(int $interval): bool {}
 
+function SDL_GL_GetSwapInterval(?int &$interval): bool {}
+
+/** The current context's EGLDisplay address; null where SDL's GL is not EGL (macOS) or no context is current. */
+function SDL_EGL_GetCurrentDisplay(): ?int {}
+
 function SDL_GL_DestroyContext(SDL_GLContext $context): bool {}
 
 function SDL_Metal_CreateView(SDL_Window $window): ?SDL_MetalView {}

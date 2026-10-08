@@ -556,6 +556,89 @@ ZEND_FUNCTION(SDL_ReleaseWindowFromGPUDevice)
 	SDL_ReleaseWindowFromGPUDevice(device, window);
 }
 
+ZEND_FUNCTION(SDL_WindowSupportsGPUPresentMode)
+{
+	zval *device_zv, *window_zv;
+	zend_long present_mode;
+	SDL_GPUDevice *device;
+	SDL_Window *window;
+
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_OBJECT_OF_CLASS(device_zv, sdl3_ce_SDL_GPUDevice)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+		Z_PARAM_LONG(present_mode)
+	ZEND_PARSE_PARAMETERS_END();
+
+	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
+	window = device != NULL ? sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 2) : NULL;
+	if (device == NULL || window == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_WindowSupportsGPUPresentMode(device, window, (SDL_GPUPresentMode) present_mode));
+}
+
+ZEND_FUNCTION(SDL_WindowSupportsGPUSwapchainComposition)
+{
+	zval *device_zv, *window_zv;
+	zend_long composition;
+	SDL_GPUDevice *device;
+	SDL_Window *window;
+
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_OBJECT_OF_CLASS(device_zv, sdl3_ce_SDL_GPUDevice)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+		Z_PARAM_LONG(composition)
+	ZEND_PARSE_PARAMETERS_END();
+
+	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
+	window = device != NULL ? sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 2) : NULL;
+	if (device == NULL || window == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_WindowSupportsGPUSwapchainComposition(device, window, (SDL_GPUSwapchainComposition) composition));
+}
+
+ZEND_FUNCTION(SDL_SetGPUAllowedFramesInFlight)
+{
+	zval *device_zv;
+	zend_long frames;
+	SDL_GPUDevice *device;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(device_zv, sdl3_ce_SDL_GPUDevice)
+		Z_PARAM_LONG(frames)
+	ZEND_PARSE_PARAMETERS_END();
+
+	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
+	if (device == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_SetGPUAllowedFramesInFlight(device, (Uint32) frames));
+}
+
+ZEND_FUNCTION(SDL_WaitForGPUSwapchain)
+{
+	zval *device_zv, *window_zv;
+	SDL_GPUDevice *device;
+	SDL_Window *window;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(device_zv, sdl3_ce_SDL_GPUDevice)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+	ZEND_PARSE_PARAMETERS_END();
+
+	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
+	window = device != NULL ? sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 2) : NULL;
+	if (device == NULL || window == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_WaitForGPUSwapchain(device, window));
+}
+
 ZEND_FUNCTION(SDL_SetGPUSwapchainParameters)
 {
 	zval *device_zv, *window_zv;
@@ -600,7 +683,7 @@ ZEND_FUNCTION(SDL_GetGPUSwapchainTextureFormat)
 	RETURN_LONG(SDL_GetGPUSwapchainTextureFormat(device, window));
 }
 
-ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture)
+static void sdl3_acquire_swapchain(INTERNAL_FUNCTION_PARAMETERS, bool wait)
 {
 	zval *command_zv, *window_zv, *texture_zv, *width_zv, *height_zv;
 	SDL_GPUCommandBuffer *command_buffer;
@@ -624,7 +707,9 @@ ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture)
 		RETURN_THROWS();
 	}
 
-	acquired = SDL_AcquireGPUSwapchainTexture(command_buffer, window, &texture, &width, &height);
+	acquired = wait
+		? SDL_WaitAndAcquireGPUSwapchainTexture(command_buffer, window, &texture, &width, &height)
+		: SDL_AcquireGPUSwapchainTexture(command_buffer, window, &texture, &width, &height);
 	if (!acquired) {
 		RETURN_FALSE;
 	}
@@ -644,4 +729,14 @@ ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture)
 		RETURN_THROWS();
 	}
 	RETURN_TRUE;
+}
+
+ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture)
+{
+	sdl3_acquire_swapchain(INTERNAL_FUNCTION_PARAM_PASSTHRU, false);
+}
+
+ZEND_FUNCTION(SDL_WaitAndAcquireGPUSwapchainTexture)
+{
+	sdl3_acquire_swapchain(INTERNAL_FUNCTION_PARAM_PASSTHRU, true);
 }

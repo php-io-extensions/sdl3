@@ -10,7 +10,7 @@ if test "$PHP_SDL3" != "no"; then
   PHP_SUBST([SDL3_SHARED_LIBADD])
 
   PHP_NEW_EXTENSION([sdl3],
-    [src/sdl3.c src/runtime.c src/SDL_init.c src/SDL_video.c src/SDL_surface.c src/SDL_hooks.c src/SDL_gpu_types.c src/SDL_gpu.c src/SDL_gpu_pass.c],
+    [src/sdl3.c src/runtime.c src/SDL_init.c src/SDL_video.c src/SDL_display.c src/SDL_surface.c src/SDL_messagebox.c src/SDL_hooks.c src/SDL_gpu_types.c src/SDL_gpu.c src/SDL_gpu_pass.c],
     [$ext_shared],, [-DZEND_ENABLE_STATIC_TSRMLS_CACHE=1])
   PHP_ADD_BUILD_DIR([$ext_builddir/src])
 fi

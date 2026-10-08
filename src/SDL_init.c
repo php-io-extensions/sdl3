@@ -3,10 +3,24 @@
 
 zend_class_entry *sdl3_ce_SDL_Event;
 zend_class_entry *sdl3_ce_SDL_WindowEvent;
+zend_class_entry *sdl3_ce_SDL_DisplayEvent;
 
 static void sdl3_event_write(zend_object *event_obj, const SDL_Event *event)
 {
 	zend_update_property_long(sdl3_ce_SDL_Event, event_obj, "type", sizeof("type") - 1, (zend_long) event->type);
+
+	if (event->type >= SDL_EVENT_DISPLAY_FIRST && event->type <= SDL_EVENT_DISPLAY_LAST) {
+		zval *display = zend_read_property(sdl3_ce_SDL_Event, event_obj, "display", sizeof("display") - 1, 0, NULL);
+		zend_object *display_obj = Z_OBJ_P(display);
+		const SDL_DisplayEvent *disp = &event->display;
+
+		zend_update_property_long(sdl3_ce_SDL_DisplayEvent, display_obj, "type", sizeof("type") - 1, (zend_long) disp->type);
+		zend_update_property_long(sdl3_ce_SDL_DisplayEvent, display_obj, "timestamp", sizeof("timestamp") - 1, (zend_long) disp->timestamp);
+		zend_update_property_long(sdl3_ce_SDL_DisplayEvent, display_obj, "displayID", sizeof("displayID") - 1, (zend_long) disp->displayID);
+		zend_update_property_long(sdl3_ce_SDL_DisplayEvent, display_obj, "data1", sizeof("data1") - 1, (zend_long) disp->data1);
+		zend_update_property_long(sdl3_ce_SDL_DisplayEvent, display_obj, "data2", sizeof("data2") - 1, (zend_long) disp->data2);
+		return;
+	}
 
 	if (event->type < SDL_EVENT_WINDOW_FIRST || event->type > SDL_EVENT_WINDOW_LAST) {
 		return;
@@ -26,13 +40,16 @@ static void sdl3_event_write(zend_object *event_obj, const SDL_Event *event)
 
 ZEND_METHOD(SDL_Event, __construct)
 {
-	zval window;
+	zval window, display;
 
 	ZEND_PARSE_PARAMETERS_NONE();
 
 	object_init_ex(&window, sdl3_ce_SDL_WindowEvent);
 	zend_update_property(sdl3_ce_SDL_Event, Z_OBJ_P(ZEND_THIS), "window", sizeof("window") - 1, &window);
 	zval_ptr_dtor(&window);
+	object_init_ex(&display, sdl3_ce_SDL_DisplayEvent);
+	zend_update_property(sdl3_ce_SDL_Event, Z_OBJ_P(ZEND_THIS), "display", sizeof("display") - 1, &display);
+	zval_ptr_dtor(&display);
 }
 
 ZEND_FUNCTION(SDL_Init)
@@ -60,6 +77,7 @@ ZEND_FUNCTION(SDL_InitSubSystem)
 ZEND_FUNCTION(SDL_Quit)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
+	sdl3_hit_tests_clear();
 	SDL_Quit();
 }
 
@@ -71,6 +89,12 @@ ZEND_FUNCTION(SDL_GetError)
 
 	error = SDL_GetError();
 	RETURN_STRING(error != NULL ? error : "");
+}
+
+ZEND_FUNCTION(SDL_ClearError)
+{
+	ZEND_PARSE_PARAMETERS_NONE();
+	RETURN_BOOL(SDL_ClearError());
 }
 
 ZEND_FUNCTION(SDL_GetVersion)
@@ -142,6 +166,8 @@ void sdl3_register_SDL_init(int module_number)
 
 	sdl3_ce_SDL_WindowEvent = register_class_SDL_WindowEvent();
 	sdl3_struct_setup(sdl3_ce_SDL_WindowEvent);
+	sdl3_ce_SDL_DisplayEvent = register_class_SDL_DisplayEvent();
+	sdl3_struct_setup(sdl3_ce_SDL_DisplayEvent);
 	sdl3_ce_SDL_Event = register_class_SDL_Event();
 	sdl3_struct_setup(sdl3_ce_SDL_Event);
 }

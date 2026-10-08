@@ -16,6 +16,7 @@ it('creates a GL context on a GL window, the core profile on the Mac and GLES on
     expect($context)->toBeInstanceOf(SDL_GLContext::class, SDL_GetError())
         ->and(SDL_GL_MakeCurrent($window, $context))->toBeTrue()
         ->and(SDL_GL_SetSwapInterval(0))->toBeTrue()
+        ->and($mac ? SDL_EGL_GetCurrentDisplay() === null : SDL_EGL_GetCurrentDisplay() > 0)->toBeTrue()
         ->and(SDL_GL_SwapWindow($window))->toBeBool()
         ->and(SDL_GL_MakeCurrent($window, null))->toBeTrue()
         ->and(SDL_GL_DestroyContext($context))->toBeTrue()

@@ -1,6 +1,6 @@
 # sdl3
 
-1:1 PHP bindings of SDL 3 at the 3.2 API: windows, surfaces, the GL, Metal and Vulkan hooks, and SDL_GPU. Version 0.10.0. Linux and macOS.
+1:1 PHP bindings of SDL 3 at the 3.2 API: windows, displays and fullscreen modes, surfaces, the GL, Metal and Vulkan hooks, and SDL_GPU. Version 0.10.0. Linux and macOS.
 
 Function and constant names are the C names. A handle is one PHP object per native pointer. Dropping the last PHP reference does not destroy the native object.
 
@@ -38,6 +38,7 @@ Bindings are the C API with four translations:
 - `const Uint8 *code` and `size_t code_size` are one `string`.
 - An out-parameter is a by-reference parameter (`?int &$w`).
 - A `void *` is an `int` address. `0` is refused. Any other address is trusted, and the stub says so.
+- A struct the caller passes for SDL to fill (`SDL_Rect *rect`, `SDL_DisplayMode *closest`) is an object SDL writes into. A `const SDL_DisplayMode *` SDL returns is a copied `SDL_DisplayMode`, or `null`. A list SDL allocates (`SDL_GetDisplays`, `SDL_GetFullscreenDisplayModes`) is a PHP list, or `null` on failure; the count is its length.
 
 A C `bool` stays `bool`. Failure is `SDL_GetError()`, as in C. Enum and flag fields are `int`. `props` fields are `int`.
 
@@ -47,7 +48,7 @@ Constants are PHP constants under their C names. The values come from the SDL he
 
 Handle classes are `final`, with a private constructor, and are not cloneable or serializable. Each has `pointer(): int` and `static fromPointer(int $pointer): static`. `fromPointer(0)` throws `ValueError`. The same native pointer in one thread is the same PHP object.
 
-`SDL_Destroy*`, `SDL_Release*`, `SDL_CloseIO`, `SDL_EndGPUCopyPass`, `SDL_EndGPURenderPass`, and submitting or cancelling a command buffer mark that handle released. A swapchain texture is released when the command buffer that acquired it is submitted or cancelled. A window surface from `SDL_GetWindowSurface()` is released when the window is destroyed. Passing a released handle to any binding throws `ValueError` naming the class (`SDL_Window has been destroyed`). The native object is not freed when the PHP object is. A later SDL object at the same address is a new PHP object.
+`SDL_Destroy*`, `SDL_Release*`, `SDL_CloseIO`, `SDL_EndGPUCopyPass`, `SDL_EndGPURenderPass`, and submitting or cancelling a command buffer mark that handle released. A swapchain texture is released when the command buffer that acquired it is submitted or cancelled. A window surface from `SDL_GetWindowSurface()` is released by `SDL_DestroyWindowSurface()` or when the window is destroyed. Passing a released handle to any binding throws `ValueError` naming the class (`SDL_Window has been destroyed`). The native object is not freed when the PHP object is. A later SDL object at the same address is a new PHP object.
 
 ## Bytes
 
@@ -60,6 +61,12 @@ SDL_CloseIO($io);
 ```
 
 `SDL_ReadIO($io, $size)` returns the bytes read, shorter at the end of the stream. `SDL_WriteIO` throws `ValueError` when `$size` is larger than the string. `SDL_CreateSurfaceFrom()` with a string keeps that string alive until `SDL_DestroySurface()`, because SDL does not copy the pixels.
+
+## Hit tests
+
+`SDL_SetWindowHitTest($window, $callback, $callback_data)` takes a PHP callable. SDL calls it as `$callback(SDL_Window $win, SDL_Point $area, mixed $data): int` on the thread pumping events, and uses the `SDL_HITTEST_*` it returns. A callback that throws, or returns something other than an `int`, answers `SDL_HITTEST_NORMAL`; the exception reaches the PHP call that pumped the events. A `null` callback removes it. The callable and `$callback_data` are held until the hit test is replaced or removed, the window is destroyed, `SDL_Quit()` runs, or the request ends.
+
+Cocoa honours `SDL_HITTEST_DRAGGABLE` and sends `SDL_EVENT_WINDOW_HIT_TEST` when it does. An inactive Mac window spends its first click on activation unless the `SDL_MOUSE_FOCUS_CLICKTHROUGH` hint is `1`.
 
 ## Threads
 
@@ -134,4 +141,4 @@ zhp -d memory_limit=128M vendor/bin/pest
 WAYLAND_DISPLAY=wayland-0 XDG_RUNTIME_DIR=/run/user/$(id -u) php -d memory_limit=128M vendor/bin/pest
 ```
 
-Both machines must be green. The gate draws a triangle by stencil-then-cover into a 4× target, resolves it, blits it, and reads both images back.
+The X11 driver runs through XWayland with `DISPLAY=:0` and no `WAYLAND_DISPLAY`. Both machines must be green. The suite shows windows, maximizes and minimizes them, enters fullscreen, and switches the display mode for exclusive fullscreen on the Mac and X11. The gate draws a triangle by stencil-then-cover into a 4× target, resolves it, blits it, and reads both images back.

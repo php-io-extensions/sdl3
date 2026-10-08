@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 88419444d0350d9047825d66b53ec9dae5226c41 */
+ * Stub hash: 1367ada9fb24e0dbb8e06e311ded6eb6bf431032 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateGPUDevice, 0, 3, SDL_GPUDevice, 1)
 	ZEND_ARG_TYPE_INFO(0, format_flags, IS_LONG, 0)
@@ -251,6 +251,25 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReleaseWindowFromGPUDevice, 
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WindowSupportsGPUPresentMode, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+	ZEND_ARG_TYPE_INFO(0, present_mode, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WindowSupportsGPUSwapchainComposition, 0, 3, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
+	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
+	ZEND_ARG_TYPE_INFO(0, swapchain_composition, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetGPUAllowedFramesInFlight, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
+	ZEND_ARG_TYPE_INFO(0, allowed_frames_in_flight, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_WaitForGPUSwapchain arginfo_SDL_ClaimWindowForGPUDevice
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetGPUSwapchainParameters, 0, 4, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
@@ -263,13 +282,15 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetGPUSwapchainTextureFormat
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_AcquireGPUSwapchainTexture, 0, 5, _IS_BOOL, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WaitAndAcquireGPUSwapchainTexture, 0, 5, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, command_buffer, SDL_GPUCommandBuffer, 0)
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 	ZEND_ARG_OBJ_INFO(1, swapchain_texture, SDL_GPUTexture, 1)
 	ZEND_ARG_TYPE_INFO(1, swapchain_texture_width, IS_LONG, 1)
 	ZEND_ARG_TYPE_INFO(1, swapchain_texture_height, IS_LONG, 1)
 ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_AcquireGPUSwapchainTexture arginfo_SDL_WaitAndAcquireGPUSwapchainTexture
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_GPUDevice___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -360,8 +381,13 @@ ZEND_FUNCTION(SDL_DrawGPUIndexedPrimitives);
 ZEND_FUNCTION(SDL_BlitGPUTexture);
 ZEND_FUNCTION(SDL_ClaimWindowForGPUDevice);
 ZEND_FUNCTION(SDL_ReleaseWindowFromGPUDevice);
+ZEND_FUNCTION(SDL_WindowSupportsGPUPresentMode);
+ZEND_FUNCTION(SDL_WindowSupportsGPUSwapchainComposition);
+ZEND_FUNCTION(SDL_SetGPUAllowedFramesInFlight);
+ZEND_FUNCTION(SDL_WaitForGPUSwapchain);
 ZEND_FUNCTION(SDL_SetGPUSwapchainParameters);
 ZEND_FUNCTION(SDL_GetGPUSwapchainTextureFormat);
+ZEND_FUNCTION(SDL_WaitAndAcquireGPUSwapchainTexture);
 ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture);
 ZEND_METHOD(SDL_GPUDevice, __construct);
 ZEND_METHOD(SDL_GPUDevice, pointer);
@@ -432,8 +458,13 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_BlitGPUTexture, arginfo_SDL_BlitGPUTexture)
 	ZEND_FE(SDL_ClaimWindowForGPUDevice, arginfo_SDL_ClaimWindowForGPUDevice)
 	ZEND_FE(SDL_ReleaseWindowFromGPUDevice, arginfo_SDL_ReleaseWindowFromGPUDevice)
+	ZEND_FE(SDL_WindowSupportsGPUPresentMode, arginfo_SDL_WindowSupportsGPUPresentMode)
+	ZEND_FE(SDL_WindowSupportsGPUSwapchainComposition, arginfo_SDL_WindowSupportsGPUSwapchainComposition)
+	ZEND_FE(SDL_SetGPUAllowedFramesInFlight, arginfo_SDL_SetGPUAllowedFramesInFlight)
+	ZEND_FE(SDL_WaitForGPUSwapchain, arginfo_SDL_WaitForGPUSwapchain)
 	ZEND_FE(SDL_SetGPUSwapchainParameters, arginfo_SDL_SetGPUSwapchainParameters)
 	ZEND_FE(SDL_GetGPUSwapchainTextureFormat, arginfo_SDL_GetGPUSwapchainTextureFormat)
+	ZEND_FE(SDL_WaitAndAcquireGPUSwapchainTexture, arginfo_SDL_WaitAndAcquireGPUSwapchainTexture)
 	ZEND_FE(SDL_AcquireGPUSwapchainTexture, arginfo_SDL_AcquireGPUSwapchainTexture)
 	ZEND_FE_END
 };

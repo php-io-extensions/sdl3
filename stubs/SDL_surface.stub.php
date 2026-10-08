@@ -60,6 +60,18 @@ final class SDL_Rect
 }
 
 /**
+ * @not-serializable
+ */
+final class SDL_Point
+{
+    public int $x = 0;
+
+    public int $y = 0;
+
+    public function __construct(int $x = 0, int $y = 0) {}
+}
+
+/**
  * @var int
  * @cvalue SDL_PIXELFORMAT_RGBA32
  */
@@ -98,6 +110,17 @@ function SDL_CloseIO(SDL_IOStream $context): bool {}
 function SDL_GetWindowSurface(SDL_Window $window): ?SDL_Surface {}
 
 function SDL_UpdateWindowSurface(SDL_Window $window): bool {}
+
+/** $rects is a list of SDL_Rect; numrects is its length. */
+function SDL_UpdateWindowSurfaceRects(SDL_Window $window, array $rects): bool {}
+
+function SDL_WindowHasSurface(SDL_Window $window): bool {}
+
+function SDL_DestroyWindowSurface(SDL_Window $window): bool {}
+
+function SDL_SetWindowSurfaceVSync(SDL_Window $window, int $vsync): bool {}
+
+function SDL_GetWindowSurfaceVSync(SDL_Window $window, ?int &$vsync): bool {}
 
 /**
  * $pixels as a string must hold $pitch × $height bytes and is kept until SDL_DestroySurface().

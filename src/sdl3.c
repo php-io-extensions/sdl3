@@ -16,11 +16,13 @@ static PHP_GINIT_FUNCTION(sdl3)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
 	zend_hash_init(&sdl3_globals->boxes, 64, NULL, NULL, 1);
+	sdl3_hit_tests_init(&sdl3_globals->hit_tests);
 }
 
 static PHP_GSHUTDOWN_FUNCTION(sdl3)
 {
 	zend_hash_destroy(&sdl3_globals->boxes);
+	zend_hash_destroy(&sdl3_globals->hit_tests);
 }
 
 PHP_MINIT_FUNCTION(sdl3)
@@ -29,6 +31,7 @@ PHP_MINIT_FUNCTION(sdl3)
 	sdl3_register_SDL_video(module_number);
 	sdl3_register_SDL_surface(module_number);
 	sdl3_register_SDL_hooks(module_number);
+	sdl3_register_SDL_messagebox(module_number);
 	sdl3_register_SDL_gpu_types(module_number);
 	sdl3_register_SDL_gpu(module_number);
 
@@ -40,6 +43,13 @@ PHP_RINIT_FUNCTION(sdl3)
 #if defined(COMPILE_DL_SDL3) && defined(ZTS)
 	ZEND_TSRMLS_CACHE_UPDATE();
 #endif
+	return SUCCESS;
+}
+
+PHP_RSHUTDOWN_FUNCTION(sdl3)
+{
+	/* The callbacks are request memory; SDL must not reach them after the request. */
+	sdl3_hit_tests_clear();
 	return SUCCESS;
 }
 
@@ -65,7 +75,7 @@ zend_module_entry sdl3_module_entry = {
 	PHP_MINIT(sdl3),
 	NULL,
 	PHP_RINIT(sdl3),
-	NULL,
+	PHP_RSHUTDOWN(sdl3),
 	PHP_MINFO(sdl3),
 	PHP_SDL3_VERSION,
 	PHP_MODULE_GLOBALS(sdl3),

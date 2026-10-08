@@ -4,6 +4,7 @@
 zend_class_entry *sdl3_ce_SDL_IOStream;
 zend_class_entry *sdl3_ce_SDL_Surface;
 zend_class_entry *sdl3_ce_SDL_Rect;
+zend_class_entry *sdl3_ce_SDL_Point;
 
 SDL3_POINTER_METHODS(SDL_IOStream)
 SDL3_POINTER_METHODS(SDL_Surface)
@@ -27,19 +28,27 @@ SURFACE_LONG(h, surface->h)
 SURFACE_LONG(pitch, surface->pitch)
 SURFACE_LONG(pixels, (uintptr_t) surface->pixels)
 
-static zend_long sdl3_long_prop(zend_object *obj, const char *name)
+bool sdl3_rect_read(zend_object *obj, SDL_Rect *rect)
 {
-	zval *zv = zend_read_property(obj->ce, obj, name, strlen(name), 0, NULL);
+	zend_long x, y, w, h;
 
-	return Z_LVAL_P(zv);
+	if (!sdl3_prop_long(obj, "x", &x) || !sdl3_prop_long(obj, "y", &y)
+		|| !sdl3_prop_long(obj, "w", &w) || !sdl3_prop_long(obj, "h", &h)) {
+		return false;
+	}
+	rect->x = (int) x;
+	rect->y = (int) y;
+	rect->w = (int) w;
+	rect->h = (int) h;
+	return true;
 }
 
-static void sdl3_rect_read(zend_object *obj, SDL_Rect *rect)
+void sdl3_rect_write(zend_object *obj, const SDL_Rect *rect)
 {
-	rect->x = (int) sdl3_long_prop(obj, "x");
-	rect->y = (int) sdl3_long_prop(obj, "y");
-	rect->w = (int) sdl3_long_prop(obj, "w");
-	rect->h = (int) sdl3_long_prop(obj, "h");
+	zend_update_property_long(sdl3_ce_SDL_Rect, obj, "x", sizeof("x") - 1, rect->x);
+	zend_update_property_long(sdl3_ce_SDL_Rect, obj, "y", sizeof("y") - 1, rect->y);
+	zend_update_property_long(sdl3_ce_SDL_Rect, obj, "w", sizeof("w") - 1, rect->w);
+	zend_update_property_long(sdl3_ce_SDL_Rect, obj, "h", sizeof("h") - 1, rect->h);
 }
 
 static bool sdl3_bytes_needed(zend_long pitch, zend_long height, size_t *need)
@@ -84,6 +93,20 @@ ZEND_METHOD(SDL_Rect, __construct)
 	zend_update_property_long(sdl3_ce_SDL_Rect, Z_OBJ_P(ZEND_THIS), "y", sizeof("y") - 1, y);
 	zend_update_property_long(sdl3_ce_SDL_Rect, Z_OBJ_P(ZEND_THIS), "w", sizeof("w") - 1, w);
 	zend_update_property_long(sdl3_ce_SDL_Rect, Z_OBJ_P(ZEND_THIS), "h", sizeof("h") - 1, h);
+}
+
+ZEND_METHOD(SDL_Point, __construct)
+{
+	zend_long x = 0, y = 0;
+
+	ZEND_PARSE_PARAMETERS_START(0, 2)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(x)
+		Z_PARAM_LONG(y)
+	ZEND_PARSE_PARAMETERS_END();
+
+	zend_update_property_long(sdl3_ce_SDL_Point, Z_OBJ_P(ZEND_THIS), "x", sizeof("x") - 1, x);
+	zend_update_property_long(sdl3_ce_SDL_Point, Z_OBJ_P(ZEND_THIS), "y", sizeof("y") - 1, y);
 }
 
 ZEND_FUNCTION(SDL_IOFromMem)
@@ -235,6 +258,130 @@ ZEND_FUNCTION(SDL_UpdateWindowSurface)
 	RETURN_BOOL(SDL_UpdateWindowSurface(window));
 }
 
+ZEND_FUNCTION(SDL_UpdateWindowSurfaceRects)
+{
+	zval *window_zv, *item;
+	HashTable *rects;
+	SDL_Window *window;
+	SDL_Rect *native;
+	uint32_t count, i = 0;
+	bool updated;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+		Z_PARAM_ARRAY_HT(rects)
+	ZEND_PARSE_PARAMETERS_END();
+
+	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
+	if (window == NULL) {
+		RETURN_THROWS();
+	}
+
+	count = zend_hash_num_elements(rects);
+	native = safe_emalloc(count == 0 ? 1 : count, sizeof(SDL_Rect), 0);
+	ZEND_HASH_FOREACH_VAL(rects, item) {
+		ZVAL_DEREF(item);
+		if (Z_TYPE_P(item) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(item), sdl3_ce_SDL_Rect)) {
+			efree(native);
+			zend_argument_type_error(2, "must be a list of SDL_Rect, %s found", zend_zval_value_name(item));
+			RETURN_THROWS();
+		}
+		if (!sdl3_rect_read(Z_OBJ_P(item), &native[i++])) {
+			efree(native);
+			RETURN_THROWS();
+		}
+	} ZEND_HASH_FOREACH_END();
+
+	updated = SDL_UpdateWindowSurfaceRects(window, native, (int) count);
+	efree(native);
+	RETURN_BOOL(updated);
+}
+
+ZEND_FUNCTION(SDL_WindowHasSurface)
+{
+	zval *window_zv;
+	SDL_Window *window;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+	ZEND_PARSE_PARAMETERS_END();
+
+	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
+	if (window == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_WindowHasSurface(window));
+}
+
+ZEND_FUNCTION(SDL_DestroyWindowSurface)
+{
+	zval *window_zv;
+	SDL_Window *window;
+	bool destroyed;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+	ZEND_PARSE_PARAMETERS_END();
+
+	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
+	if (window == NULL) {
+		RETURN_THROWS();
+	}
+
+	destroyed = SDL_DestroyWindowSurface(window);
+	if (destroyed) {
+		/* The window keeps only its surface; that SDL_Surface object is now destroyed. */
+		sdl3_drop_kept(Z_OBJ_P(window_zv));
+	}
+	RETURN_BOOL(destroyed);
+}
+
+ZEND_FUNCTION(SDL_SetWindowSurfaceVSync)
+{
+	zval *window_zv;
+	SDL_Window *window;
+	zend_long vsync;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+		Z_PARAM_LONG(vsync)
+	ZEND_PARSE_PARAMETERS_END();
+
+	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
+	if (window == NULL) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_SetWindowSurfaceVSync(window, (int) vsync));
+}
+
+ZEND_FUNCTION(SDL_GetWindowSurfaceVSync)
+{
+	zval *window_zv, *vsync_zv;
+	SDL_Window *window;
+	int vsync = 0;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
+		Z_PARAM_ZVAL(vsync_zv)
+	ZEND_PARSE_PARAMETERS_END();
+
+	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
+	if (window == NULL) {
+		RETURN_THROWS();
+	}
+
+	if (!SDL_GetWindowSurfaceVSync(window, &vsync)) {
+		RETURN_FALSE;
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(vsync_zv, vsync);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	RETURN_TRUE;
+}
+
 ZEND_FUNCTION(SDL_CreateSurfaceFrom)
 {
 	zend_long width, height, format, pitch, address = 0;
@@ -311,11 +458,15 @@ ZEND_FUNCTION(SDL_BlitSurface)
 		RETURN_THROWS();
 	}
 	if (srcrect != NULL) {
-		sdl3_rect_read(srcrect, &src_rect);
+		if (!sdl3_rect_read(srcrect, &src_rect)) {
+			RETURN_THROWS();
+		}
 		src_ptr = &src_rect;
 	}
 	if (dstrect != NULL) {
-		sdl3_rect_read(dstrect, &dst_rect);
+		if (!sdl3_rect_read(dstrect, &dst_rect)) {
+			RETURN_THROWS();
+		}
 		dst_ptr = &dst_rect;
 	}
 
@@ -345,11 +496,15 @@ ZEND_FUNCTION(SDL_BlitSurfaceScaled)
 		RETURN_THROWS();
 	}
 	if (srcrect != NULL) {
-		sdl3_rect_read(srcrect, &src_rect);
+		if (!sdl3_rect_read(srcrect, &src_rect)) {
+			RETURN_THROWS();
+		}
 		src_ptr = &src_rect;
 	}
 	if (dstrect != NULL) {
-		sdl3_rect_read(dstrect, &dst_rect);
+		if (!sdl3_rect_read(dstrect, &dst_rect)) {
+			RETURN_THROWS();
+		}
 		dst_ptr = &dst_rect;
 	}
 
@@ -376,7 +531,9 @@ ZEND_FUNCTION(SDL_FillSurfaceRect)
 		RETURN_THROWS();
 	}
 	if (rect != NULL) {
-		sdl3_rect_read(rect, &native);
+		if (!sdl3_rect_read(rect, &native)) {
+			RETURN_THROWS();
+		}
 		rect_ptr = &native;
 	}
 
@@ -394,4 +551,6 @@ void sdl3_register_SDL_surface(int module_number)
 	sdl3_handle_setup(sdl3_ce_SDL_Surface);
 	sdl3_ce_SDL_Rect = register_class_SDL_Rect();
 	sdl3_struct_setup(sdl3_ce_SDL_Rect);
+	sdl3_ce_SDL_Point = register_class_SDL_Point();
+	sdl3_struct_setup(sdl3_ce_SDL_Point);
 }

@@ -107,6 +107,38 @@ ZEND_FUNCTION(SDL_GL_SetSwapInterval)
 	RETURN_BOOL(SDL_GL_SetSwapInterval((int) interval));
 }
 
+ZEND_FUNCTION(SDL_GL_GetSwapInterval)
+{
+	zval *interval_zv;
+	int interval = 0;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_ZVAL(interval_zv)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if (!SDL_GL_GetSwapInterval(&interval)) {
+		RETURN_FALSE;
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(interval_zv, interval);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	RETURN_TRUE;
+}
+
+ZEND_FUNCTION(SDL_EGL_GetCurrentDisplay)
+{
+	SDL_EGLDisplay display;
+
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	display = SDL_EGL_GetCurrentDisplay();
+	if (display == NULL) {
+		RETURN_NULL();
+	}
+	RETURN_LONG((zend_long) (uintptr_t) display);
+}
+
 ZEND_FUNCTION(SDL_GL_DestroyContext)
 {
 	zval *context_zv;

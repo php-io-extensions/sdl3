@@ -90,6 +90,15 @@ void sdl3_release(zend_object *obj)
 	ZVAL_UNDEF(&intern->keep);
 }
 
+void sdl3_drop_kept(zend_object *owner)
+{
+	sdl3_handle *intern = sdl3_handle_from(owner);
+
+	sdl3_release_kept(intern);
+	zval_ptr_dtor(&intern->keep);
+	ZVAL_UNDEF(&intern->keep);
+}
+
 void sdl3_keep_string(zend_object *obj, zend_string *str)
 {
 	sdl3_handle *intern = sdl3_handle_from(obj);

@@ -12,6 +12,7 @@
 
 ZEND_BEGIN_MODULE_GLOBALS(sdl3)
 	HashTable boxes;               /* native address => zend_object*, live handles only, not refcounted */
+	HashTable hit_tests;           /* SDL_Window address => the PHP hit test SDL holds */
 ZEND_END_MODULE_GLOBALS(sdl3)
 
 ZEND_EXTERN_MODULE_GLOBALS(sdl3)
@@ -34,6 +35,8 @@ void sdl3_box(zval *rv, void *ptr, zend_class_entry *ce);
 void *sdl3_handle_ptr(zval *zv, zend_class_entry *ce, uint32_t arg_num);
 /* Marks a handle released: pointer cleared, identity entry dropped, borrowed value let go. Kept handles are released too. */
 void sdl3_release(zend_object *obj);
+/* Releases the handles owner keeps and lets go of them; owner stays live. */
+void sdl3_drop_kept(zend_object *owner);
 /* Replaces keep with a copy of a PHP string the native object borrows. */
 void sdl3_keep_string(zend_object *obj, zend_string *str);
 /* Remembers a handle whose native lifetime ends with owner's. A second keep of the same object is a no-op. */
@@ -75,16 +78,29 @@ void sdl3_init_nested(zend_object *obj, const char *name, zend_class_entry *ce);
 
 extern zend_class_entry *sdl3_ce_SDL_Event;
 extern zend_class_entry *sdl3_ce_SDL_WindowEvent;
+extern zend_class_entry *sdl3_ce_SDL_DisplayEvent;
 extern zend_class_entry *sdl3_ce_SDL_Window;
+extern zend_class_entry *sdl3_ce_SDL_DisplayMode;
+extern zend_class_entry *sdl3_ce_SDL_Point;
 extern zend_class_entry *sdl3_ce_SDL_IOStream;
 extern zend_class_entry *sdl3_ce_SDL_Surface;
 extern zend_class_entry *sdl3_ce_SDL_Rect;
 extern zend_class_entry *sdl3_ce_SDL_GLContext;
 extern zend_class_entry *sdl3_ce_SDL_MetalView;
 
+/* SDL_Rect <-> its PHP class. Reading false means an exception is already set. */
+bool sdl3_rect_read(zend_object *obj, SDL_Rect *rect);
+void sdl3_rect_write(zend_object *obj, const SDL_Rect *rect);
+
+/* PHP hit tests: the table in GINIT, one window's on SDL_DestroyWindow, all on SDL_Quit and RSHUTDOWN. */
+void sdl3_hit_tests_init(HashTable *table);
+void sdl3_hit_tests_forget(SDL_Window *window);
+void sdl3_hit_tests_clear(void);
+
 void sdl3_register_SDL_init(int module_number);
 void sdl3_register_SDL_video(int module_number);
 void sdl3_register_SDL_surface(int module_number);
 void sdl3_register_SDL_hooks(int module_number);
+void sdl3_register_SDL_messagebox(int module_number);
 
 #endif
