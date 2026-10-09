@@ -13,6 +13,7 @@
 ZEND_BEGIN_MODULE_GLOBALS(sdl3)
 	HashTable boxes;               /* native address => zend_object*, live handles only, not refcounted */
 	HashTable hit_tests;           /* SDL_Window address => the PHP hit test SDL holds */
+	HashTable pushed_texts;        /* SDL_strdup copies of pushed text events' text: SDL keeps the pointer, not the bytes */
 ZEND_END_MODULE_GLOBALS(sdl3)
 
 ZEND_EXTERN_MODULE_GLOBALS(sdl3)
@@ -21,6 +22,7 @@ ZEND_EXTERN_MODULE_GLOBALS(sdl3)
 typedef struct {
 	void *ptr;                     /* the native handle; NULL once released */
 	zval keep;                     /* what the native object borrows from PHP: a string, one handle, or a list of handles */
+	uint32_t opens;                /* SDL's open count for a counted device (gamepad, joystick); released at 0 */
 	zend_object std;
 } sdl3_handle;
 
@@ -37,6 +39,9 @@ void *sdl3_handle_ptr(zval *zv, zend_class_entry *ce, uint32_t arg_num);
 void sdl3_release(zend_object *obj);
 /* Releases the handles owner keeps and lets go of them; owner stays live. */
 void sdl3_drop_kept(zend_object *owner);
+
+/* Releases every live handle of class ce: SDL destroyed them all (a subsystem went down). */
+void sdl3_release_all(zend_class_entry *ce);
 /* Replaces keep with a copy of a PHP string the native object borrows. */
 void sdl3_keep_string(zend_object *obj, zend_string *str);
 /* Remembers a handle whose native lifetime ends with owner's. A second keep of the same object is a no-op. */
@@ -79,6 +84,11 @@ void sdl3_init_nested(zend_object *obj, const char *name, zend_class_entry *ce);
 extern zend_class_entry *sdl3_ce_SDL_Event;
 extern zend_class_entry *sdl3_ce_SDL_WindowEvent;
 extern zend_class_entry *sdl3_ce_SDL_DisplayEvent;
+extern zend_class_entry *sdl3_ce_SDL_KeyboardEvent;
+extern zend_class_entry *sdl3_ce_SDL_TextInputEvent;
+extern zend_class_entry *sdl3_ce_SDL_MouseMotionEvent;
+extern zend_class_entry *sdl3_ce_SDL_MouseButtonEvent;
+extern zend_class_entry *sdl3_ce_SDL_MouseWheelEvent;
 extern zend_class_entry *sdl3_ce_SDL_Window;
 extern zend_class_entry *sdl3_ce_SDL_DisplayMode;
 extern zend_class_entry *sdl3_ce_SDL_Point;
@@ -97,10 +107,17 @@ void sdl3_hit_tests_init(HashTable *table);
 void sdl3_hit_tests_forget(SDL_Window *window);
 void sdl3_hit_tests_clear(void);
 
+/* Frees the pushed texts: at SDL_Quit, when the events subsystem goes down, and at request end (after flushing unread text events). */
+void sdl3_pushed_texts_clear(void);
+
+/* Releases every SDL_Gamepad once SDL's gamepad subsystem is down, every SDL_Joystick once its joystick subsystem is. */
+void sdl3_input_subsystems_gone(void);
+
 void sdl3_register_SDL_init(int module_number);
 void sdl3_register_SDL_video(int module_number);
 void sdl3_register_SDL_surface(int module_number);
 void sdl3_register_SDL_hooks(int module_number);
 void sdl3_register_SDL_messagebox(int module_number);
+void sdl3_register_SDL_input(int module_number);
 
 #endif

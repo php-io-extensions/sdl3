@@ -11,6 +11,7 @@ static zend_object *sdl3_create_object(zend_class_entry *ce)
 	object_properties_init(&intern->std, ce);
 	intern->std.handlers = &sdl3_handle_handlers;
 	intern->ptr = NULL;
+	intern->opens = 0;
 	ZVAL_UNDEF(&intern->keep);
 
 	return &intern->std;
@@ -79,6 +80,7 @@ static void sdl3_release_kept(sdl3_handle *intern)
 void sdl3_release(zend_object *obj)
 {
 	sdl3_handle *intern = sdl3_handle_from(obj);
+	intern->opens = 0;
 
 	if (intern->ptr != NULL) {
 		zend_hash_index_del(&SDL3_G(boxes), (zend_ulong) (uintptr_t) intern->ptr);
@@ -371,4 +373,34 @@ void sdl3_init_nested(zend_object *obj, const char *name, zend_class_entry *ce)
 	}
 	zend_update_property(obj->ce, obj, name, strlen(name), &nested);
 	zval_ptr_dtor(&nested);
+}
+
+void sdl3_release_all(zend_class_entry *ce)
+{
+	zend_object *obj;
+	zend_object **found;
+	uint32_t count = 0, i = 0;
+
+	ZEND_HASH_FOREACH_PTR(&SDL3_G(boxes), obj) {
+		if (obj->ce == ce) {
+			count++;
+		}
+	} ZEND_HASH_FOREACH_END();
+
+	if (count == 0) {
+		return;
+	}
+
+	/* Collected first: releasing drops entries from the table being walked. */
+	found = emalloc(sizeof(zend_object *) * count);
+	ZEND_HASH_FOREACH_PTR(&SDL3_G(boxes), obj) {
+		if (obj->ce == ce) {
+			found[i++] = obj;
+		}
+	} ZEND_HASH_FOREACH_END();
+
+	for (i = 0; i < count; i++) {
+		sdl3_release(found[i]);
+	}
+	efree(found);
 }

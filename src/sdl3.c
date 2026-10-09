@@ -17,10 +17,17 @@ static PHP_GINIT_FUNCTION(sdl3)
 #endif
 	zend_hash_init(&sdl3_globals->boxes, 64, NULL, NULL, 1);
 	sdl3_hit_tests_init(&sdl3_globals->hit_tests);
+	zend_hash_init(&sdl3_globals->pushed_texts, 8, NULL, NULL, 1);
 }
 
 static PHP_GSHUTDOWN_FUNCTION(sdl3)
 {
+	void *text;
+
+	ZEND_HASH_FOREACH_PTR(&sdl3_globals->pushed_texts, text) {
+		SDL_free(text);
+	} ZEND_HASH_FOREACH_END();
+	zend_hash_destroy(&sdl3_globals->pushed_texts);
 	zend_hash_destroy(&sdl3_globals->boxes);
 	zend_hash_destroy(&sdl3_globals->hit_tests);
 }
@@ -32,6 +39,7 @@ PHP_MINIT_FUNCTION(sdl3)
 	sdl3_register_SDL_surface(module_number);
 	sdl3_register_SDL_hooks(module_number);
 	sdl3_register_SDL_messagebox(module_number);
+	sdl3_register_SDL_input(module_number);
 	sdl3_register_SDL_gpu_types(module_number);
 	sdl3_register_SDL_gpu(module_number);
 
@@ -50,6 +58,11 @@ PHP_RSHUTDOWN_FUNCTION(sdl3)
 {
 	/* The callbacks are request memory; SDL must not reach them after the request. */
 	sdl3_hit_tests_clear();
+	/* A text event still queued would point at freed bytes in the next request. */
+	if (SDL_WasInit(SDL_INIT_EVENTS) & SDL_INIT_EVENTS) {
+		SDL_FlushEvent(SDL_EVENT_TEXT_INPUT);
+	}
+	sdl3_pushed_texts_clear();
 	return SUCCESS;
 }
 
