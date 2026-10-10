@@ -1,5 +1,9 @@
 # Log
 
+## 2026-10-09
+
+* `extra.venusian.system` in composer.json: the apt packages `venusian build` installs to compile the extension, the run-time packages a `.deb` carrying it depends on or recommends beyond what `dpkg-shlibdeps` sees, and the Homebrew packages for a dev install.
+
 ## 2026-10-08
 
 Bound pad identity and player lights for HumanInput slice 18b: `SDL_GetGamepadSerial`, `SDL_GetJoystickSerial`, `SDL_GetGamepadPath`, `SDL_GetJoystickPath`, `SDL_Get/SetGamepadPlayerIndex`, `SDL_Get/SetJoystickPlayerIndex`. A virtual device has neither serial nor path. Measured: on the Pi without /dev/hidraw access SDL reads a DualSense through evdev with no serial; its path is the /dev/input/event node. Suite: Mac NTS and ZTS 81 passed, 2 skipped; Pi 78 passed, 5 skipped (after the path bindings too).

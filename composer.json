@@ -29,6 +29,31 @@
     "extra": {
         "branch-alias": {
             "dev-main": "0.10.x-dev"
+        },
+        "venusian": {
+            "system": {
+                "apt": {
+                    "depends": [
+                        "libx11-6",
+                        "libxext6",
+                        "libxkbcommon0",
+                        "libwayland-client0",
+                        "libwayland-cursor0",
+                        "libwayland-egl1",
+                        "libdecor-0-0"
+                    ],
+                    "recommends": [
+                        "libasound2t64",
+                        "libpulse0",
+                        "libpipewire-0.3-0t64"
+                    ]
+                },
+                "brew": {
+                    "build": [
+                        "sdl3"
+                    ]
+                }
+            }
         }
     },
     "php-ext": {

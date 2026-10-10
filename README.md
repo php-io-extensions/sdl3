@@ -10,6 +10,7 @@ Function and constant names are the C names. A handle is one PHP object per nati
 - PHP 8.4, NTS or ZTS
 - macOS: `brew install sdl3`
 - Debian trixie and Raspberry Pi OS: `apt install libsdl3-dev`
+- `venusian build` reads the system packages from `extra.venusian.system` in composer.json: apt packages to build with and the run-time ones a `.deb` depends on or recommends, and the Homebrew ones.
 
 On a Pi that also has SDL under `/usr/local`, that build has no Wayland device. The distro package is the one with Wayland. `install-debian-trixie.sh` configures against `/usr/lib/$(gcc -dumpmachine)` and puts `/usr/include` ahead of `/usr/local/include`, so the extension links distro SDL 3.2.
 

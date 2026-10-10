@@ -7,6 +7,16 @@ if test "$PHP_SDL3" != "no"; then
   PKG_CHECK_MODULES([SDL3], [sdl3 >= 3.2.0])
   PHP_EVAL_INCLINE([$SDL3_CFLAGS])
   PHP_EVAL_LIBLINE([$SDL3_LIBS], [SDL3_SHARED_LIBADD])
+  dnl Compiled into PHP, the flags PHP_EVAL_LIBLINE drops (a static library's -framework
+  dnl pairs and -Wl, flags on macOS) join PHP's program link line.
+  if test "$ext_shared" != "yes"; then
+    for sdl3_flag in $SDL3_LIBS; do
+      case $sdl3_flag in
+        -l*|-L*|-pthread) ;;
+        *) EXTRA_LDFLAGS_PROGRAM="$EXTRA_LDFLAGS_PROGRAM $sdl3_flag" ;;
+      esac
+    done
+  fi
   PHP_SUBST([SDL3_SHARED_LIBADD])
 
   PHP_NEW_EXTENSION([sdl3],
