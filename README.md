@@ -1,5 +1,7 @@
 # sdl3
 
+[![CI](https://img.shields.io/github/actions/workflow/status/php-io-extensions/sdl3/ci.yml?style=flat-square&label=CI)](https://github.com/php-io-extensions/sdl3/actions/workflows/ci.yml)
+
 1:1 PHP bindings of SDL 3 at the 3.2 API: windows, displays and fullscreen modes, surfaces, the GL, Metal and Vulkan hooks, and SDL_GPU. Version 0.10.0. Linux and macOS.
 
 Function and constant names are the C names. A handle is one PHP object per native pointer. Dropping the last PHP reference does not destroy the native object.
