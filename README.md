@@ -1,6 +1,7 @@
 # sdl3
 
 [![CI](https://img.shields.io/github/actions/workflow/status/php-io-extensions/sdl3/ci.yml?style=flat-square&label=CI)](https://github.com/php-io-extensions/sdl3/actions/workflows/ci.yml)
+[![SDL API](https://img.shields.io/badge/SDL_API-17.4%25_%28215%2F1233%29-blue?style=flat-square)](SUPPORT.md)
 
 1:1 PHP bindings of SDL 3 at the 3.2 API: windows, displays and fullscreen modes, surfaces, the GL, Metal and Vulkan hooks, and SDL_GPU. Version 0.11.0. Linux and macOS.
 
@@ -72,6 +73,17 @@ Cocoa honours `SDL_HITTEST_DRAGGABLE` and sends `SDL_EVENT_WINDOW_HIT_TEST` when
 ## Threads
 
 Video and the GPU device stay on the thread that called `SDL_Init`. The binding does not add a check. On macOS, Cocoa rejects a video call from another thread. The identity table is per thread, so a handle boxed on one thread is not the PHP object on another.
+
+## Coverage
+
+[SUPPORT.md](SUPPORT.md) lists every function SDL 3.2.0, the floor this extension builds against,
+declares in its public headers (all of SDL, not only video and the GPU), each marked bound or not;
+the API badge is computed from it. Regenerate both after a binding change, and check them:
+
+```bash
+php84 scripts/support.php           # writes SUPPORT.md and the badge
+php84 scripts/support.php --check   # exits 1 when either is stale
+```
 
 ## Example
 

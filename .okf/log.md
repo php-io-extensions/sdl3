@@ -3,6 +3,7 @@
 ## 2026-10-28
 
 * **Version**: 0.11.0 in `PHP_SDL3_VERSION` (`php_sdl3.h`), `AGENTS.md`, README and the index; `branch-alias` `dev-main` is `0.11.x-dev`. Promoted with the Venusian 0.11 ecosystem. No API or behaviour change. Built and loaded on Homebrew PHP 8.4 NTS and ZTS (81 passed, 2 skipped each), the Pi on 8.4 ZTS (78 passed, 5 skipped) and an x86_64 8.4 NTS box (77 passed, 5 skipped; `HooksTest`'s GL context fails where that box's X session has no GL).
+* **Coverage**: `scripts/support.php` writes `SUPPORT.md` and the README's API badge: every `extern SDL_DECLSPEC … SDLCALL` function of the public headers at the release-3.2.0 tag (the floor), all of SDL, bound when a stub declares the function of the same name; `SDL_test*.h` and `SDL_oldnames.h` are not read. Headers download once into `scripts/.support-cache/` (gitignored); `--check` exits 1 when the list or badge is stale. 215 / 1233 (17.4%).
 
 ## 2026-10-09
 
