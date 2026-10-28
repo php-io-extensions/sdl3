@@ -10,9 +10,6 @@ sources:
   - id: runtime
     resource: src/runtime.h
     title: sdl3_handle and the identity table
-  - id: plan
-    resource: docs/superpowers/plans/2026-10-04-slice-2-ext-sdl3.md
-    title: Slice 2 global constraints
 ---
 
 # Overview

@@ -13,14 +13,11 @@ sources:
   - id: debian
     resource: install-debian-trixie.sh
     title: Debian and Pi installer
-  - id: measured
-    resource: docs/superpowers/plans/2026-10-04-slice-2-ext-sdl3.md
-    title: SDL versions measured 2026-10-04
 ---
 
 # Overview
 
-SDL_GPU needs `SDL_Init(SDL_INIT_VIDEO)` first. The extension builds against SDL 3.2 or newer and binds only the 3.2 API.[^measured]
+SDL_GPU needs `SDL_Init(SDL_INIT_VIDEO)` first. The extension builds against SDL 3.2 or newer and binds only the 3.2 API.[^debian]
 
 | Machine | SDL that loads | Video | SDL_GPU driver | Depth-stencil format | RGBA8 4× | Shader formats |
 |---|---|---|---|---|---|---|
@@ -50,4 +47,4 @@ A swapchain test shows a window. Say so before that run.
 
 `vendor/`, `composer.lock`, and the phpize tree are not part of the commit. The installer deletes its build products.
 
-[^measured]: Measured before the slice 2 plan, 2026-10-04
+[^debian]: Debian and Pi installer

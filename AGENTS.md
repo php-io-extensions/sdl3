@@ -10,4 +10,4 @@
 8. **Build.** `./install-macos.sh` into Homebrew `php@8.4` and `php@8.4-zts`. On the Pi, copy the tree with `fnk` and `./install-debian-trixie.sh` (distro SDL, not `/usr/local`). Pest at `-d memory_limit=128M`. On the Pi export `WAYLAND_DISPLAY=wayland-0` and `XDG_RUNTIME_DIR=/run/user/$(id -u)`. Gate a commit on the suite's exit code.
 9. **Video stays on the thread that called `SDL_Init`.** The binding does not guard this. Cocoa enforces it.
 10. **Durable facts go in `.okf`.** Update the matching concept and append `.okf/log.md`.
-11. **Version** is `PHP_SDL3_VERSION` in `php_sdl3.h`: 0.10.0. `os-families`: linux, darwin.
+11. **Version** is `PHP_SDL3_VERSION` in `php_sdl3.h`: 0.11.0. `os-families`: linux, darwin.

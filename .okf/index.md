@@ -4,7 +4,7 @@ okf_version: "0.2"
 
 # ext-sdl3
 
-1:1 PHP bindings of SDL 3 at the 3.2 API. Version 0.10.0. Linux and macOS.
+1:1 PHP bindings of SDL 3 at the 3.2 API. Version 0.11.0. Linux and macOS.
 
 # API
 
