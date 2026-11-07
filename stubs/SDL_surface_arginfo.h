@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: d47a98657e77d5fb4a299f4f6c6b5e3a8d637184 */
+ * Stub hash: 6d7fa436d45ebe2f2e0f911cd7f3aeff383ebdbf */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_IOFromMem, 0, 2, SDL_IOStream, 1)
 	ZEND_ARG_TYPE_INFO(0, mem, IS_LONG, 0)
@@ -8,8 +8,9 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_SDL_IOFromConstMem arginfo_SDL_IOFromMem
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReadIO, 0, 2, IS_STRING, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReadIO, 0, 3, IS_LONG, 0)
 	ZEND_ARG_OBJ_INFO(0, context, SDL_IOStream, 0)
+	ZEND_ARG_TYPE_INFO(0, ptr, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, size, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
@@ -31,9 +32,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_UpdateWindowSurface, 0, 1, _
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_UpdateWindowSurfaceRects, 0, 2, _IS_BOOL, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_UpdateWindowSurfaceRects, 0, 3, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 	ZEND_ARG_TYPE_INFO(0, rects, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, numrects, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_SDL_WindowHasSurface arginfo_SDL_UpdateWindowSurface
@@ -89,7 +91,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_IOStream_pointer, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_IOStream_fromPointer, 0, 1, IS_STATIC, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_IOStream_fromPointer, 0, 1, IS_STATIC, 1)
 	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

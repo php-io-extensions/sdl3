@@ -17,7 +17,7 @@ ZEND_FUNCTION(SDL_ShowSimpleMessageBox)
 
 	if (window_zv != NULL) {
 		window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 4);
-		if (window == NULL) {
+		if (EG(exception)) {
 			RETURN_THROWS();
 		}
 	}

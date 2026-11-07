@@ -1,5 +1,11 @@
 # Log
 
+## 2026-11-06
+
+* **`SDL_GetModState`** bound 1:1 (SDL_keyboard.h:186, in 3.2): returns the `SDL_Keymod` bits held now as an int, the `SDL_KMOD_*` constants name them. `KeyboardTest` has a behaviour test; NTS and ZTS built and installed. 216 / 1233.
+
+* **1:1 under ext-guard** (audit 0). A build with every check off showed which calls crash. Kept, each behind `SDL3_PROBE_OFF` with a `tests/Probes` test: surface pixels shorter than pitch × height, uniform data past its string, `SDL_WriteIO` size past its string, a list's count past the list, a released `SDL_Surface`'s field getters. Dropped: "has been destroyed" for SDL calls (a released handle is NULL; SDL answers "Invalid window", "Invalid GPU device" and the like), null-address and negative-size checks, `fromPointer(0)` (null). API: the five list functions take their C count; `SDL_ReadIO(ctx, ptr, size): int`; `SDL_Vulkan_GetInstanceExtensions(?int &$count)`; `SDL_SetWindowHitTest(window, callback)`. `--enable-sdl3-probes` builds the switch. Mac, SDL 3.4.4: probe build 5 probes pass; release NTS and ZTS 49 passed, 6 skipped across the files that open no visible window. Window tests and the Pi not run yet.
+
 ## 2026-10-28
 
 * **Version**: 0.11.0 in `PHP_SDL3_VERSION` (`php_sdl3.h`), `AGENTS.md`, README and the index; `branch-alias` `dev-main` is `0.11.x-dev`. Promoted with the Venusian 0.11 ecosystem. No API or behaviour change. Built and loaded on Homebrew PHP 8.4 NTS and ZTS (81 passed, 2 skipped each), the Pi on 8.4 ZTS (78 passed, 5 skipped) and an x86_64 8.4 NTS box (77 passed, 5 skipped; `HooksTest`'s GL context fails where that box's X session has no GL).

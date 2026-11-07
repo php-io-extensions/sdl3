@@ -15,7 +15,9 @@ SDL3_POINTER_METHODS(SDL_Surface)
 		SDL_Surface *surface; \
 		ZEND_PARSE_PARAMETERS_NONE(); \
 		surface = sdl3_handle_ptr(ZEND_THIS, sdl3_ce_SDL_Surface, 0); \
-		if (surface == NULL) { \
+		/* The getter reads the struct itself: a released surface is NULL. */ \
+		if (!SDL3_PROBE_OFF("sdl3-surface-released") && (surface == NULL)) { \
+			zend_value_error("SDL_Surface has been destroyed"); /* binding:sdl3-surface-released */ \
 			RETURN_THROWS(); \
 		} \
 		RETURN_LONG((zend_long) (expr)); \
@@ -63,15 +65,7 @@ static bool sdl3_bytes_needed(zend_long pitch, zend_long height, size_t *need)
 
 static SDL_IOStream *sdl3_io_from(zend_long mem, zend_long size, bool constant)
 {
-	if (mem == 0) {
-		zend_argument_value_error(1, "must not be a null address");
-		return NULL;
-	}
-	if (size < 0) {
-		zend_argument_value_error(2, "must be greater than or equal to 0");
-		return NULL;
-	}
-
+	/* The address is trusted to hold size bytes; SDL rejects address 0 itself. */
 	return constant
 		? SDL_IOFromConstMem((const void *) (uintptr_t) mem, (size_t) size)
 		: SDL_IOFromMem((void *) (uintptr_t) mem, (size_t) size);
@@ -120,9 +114,6 @@ ZEND_FUNCTION(SDL_IOFromMem)
 	ZEND_PARSE_PARAMETERS_END();
 
 	io = sdl3_io_from(mem, size, false);
-	if (EG(exception)) {
-		RETURN_THROWS();
-	}
 	sdl3_box(return_value, io, sdl3_ce_SDL_IOStream);
 }
 
@@ -137,40 +128,28 @@ ZEND_FUNCTION(SDL_IOFromConstMem)
 	ZEND_PARSE_PARAMETERS_END();
 
 	io = sdl3_io_from(mem, size, true);
-	if (EG(exception)) {
-		RETURN_THROWS();
-	}
 	sdl3_box(return_value, io, sdl3_ce_SDL_IOStream);
 }
 
 ZEND_FUNCTION(SDL_ReadIO)
 {
 	zval *context_zv;
-	zend_long size;
+	zend_long ptr, size;
 	SDL_IOStream *context;
-	zend_string *out;
-	size_t got;
 
-	ZEND_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(3, 3)
 		Z_PARAM_OBJECT_OF_CLASS(context_zv, sdl3_ce_SDL_IOStream)
+		Z_PARAM_LONG(ptr)
 		Z_PARAM_LONG(size)
 	ZEND_PARSE_PARAMETERS_END();
 
-	if (size < 0) {
-		zend_argument_value_error(2, "must be greater than or equal to 0");
-		RETURN_THROWS();
-	}
-
 	context = sdl3_handle_ptr(context_zv, sdl3_ce_SDL_IOStream, 1);
-	if (context == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
-	out = zend_string_alloc((size_t) size, 0);
-	got = SDL_ReadIO(context, ZSTR_VAL(out), (size_t) size);
-	ZSTR_LEN(out) = got;
-	ZSTR_VAL(out)[got] = '\0';
-	RETURN_NEW_STR(out);
+	/* The address is trusted to have room for size bytes. */
+	RETURN_LONG((zend_long) SDL_ReadIO(context, (void *) (uintptr_t) ptr, (size_t) size));
 }
 
 ZEND_FUNCTION(SDL_WriteIO)
@@ -186,13 +165,13 @@ ZEND_FUNCTION(SDL_WriteIO)
 		Z_PARAM_LONG(size)
 	ZEND_PARSE_PARAMETERS_END();
 
-	if (size < 0 || (size_t) size > ZSTR_LEN(ptr)) {
-		zend_argument_value_error(2, "must hold " ZEND_LONG_FMT " bytes, %zu given", size, ZSTR_LEN(ptr));
+	if (!SDL3_PROBE_OFF("sdl3-write-io-length") && (size < 0 || (size_t) size > ZSTR_LEN(ptr))) {
+		zend_argument_value_error(2, "must hold " ZEND_LONG_FMT " bytes, %zu given", size, ZSTR_LEN(ptr)); /* binding:sdl3-write-io-length */
 		RETURN_THROWS();
 	}
 
 	context = sdl3_handle_ptr(context_zv, sdl3_ce_SDL_IOStream, 1);
-	if (context == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -210,7 +189,7 @@ ZEND_FUNCTION(SDL_CloseIO)
 	ZEND_PARSE_PARAMETERS_END();
 
 	context = sdl3_handle_ptr(context_zv, sdl3_ce_SDL_IOStream, 1);
-	if (context == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -230,7 +209,7 @@ ZEND_FUNCTION(SDL_GetWindowSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -251,7 +230,7 @@ ZEND_FUNCTION(SDL_UpdateWindowSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -266,18 +245,23 @@ ZEND_FUNCTION(SDL_UpdateWindowSurfaceRects)
 	SDL_Rect *native;
 	uint32_t count, i = 0;
 	bool updated;
+	zend_long numrects;
 
-	ZEND_PARSE_PARAMETERS_START(2, 2)
+	ZEND_PARSE_PARAMETERS_START(3, 3)
 		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
 		Z_PARAM_ARRAY_HT(rects)
+		Z_PARAM_LONG(numrects)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
 	count = zend_hash_num_elements(rects);
+	if (!sdl3_list_count(numrects, count, 3, 2)) {
+		RETURN_THROWS();
+	}
 	native = safe_emalloc(count == 0 ? 1 : count, sizeof(SDL_Rect), 0);
 	ZEND_HASH_FOREACH_VAL(rects, item) {
 		ZVAL_DEREF(item);
@@ -292,7 +276,7 @@ ZEND_FUNCTION(SDL_UpdateWindowSurfaceRects)
 		}
 	} ZEND_HASH_FOREACH_END();
 
-	updated = SDL_UpdateWindowSurfaceRects(window, native, (int) count);
+	updated = SDL_UpdateWindowSurfaceRects(window, native, (int) numrects);
 	efree(native);
 	RETURN_BOOL(updated);
 }
@@ -307,7 +291,7 @@ ZEND_FUNCTION(SDL_WindowHasSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -325,7 +309,7 @@ ZEND_FUNCTION(SDL_DestroyWindowSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -349,7 +333,7 @@ ZEND_FUNCTION(SDL_SetWindowSurfaceVSync)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -368,7 +352,7 @@ ZEND_FUNCTION(SDL_GetWindowSurfaceVSync)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -399,16 +383,13 @@ ZEND_FUNCTION(SDL_CreateSurfaceFrom)
 	ZEND_PARSE_PARAMETERS_END();
 
 	if (pixels != NULL) {
-		if (!sdl3_bytes_needed(pitch, height, &need) || ZSTR_LEN(pixels) < need) {
-			zend_argument_value_error(4, "must hold %zu bytes, %zu given", need, pixels != NULL ? ZSTR_LEN(pixels) : 0);
+		if (!SDL3_PROBE_OFF("sdl3-surface-pixels-length") && (!sdl3_bytes_needed(pitch, height, &need) || ZSTR_LEN(pixels) < need)) {
+			zend_argument_value_error(4, "must hold %zu bytes, %zu given", need, pixels != NULL ? ZSTR_LEN(pixels) : 0); /* binding:sdl3-surface-pixels-length */
 			RETURN_THROWS();
 		}
 		bytes = ZSTR_VAL(pixels);
 	} else {
-		if (address == 0) {
-			zend_argument_value_error(4, "must not be a null address");
-			RETURN_THROWS();
-		}
+		/* Trusted to hold pitch × height bytes; 0 is a surface without pixels, which SDL allows. */
 		bytes = (void *) (uintptr_t) address;
 	}
 
@@ -429,7 +410,7 @@ ZEND_FUNCTION(SDL_DestroySurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
-	if (surface == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -453,8 +434,8 @@ ZEND_FUNCTION(SDL_BlitSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	src = sdl3_handle_ptr(src_zv, sdl3_ce_SDL_Surface, 1);
-	dst = src != NULL ? sdl3_handle_ptr(dst_zv, sdl3_ce_SDL_Surface, 3) : NULL;
-	if (src == NULL || dst == NULL) {
+	dst = !EG(exception) ? sdl3_handle_ptr(dst_zv, sdl3_ce_SDL_Surface, 3) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 	if (srcrect != NULL) {
@@ -491,8 +472,8 @@ ZEND_FUNCTION(SDL_BlitSurfaceScaled)
 	ZEND_PARSE_PARAMETERS_END();
 
 	src = sdl3_handle_ptr(src_zv, sdl3_ce_SDL_Surface, 1);
-	dst = src != NULL ? sdl3_handle_ptr(dst_zv, sdl3_ce_SDL_Surface, 3) : NULL;
-	if (src == NULL || dst == NULL) {
+	dst = !EG(exception) ? sdl3_handle_ptr(dst_zv, sdl3_ce_SDL_Surface, 3) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 	if (srcrect != NULL) {
@@ -527,7 +508,7 @@ ZEND_FUNCTION(SDL_FillSurfaceRect)
 	ZEND_PARSE_PARAMETERS_END();
 
 	dst = sdl3_handle_ptr(dst_zv, sdl3_ce_SDL_Surface, 1);
-	if (dst == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 	if (rect != NULL) {

@@ -8,9 +8,11 @@ it('presents only the rects it is given', function (): void {
     $surface = SDL_GetWindowSurface($window);
     SDL_FillSurfaceRect($surface, new SDL_Rect(0, 0, 40, 40), 0xffff0000);
 
-    expect(SDL_UpdateWindowSurfaceRects($window, [new SDL_Rect(0, 0, 40, 40), new SDL_Rect(80, 60, 10, 10)]))->toBeTrue(SDL_GetError())
-        ->and(fn () => SDL_UpdateWindowSurfaceRects($window, [new SDL_Rect(), 'not a rect']))
-            ->toThrow(TypeError::class, 'must be a list of SDL_Rect, string found');
+    expect(SDL_UpdateWindowSurfaceRects($window, [new SDL_Rect(0, 0, 40, 40), new SDL_Rect(80, 60, 10, 10)], 2))->toBeTrue(SDL_GetError())
+        ->and(fn () => SDL_UpdateWindowSurfaceRects($window, [new SDL_Rect(), 'not a rect'], 2))
+            ->toThrow(TypeError::class, 'must be a list of SDL_Rect, string found')
+        ->and(fn () => SDL_UpdateWindowSurfaceRects($window, [new SDL_Rect()], 2))
+            ->toThrow(ValueError::class, 'Argument #3 ($numrects) must be between 0 and the length of argument #2 ($rects)');
 
     SDL_DestroyWindow($window);
 });

@@ -9,19 +9,6 @@ zend_class_entry *sdl3_ce_SDL_MetalView;
 SDL3_POINTER_METHODS(SDL_GLContext)
 SDL3_POINTER_METHODS(SDL_MetalView)
 
-static void *sdl3_address(zend_long value, bool is_null, uint32_t arg_num, bool optional)
-{
-	if (is_null || value == 0) {
-		if (optional) {
-			return NULL;
-		}
-		zend_argument_value_error(arg_num, "must not be a null address");
-		return NULL;
-	}
-
-	return (void *) (uintptr_t) value;
-}
-
 ZEND_FUNCTION(SDL_GL_SetAttribute)
 {
 	zend_long attr, value;
@@ -44,7 +31,7 @@ ZEND_FUNCTION(SDL_GL_CreateContext)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -64,14 +51,14 @@ ZEND_FUNCTION(SDL_GL_MakeCurrent)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 	if (context != NULL) {
 		zval context_zv;
 		ZVAL_OBJ(&context_zv, context);
 		native = sdl3_handle_ptr(&context_zv, sdl3_ce_SDL_GLContext, 2);
-		if (native == NULL) {
+		if (EG(exception)) {
 			RETURN_THROWS();
 		}
 	}
@@ -89,7 +76,7 @@ ZEND_FUNCTION(SDL_GL_SwapWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -150,7 +137,7 @@ ZEND_FUNCTION(SDL_GL_DestroyContext)
 	ZEND_PARSE_PARAMETERS_END();
 
 	context = sdl3_handle_ptr(context_zv, sdl3_ce_SDL_GLContext, 1);
-	if (context == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -169,7 +156,7 @@ ZEND_FUNCTION(SDL_Metal_CreateView)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -187,7 +174,7 @@ ZEND_FUNCTION(SDL_Metal_GetLayer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	view = sdl3_handle_ptr(view_zv, sdl3_ce_SDL_MetalView, 1);
-	if (view == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -205,7 +192,7 @@ ZEND_FUNCTION(SDL_Metal_DestroyView)
 	ZEND_PARSE_PARAMETERS_END();
 
 	view = sdl3_handle_ptr(view_zv, sdl3_ce_SDL_MetalView, 1);
-	if (view == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -218,10 +205,20 @@ ZEND_FUNCTION(SDL_Vulkan_GetInstanceExtensions)
 	Uint32 count = 0;
 	char const * const *extensions;
 	uint32_t i;
+	zval *count_zv = NULL;
 
-	ZEND_PARSE_PARAMETERS_NONE();
+	ZEND_PARSE_PARAMETERS_START(0, 1)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_ZVAL(count_zv)
+	ZEND_PARSE_PARAMETERS_END();
 
 	extensions = SDL_Vulkan_GetInstanceExtensions(&count);
+	if (count_zv != NULL) {
+		ZEND_TRY_ASSIGN_REF_LONG(count_zv, (zend_long) count);
+		if (EG(exception)) {
+			RETURN_THROWS();
+		}
+	}
 	if (extensions == NULL) {
 		RETURN_NULL();
 	}
@@ -250,9 +247,9 @@ ZEND_FUNCTION(SDL_Vulkan_CreateSurface)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	instance_ptr = sdl3_address(instance, false, 2, false);
-	allocator = sdl3_address(allocator_value, allocator_null, 3, true);
-	if (window == NULL || EG(exception)) {
+	instance_ptr = (void *) (uintptr_t) instance;
+	allocator = allocator_null ? NULL : (void *) (uintptr_t) allocator_value;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -279,15 +276,8 @@ ZEND_FUNCTION(SDL_Vulkan_DestroySurface)
 		Z_PARAM_LONG_OR_NULL(allocator_value, allocator_null)
 	ZEND_PARSE_PARAMETERS_END();
 
-	instance_ptr = sdl3_address(instance, false, 1, false);
-	allocator = sdl3_address(allocator_value, allocator_null, 3, true);
-	if (EG(exception)) {
-		RETURN_THROWS();
-	}
-	if (surface == 0) {
-		zend_argument_value_error(2, "must not be a null address");
-		RETURN_THROWS();
-	}
+	instance_ptr = (void *) (uintptr_t) instance;
+	allocator = allocator_null ? NULL : (void *) (uintptr_t) allocator_value;
 
 	SDL_Vulkan_DestroySurface((VkInstance) instance_ptr, (VkSurfaceKHR) (uintptr_t) surface,
 		(const struct VkAllocationCallbacks *) allocator);

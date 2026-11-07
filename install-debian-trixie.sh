@@ -166,7 +166,8 @@ fi
 export PKG_CONFIG_PATH="/usr/lib/$(gcc -dumpmachine)/pkgconfig"
 export CFLAGS="-I/usr/include${CFLAGS:+ $CFLAGS}"
 export LDFLAGS="-L$(pkg-config --variable=libdir sdl3)${LDFLAGS:+ $LDFLAGS}"
-if ! ./configure --enable-sdl3 "--with-php-config=${RESOLVED_PHP_CONFIG}" >>"$LOG_FILE" 2>&1; then
+# SDL3_CONFIGURE="--enable-sdl3-probes" makes a probe build (tests/Probes); never ship one.
+if ! ./configure --enable-sdl3 ${SDL3_CONFIGURE:-} "--with-php-config=${RESOLVED_PHP_CONFIG}" >>"$LOG_FILE" 2>&1; then
     show_failure_logs
     die "configure failed. See ${LOG_FILE}."
 fi

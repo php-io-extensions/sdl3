@@ -91,7 +91,9 @@ it('counts opens: the handle stays live until every open is closed', function ()
 
     SDL_CloseGamepad($first);
 
-    expect(fn () => SDL_GetGamepadName($first))->toThrow(ValueError::class, 'SDL_Gamepad has been destroyed');
+    // A closed gamepad is NULL, which SDL answers with no name.
+    expect($first->pointer())->toBe(0)
+        ->and(SDL_GetGamepadName($first))->toBeNull();
 });
 
 it('drops a detached device from the lists', function (): void {
@@ -118,13 +120,8 @@ it('releases its pad and stick handles when SDL takes the joystick subsystem dow
         $stick = SDL_OpenJoystick($id);
         '.$quit.';
         $out = [];
-        foreach ([fn () => SDL_GetGamepadName($pad), fn () => SDL_GetJoystickName($stick)] as $read) {
-            try {
-                $read();
-                $out[] = "live";
-            } catch (ValueError $e) {
-                $out[] = str_contains($e->getMessage(), "has been destroyed") ? "released" : $e->getMessage();
-            }
+        foreach ([$pad->pointer(), $stick->pointer()] as $address) {
+            $out[] = $address === 0 ? "released" : "live";
         }
         echo json_encode($out);');
 
@@ -155,12 +152,7 @@ it('releases its pad handles when the gamepad subsystem goes down while joystick
         $stick = SDL_OpenJoystick($id);
         SDL_QuitSubSystem(SDL_INIT_GAMEPAD);
         $out = [];
-        try {
-            SDL_GetGamepadName($pad);
-            $out[] = "live";
-        } catch (ValueError $e) {
-            $out[] = str_contains($e->getMessage(), "has been destroyed") ? "released" : $e->getMessage();
-        }
+        $out[] = $pad->pointer() === 0 ? "released" : "live";
         $out[] = SDL_GetJoystickName($stick);
         echo json_encode($out);');
 

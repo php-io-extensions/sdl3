@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 1367ada9fb24e0dbb8e06e311ded6eb6bf431032 */
+ * Stub hash: 9c1645aad339a2eb41dd39f53d5c54ec06bdcd64 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateGPUDevice, 0, 3, SDL_GPUDevice, 1)
 	ZEND_ARG_TYPE_INFO(0, format_flags, IS_LONG, 0)
@@ -104,10 +104,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReleaseGPUFence, 0, 2, IS_VO
 	ZEND_ARG_OBJ_INFO(0, fence, SDL_GPUFence, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WaitForGPUFences, 0, 3, _IS_BOOL, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WaitForGPUFences, 0, 4, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
 	ZEND_ARG_TYPE_INFO(0, wait_all, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, fences, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_fences, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WaitForGPUIdle, 0, 1, _IS_BOOL, 0)
@@ -162,9 +163,10 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReleaseGPUGraphicsPipeline, 
 	ZEND_ARG_OBJ_INFO(0, pipeline, SDL_GPUGraphicsPipeline, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_BeginGPURenderPass, 0, 3, SDL_GPURenderPass, 1)
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_BeginGPURenderPass, 0, 4, SDL_GPURenderPass, 1)
 	ZEND_ARG_OBJ_INFO(0, command_buffer, SDL_GPUCommandBuffer, 0)
 	ZEND_ARG_TYPE_INFO(0, color_target_infos, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_color_targets, IS_LONG, 0)
 	ZEND_ARG_OBJ_INFO(0, depth_stencil_target_info, SDL_GPUDepthStencilTargetInfo, 1)
 ZEND_END_ARG_INFO()
 
@@ -192,10 +194,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetGPUStencilReference, 0, 2
 	ZEND_ARG_TYPE_INFO(0, reference, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUVertexBuffers, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUVertexBuffers, 0, 4, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, render_pass, SDL_GPURenderPass, 0)
 	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, bindings, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUIndexBuffer, 0, 3, IS_VOID, 0)
@@ -204,10 +207,11 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUIndexBuffer, 0, 3, IS
 	ZEND_ARG_TYPE_INFO(0, index_element_size, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUFragmentSamplers, 0, 3, IS_VOID, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUFragmentSamplers, 0, 4, IS_VOID, 0)
 	ZEND_ARG_OBJ_INFO(0, render_pass, SDL_GPURenderPass, 0)
 	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
 	ZEND_ARG_TYPE_INFO(0, texture_sampler_bindings, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_PushGPUVertexUniformData, 0, 4, IS_VOID, 0)
@@ -298,7 +302,7 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_GPUDevice_pointer, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_GPUDevice_fromPointer, 0, 1, IS_STATIC, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_GPUDevice_fromPointer, 0, 1, IS_STATIC, 1)
 	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

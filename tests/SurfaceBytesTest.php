@@ -6,7 +6,7 @@ declare(strict_types=1);
 function surfaceBytes(SDL_Surface $surface): string
 {
     $io = SDL_IOFromConstMem($surface->pixels(), $surface->pitch() * $surface->h());
-    $bytes = SDL_ReadIO($io, $surface->pitch() * $surface->h());
+    $bytes = readIO($io, $surface->pitch() * $surface->h());
     SDL_CloseIO($io);
 
     return $bytes;

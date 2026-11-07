@@ -8,6 +8,8 @@
 # For each PHP: phpize/configure/make against that PHP's php-config, copy the
 # .so into its extension_dir, re-sign it ad hoc so amfid accepts it on first
 # load, and enable it with 30-sdl3.ini in its conf.d scan dir.
+#
+#   SDL3_CONFIGURE="--enable-sdl3-probes" ./install-macos.sh   # a probe build (tests/Probes)
 
 set -Eeuo pipefail
 
@@ -47,7 +49,7 @@ for PHP_BIN in "${PHP_BINS[@]}"; do
     done
     if ! (cd "$BUILD_DIR" \
         && "$PHPIZE" \
-        && ./configure --enable-sdl3 --with-php-config="$PHP_CONFIG" \
+        && ./configure --enable-sdl3 ${SDL3_CONFIGURE:-} --with-php-config="$PHP_CONFIG" \
         && make -j"$(sysctl -n hw.ncpu)") >"${BUILD_DIR}/build.log" 2>&1; then
         tail -40 "${BUILD_DIR}/build.log" >&2
         die "Build failed for ${PHP_BIN}"

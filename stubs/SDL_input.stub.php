@@ -850,7 +850,7 @@ final class SDL_Gamepad
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -865,7 +865,7 @@ final class SDL_Joystick
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -896,6 +896,9 @@ final class SDL_VirtualJoystickDesc
 }
 
 function SDL_GetKeyboardFocus(): ?SDL_Window {}
+
+/** @return int the SDL_Keymod bits held now (SDL_keyboard.h SDL_GetModState); SDL_KMOD_* name them */
+function SDL_GetModState(): int {}
 
 function SDL_StartTextInput(SDL_Window $window): bool {}
 

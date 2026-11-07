@@ -203,14 +203,15 @@ it('turns the screen saver off and back on', function (): void {
     $was ? SDL_EnableScreenSaver() : SDL_DisableScreenSaver();
 });
 
-it('refuses a destroyed window in the new window calls', function (): void {
+it('passes a destroyed window to SDL as NULL, which SDL refuses itself', function (): void {
     $window = hiddenWindow();
     SDL_DestroyWindow($window);
 
-    expect(fn () => SDL_MaximizeWindow($window))->toThrow(ValueError::class, 'SDL_Window has been destroyed')
-        ->and(fn () => SDL_SetWindowBordered($window, true))->toThrow(ValueError::class)
-        ->and(fn () => SDL_SetWindowPosition($window, 0, 0))->toThrow(ValueError::class)
-        ->and(fn () => SDL_GetWindowMinimumSize($window, $w, $h))->toThrow(ValueError::class)
-        ->and(fn () => SDL_GetWindowSafeArea($window, new SDL_Rect()))->toThrow(ValueError::class)
-        ->and(fn () => SDL_SetWindowHitTest($window, fn () => SDL_HITTEST_NORMAL))->toThrow(ValueError::class);
+    expect(SDL_MaximizeWindow($window))->toBeFalse()
+        ->and(SDL_GetError())->toBe('Invalid window')
+        ->and(SDL_SetWindowBordered($window, true))->toBeFalse()
+        ->and(SDL_SetWindowPosition($window, 0, 0))->toBeFalse()
+        ->and(SDL_GetWindowMinimumSize($window, $w, $h))->toBeFalse()
+        ->and(SDL_GetWindowSafeArea($window, new SDL_Rect()))->toBeFalse()
+        ->and(SDL_SetWindowHitTest($window, fn () => SDL_HITTEST_NORMAL))->toBeFalse();
 });

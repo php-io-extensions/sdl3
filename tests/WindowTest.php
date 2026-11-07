@@ -47,14 +47,15 @@ it('creates a window from properties', function (): void {
     SDL_DestroyProperties($props);
 });
 
-it('refuses a destroyed window, and hands a new one at a reused address a fresh object', function (): void {
+it('passes a destroyed window to SDL as NULL, and hands a new one at a reused address a fresh object', function (): void {
     $window = hiddenWindow();
     $address = $window->pointer();
     SDL_DestroyWindow($window);
 
-    expect(fn () => SDL_GetWindowTitle($window))->toThrow(ValueError::class, 'SDL_Window has been destroyed')
-        ->and(fn () => SDL_DestroyWindow($window))->toThrow(ValueError::class)
-        ->and(fn () => $window->pointer())->toThrow(ValueError::class);
+    expect($window->pointer())->toBe(0)
+        ->and(SDL_GetWindowTitle($window))->toBe('')
+        ->and(SDL_GetError())->toBe('Invalid window');
+    SDL_DestroyWindow($window);
 
     $next = hiddenWindow();
     expect($next)->not->toBe($window);

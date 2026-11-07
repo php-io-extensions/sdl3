@@ -1,0 +1,35 @@
+{
+  "symbols": {},
+  "glue": {
+    "*": {"methods": ["pointer", "fromPointer"], "forwards": "address hand-off on every handle class"},
+    "SDL_Event": {"methods": ["__construct"], "forwards": "a C union: the event's fields as properties"},
+    "SDL_Surface": {"methods": ["flags", "format", "w", "h", "pitch", "pixels"], "forwards": "the struct's public fields, read live"},
+    "SDL_GPUDepthStencilState": {"methods": ["__construct"], "forwards": "zero-init, as C's {0}: builds the nested structs"},
+    "SDL_GPUColorTargetDescription": {"methods": ["__construct"], "forwards": "zero-init, as C's {0}: builds the nested structs"},
+    "SDL_GPUBlitInfo": {"methods": ["__construct"], "forwards": "zero-init, as C's {0}: builds the nested structs"},
+    "SDL_GPUGraphicsPipelineCreateInfo": {"methods": ["__construct"], "forwards": "zero-init, as C's {0}: builds the nested structs"},
+    "SDL_GPUColorTargetInfo": {"methods": ["__construct"], "forwards": "zero-init, as C's {0}: builds the nested structs"}
+  },
+  "helpers": {
+    "marshal": ["sdl3_handle_ptr", "sdl3_prop_long", "sdl3_prop_double", "sdl3_prop_bool", "sdl3_prop_string", "sdl3_prop_handle", "sdl3_prop_object", "sdl3_prop_list", "sdl3_list_element", "sdl3_list_count", "sdl3_hit_test_call"],
+    "translate": []
+  },
+  "sites": {
+    "sdl3-surface-released": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/SurfaceReleasedTest.php"},
+    "sdl3-surface-pixels-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
+    "sdl3-uniform-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
+    "sdl3-write-io-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
+    "sdl3-list-count": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/ListCountTest.php"}
+  },
+  "typemap": {
+    "SDL_EGLDisplay": ["int"],
+    "VkInstance": ["int"],
+    "VkSurfaceKHR": ["int"],
+    "VkAllocationCallbacks*": ["int"],
+    "SDL_GPUColorTargetInfo*": ["array"],
+    "SDL_GPUBufferBinding*": ["array"],
+    "SDL_GPUTextureSamplerBinding*": ["array"],
+    "SDL_Rect*": ["array"]
+
+  }
+}

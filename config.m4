@@ -3,7 +3,17 @@ PHP_ARG_ENABLE([sdl3],
   [AS_HELP_STRING([--enable-sdl3], [Enable the SDL 3 bindings])],
   [no])
 
+PHP_ARG_ENABLE([sdl3-probes],
+  [whether to build the sdl3 probe switch],
+  [AS_HELP_STRING([--enable-sdl3-probes],
+    [Build the SDL3_PROBE_OFF switch that tests/Probes drives: env SDL3_PROBE_OFF=<site id> turns that kept refusal off. Never for a release build])],
+  [no],
+  [no])
+
 if test "$PHP_SDL3" != "no"; then
+  if test "$PHP_SDL3_PROBES" != "no"; then
+    AC_DEFINE([SDL3_PROBES], [1], [Kept refusal sites can be turned off through env SDL3_PROBE_OFF])
+  fi
   PKG_CHECK_MODULES([SDL3], [sdl3 >= 3.2.0])
   PHP_EVAL_INCLINE([$SDL3_CFLAGS])
   PHP_EVAL_LIBLINE([$SDL3_LIBS], [SDL3_SHARED_LIBADD])

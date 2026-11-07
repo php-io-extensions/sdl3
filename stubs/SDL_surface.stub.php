@@ -13,7 +13,7 @@ final class SDL_IOStream
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -28,7 +28,7 @@ final class SDL_Surface
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 
     public function flags(): int {}
 
@@ -101,7 +101,8 @@ function SDL_IOFromMem(int $mem, int $size): ?SDL_IOStream {}
 /** $mem other than 0 is trusted. */
 function SDL_IOFromConstMem(int $mem, int $size): ?SDL_IOStream {}
 
-function SDL_ReadIO(SDL_IOStream $context, int $size): string {}
+/** $ptr is an address trusted to have room for $size bytes. */
+function SDL_ReadIO(SDL_IOStream $context, int $ptr, int $size): int {}
 
 function SDL_WriteIO(SDL_IOStream $context, string $ptr, int $size): int {}
 
@@ -111,8 +112,8 @@ function SDL_GetWindowSurface(SDL_Window $window): ?SDL_Surface {}
 
 function SDL_UpdateWindowSurface(SDL_Window $window): bool {}
 
-/** $rects is a list of SDL_Rect; numrects is its length. */
-function SDL_UpdateWindowSurfaceRects(SDL_Window $window, array $rects): bool {}
+/** $rects is a list of SDL_Rect; $numrects past the list is a ValueError. */
+function SDL_UpdateWindowSurfaceRects(SDL_Window $window, array $rects, int $numrects): bool {}
 
 function SDL_WindowHasSurface(SDL_Window $window): bool {}
 

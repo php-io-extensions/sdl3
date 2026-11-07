@@ -294,7 +294,7 @@ ZEND_FUNCTION(SDL_GetDisplayForWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -314,7 +314,7 @@ ZEND_FUNCTION(SDL_SetWindowFullscreenMode)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 	if (mode_obj != NULL && !sdl3_display_mode_read(mode_obj, &mode)) {
@@ -334,7 +334,7 @@ ZEND_FUNCTION(SDL_GetWindowFullscreenMode)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 

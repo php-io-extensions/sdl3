@@ -17,6 +17,58 @@ function video(): void
     }
 }
 
+/** macOS signal numbers a kept refusal's probe dies by. */
+const PROBE_SIGBUS = 10;
+const PROBE_SIGSEGV = 11;
+
+/** Skips a tests/Probes test unless the loaded ext-sdl3 is a probe build (--enable-sdl3-probes). */
+function requireProbeBuild(): void
+{
+    if (! defined('SDL3_PROBES')) {
+        test()->markTestSkipped('ext-sdl3 is not a probe build (configure --enable-sdl3-probes): SDL3_PROBES is undefined');
+    }
+}
+
+/**
+ * Runs $code in a child of this PHP with only ext-sdl3 loaded and video up. $siteOff names the kept
+ * site SDL3_PROBE_OFF turns off, null keeps every site. $gmalloc runs the child under libgmalloc with
+ * Zend's allocator off, so a native over-read of PHP memory faults at the guard page.
+ *
+ * @return array{signal: ?int, stdout: string}
+ */
+function sdl3Probe(string $code, ?string $siteOff, bool $gmalloc = false): array
+{
+    $script = "<?php\ndeclare(strict_types=1);\nSDL_Init(SDL_INIT_VIDEO);\ntry {\n".$code."\n} catch (Throwable \$t) {\n    echo 'REFUSED ', get_class(\$t), ': ', \$t->getMessage(), \"\\n\";\n}\necho \"SURVIVED\\n\";\n";
+    $file = tempnam(sys_get_temp_dir(), 'sdl3-probe');
+    file_put_contents($file, $script);
+
+    $env = getenv();
+    unset($env['SDL3_PROBE_OFF'], $env['DYLD_INSERT_LIBRARIES'], $env['USE_ZEND_ALLOC']);
+    $env['XDEBUG_MODE'] = 'off';
+    if ($siteOff !== null) {
+        $env['SDL3_PROBE_OFF'] = $siteOff;
+    }
+    if ($gmalloc) {
+        $env['DYLD_INSERT_LIBRARIES'] = '/usr/lib/libgmalloc.dylib';
+        $env['USE_ZEND_ALLOC'] = '0';
+    }
+
+    $command = [PHP_BINARY, '-n', '-d', 'memory_limit=128M', '-d', 'extension='.ini_get('extension_dir').'/sdl3.so', $file];
+    $process = proc_open($command, [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes, null, $env);
+    $stdout = (string) stream_get_contents($pipes[1]);
+    fclose($pipes[1]);
+    do {
+        $status = proc_get_status($process);
+        if ($status['running']) {
+            usleep(20_000);
+        }
+    } while ($status['running']);
+    proc_close($process);
+    @unlink($file);
+
+    return ['signal' => $status['signaled'] ? $status['termsig'] : null, 'stdout' => $stdout];
+}
+
 function hiddenWindow(int $flags = 0): SDL_Window
 {
     video();
@@ -88,11 +140,20 @@ function readMapped(SDL_GPUTransferBuffer $buffer, int $size): string
         throw new RuntimeException('SDL_MapGPUTransferBuffer: '.SDL_GetError());
     }
     $io = SDL_IOFromConstMem($address, $size);
-    $bytes = SDL_ReadIO($io, $size);
+    $bytes = readIO($io, $size);
     SDL_CloseIO($io);
     SDL_UnmapGPUTransferBuffer(gpu(), $buffer);
 
     return $bytes;
+}
+
+/** $size bytes read with SDL_ReadIO into an ext-fb buffer, which gives the address it writes to. */
+function readIO(SDL_IOStream $io, int $size): string
+{
+    $into = new FbBuffer(new FbFormat(FB_LAYOUT_RGBA8888, channelOrder: FB_CHANNELS_RGBA), max(1, intdiv($size + 3, 4)), 1);
+    $got = SDL_ReadIO($io, $into->pointer(), $size);
+
+    return substr($into->bytes(), 0, $got);
 }
 
 /**

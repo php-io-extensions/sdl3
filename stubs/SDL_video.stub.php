@@ -13,7 +13,7 @@ final class SDL_Window
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -655,12 +655,12 @@ function SDL_GetWindowOpacity(SDL_Window $window): float {}
 function SDL_SetWindowFocusable(SDL_Window $window, bool $focusable): bool {}
 
 /**
- * SDL calls $callback(SDL_Window $win, SDL_Point $area, mixed $data): int on the thread pumping
+ * SDL calls $callback(SDL_Window $win, SDL_Point $area): int on the thread pumping
  * events and uses the SDL_HITTEST_* it returns; SDL_HITTEST_NORMAL when it throws. Null $callback
- * removes it. The callback and $callback_data are held until replaced, SDL_DestroyWindow(),
+ * removes it. The callback is held until replaced, SDL_DestroyWindow(),
  * SDL_Quit() or the end of the request.
  */
-function SDL_SetWindowHitTest(SDL_Window $window, ?callable $callback, mixed $callback_data = null): bool {}
+function SDL_SetWindowHitTest(SDL_Window $window, ?callable $callback): bool {}
 
 function SDL_FlashWindow(SDL_Window $window, int $operation): bool {}
 

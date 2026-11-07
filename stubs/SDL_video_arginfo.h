@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 4f4d97d7eff6c2c9f951ce06d0cca88f459fd188 */
+ * Stub hash: fcd19b8bde001becfdb742ba83bac9051a9d8602 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateWindow, 0, 4, SDL_Window, 1)
 	ZEND_ARG_TYPE_INFO(0, title, IS_STRING, 0)
@@ -302,7 +302,6 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetWindowHitTest, 0, 2, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, window, SDL_Window, 0)
 	ZEND_ARG_TYPE_INFO(0, callback, IS_CALLABLE, 1)
-	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, callback_data, IS_MIXED, 0, "null")
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_FlashWindow, 0, 2, _IS_BOOL, 0)
@@ -322,7 +321,7 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_SDL_Window_pointer arginfo_SDL_CreateProperties
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Window_fromPointer, 0, 1, IS_STATIC, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Window_fromPointer, 0, 1, IS_STATIC, 1)
 	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 

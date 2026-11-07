@@ -32,10 +32,12 @@ it('uploads a texture and downloads it again through transfer buffers', function
     SDL_EndGPUCopyPass($copy);
     $fence = SDL_SubmitGPUCommandBufferAndAcquireFence($commands);
 
-    expect(SDL_WaitForGPUFences(gpu(), true, [$fence]))->toBeTrue()
+    // A submitted command buffer is NULL, which SDL refuses itself.
+    expect(SDL_WaitForGPUFences(gpu(), true, [$fence], 1))->toBeTrue()
         ->and(SDL_QueryGPUFence(gpu(), $fence))->toBeTrue()
         ->and(readMapped($down, 32))->toBe($bytes)
-        ->and(fn () => SDL_SubmitGPUCommandBuffer($commands))->toThrow(ValueError::class, 'SDL_GPUCommandBuffer has been destroyed');
+        ->and(SDL_SubmitGPUCommandBuffer($commands))->toBeFalse()
+        ->and(SDL_GetError())->toContain('command_buffer');
 
     SDL_ReleaseGPUFence(gpu(), $fence);
     SDL_ReleaseGPUTransferBuffer(gpu(), $up);
@@ -71,5 +73,9 @@ it('uploads a buffer, makes a sampler, cancels a command buffer and waits for id
 });
 
 it('refuses a fence list holding something else', function (): void {
-    SDL_WaitForGPUFences(gpu(), true, ['not a fence']);
+    SDL_WaitForGPUFences(gpu(), true, ['not a fence'], 1);
 })->throws(TypeError::class);
+
+it('refuses a fence count past the list', function (): void {
+    SDL_WaitForGPUFences(gpu(), true, [], 1);
+})->throws(ValueError::class, 'Argument #4 ($num_fences) must be between 0 and the length of argument #3 ($fences)');

@@ -54,7 +54,7 @@ ZEND_FUNCTION(SDL_DestroyWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -73,7 +73,7 @@ ZEND_FUNCTION(SDL_GetWindowID)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -103,7 +103,7 @@ ZEND_FUNCTION(SDL_SetWindowTitle)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -121,7 +121,7 @@ ZEND_FUNCTION(SDL_GetWindowTitle)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -142,7 +142,7 @@ ZEND_FUNCTION(SDL_GetWindowSize)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -168,7 +168,7 @@ ZEND_FUNCTION(SDL_GetWindowSizeInPixels)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -191,7 +191,7 @@ ZEND_FUNCTION(SDL_GetWindowPixelDensity)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -208,7 +208,7 @@ ZEND_FUNCTION(SDL_GetWindowDisplayScale)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -225,7 +225,7 @@ ZEND_FUNCTION(SDL_ShowWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -242,7 +242,7 @@ ZEND_FUNCTION(SDL_HideWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -259,7 +259,7 @@ ZEND_FUNCTION(SDL_RaiseWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -276,7 +276,7 @@ ZEND_FUNCTION(SDL_GetWindowFlags)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -293,7 +293,7 @@ ZEND_FUNCTION(SDL_GetWindowProperties)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -487,7 +487,7 @@ ZEND_FUNCTION(SDL_GetBooleanProperty)
 			Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window) \
 		ZEND_PARSE_PARAMETERS_END(); \
 		window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1); \
-		if (window == NULL) { \
+		if (EG(exception)) { \
 			RETURN_THROWS(); \
 		} \
 		RETURN_BOOL(fn(window)); \
@@ -505,7 +505,7 @@ ZEND_FUNCTION(SDL_GetBooleanProperty)
 			Z_PARAM_BOOL(value) \
 		ZEND_PARSE_PARAMETERS_END(); \
 		window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1); \
-		if (window == NULL) { \
+		if (EG(exception)) { \
 			RETURN_THROWS(); \
 		} \
 		RETURN_BOOL(fn(window, value)); \
@@ -524,7 +524,7 @@ ZEND_FUNCTION(SDL_GetBooleanProperty)
 			Z_PARAM_LONG(b) \
 		ZEND_PARSE_PARAMETERS_END(); \
 		window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1); \
-		if (window == NULL) { \
+		if (EG(exception)) { \
 			RETURN_THROWS(); \
 		} \
 		RETURN_BOOL(fn(window, (int) a, (int) b)); \
@@ -543,7 +543,7 @@ ZEND_FUNCTION(SDL_GetBooleanProperty)
 			Z_PARAM_ZVAL(b_zv) \
 		ZEND_PARSE_PARAMETERS_END(); \
 		window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1); \
-		if (window == NULL) { \
+		if (EG(exception)) { \
 			RETURN_THROWS(); \
 		} \
 		if (!fn(window, &a, &b)) { \
@@ -587,8 +587,8 @@ ZEND_FUNCTION(SDL_SetWindowIcon)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	icon = window != NULL ? sdl3_handle_ptr(icon_zv, sdl3_ce_SDL_Surface, 2) : NULL;
-	if (window == NULL || icon == NULL) {
+	icon = !EG(exception) ? sdl3_handle_ptr(icon_zv, sdl3_ce_SDL_Surface, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -608,7 +608,7 @@ ZEND_FUNCTION(SDL_GetWindowSafeArea)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -632,7 +632,7 @@ ZEND_FUNCTION(SDL_SetWindowAspectRatio)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -652,7 +652,7 @@ ZEND_FUNCTION(SDL_GetWindowAspectRatio)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -685,7 +685,7 @@ ZEND_FUNCTION(SDL_GetWindowBordersSize)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -710,7 +710,7 @@ ZEND_FUNCTION(SDL_SetWindowOpacity)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -727,7 +727,7 @@ ZEND_FUNCTION(SDL_GetWindowOpacity)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -746,7 +746,7 @@ ZEND_FUNCTION(SDL_FlashWindow)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -756,7 +756,6 @@ ZEND_FUNCTION(SDL_FlashWindow)
 /* A PHP hit test. SDL holds the entry as callback_data; refs covers a callback that replaces itself mid-call. */
 typedef struct {
 	zend_fcall_info_cache fcc;
-	zval data;
 	uint32_t refs;
 } sdl3_hit_test;
 
@@ -766,7 +765,6 @@ static void sdl3_hit_test_unref(sdl3_hit_test *entry)
 		return;
 	}
 	zend_fcc_dtor(&entry->fcc);
-	zval_ptr_dtor(&entry->data);
 	efree(entry);
 }
 
@@ -779,7 +777,7 @@ static SDL_HitTestResult SDLCALL sdl3_hit_test_call(SDL_Window *win, const SDL_P
 {
 	sdl3_hit_test *entry = data;
 	SDL_HitTestResult result = SDL_HITTEST_NORMAL;
-	zval args[3], rv;
+	zval args[2], rv;
 
 	if (EG(exception) != NULL) {
 		return SDL_HITTEST_NORMAL;
@@ -790,10 +788,9 @@ static SDL_HitTestResult SDLCALL sdl3_hit_test_call(SDL_Window *win, const SDL_P
 	object_init_ex(&args[1], sdl3_ce_SDL_Point);
 	zend_update_property_long(sdl3_ce_SDL_Point, Z_OBJ(args[1]), "x", sizeof("x") - 1, area->x);
 	zend_update_property_long(sdl3_ce_SDL_Point, Z_OBJ(args[1]), "y", sizeof("y") - 1, area->y);
-	ZVAL_COPY(&args[2], &entry->data);
 	ZVAL_UNDEF(&rv);
 
-	zend_call_known_fcc(&entry->fcc, &rv, 3, args, NULL);
+	zend_call_known_fcc(&entry->fcc, &rv, 2, args, NULL);
 
 	if (Z_TYPE(rv) == IS_LONG) {
 		result = (SDL_HitTestResult) Z_LVAL(rv);
@@ -804,7 +801,6 @@ static SDL_HitTestResult SDLCALL sdl3_hit_test_call(SDL_Window *win, const SDL_P
 	zval_ptr_dtor(&rv);
 	zval_ptr_dtor(&args[0]);
 	zval_ptr_dtor(&args[1]);
-	zval_ptr_dtor(&args[2]);
 	sdl3_hit_test_unref(entry);
 
 	return result;
@@ -833,22 +829,20 @@ void sdl3_hit_tests_clear(void)
 
 ZEND_FUNCTION(SDL_SetWindowHitTest)
 {
-	zval *window_zv, *data = NULL;
+	zval *window_zv;
 	zend_fcall_info fci = empty_fcall_info;
 	zend_fcall_info_cache fcc = empty_fcall_info_cache;
 	SDL_Window *window;
 	sdl3_hit_test *entry;
 	bool set;
 
-	ZEND_PARSE_PARAMETERS_START(2, 3)
+	ZEND_PARSE_PARAMETERS_START(2, 2)
 		Z_PARAM_OBJECT_OF_CLASS(window_zv, sdl3_ce_SDL_Window)
 		Z_PARAM_FUNC_NO_TRAMPOLINE_FREE_OR_NULL(fci, fcc)
-		Z_PARAM_OPTIONAL
-		Z_PARAM_ZVAL(data)
 	ZEND_PARSE_PARAMETERS_END();
 
 	window = sdl3_handle_ptr(window_zv, sdl3_ce_SDL_Window, 1);
-	if (window == NULL) {
+	if (EG(exception)) {
 		if (ZEND_FCI_INITIALIZED(fci)) {
 			zend_release_fcall_info_cache(&fcc);
 		}
@@ -865,11 +859,6 @@ ZEND_FUNCTION(SDL_SetWindowHitTest)
 
 	entry = emalloc(sizeof(sdl3_hit_test));
 	zend_fcc_dup(&entry->fcc, &fcc);
-	if (data != NULL) {
-		ZVAL_COPY(&entry->data, data);
-	} else {
-		ZVAL_NULL(&entry->data);
-	}
 	entry->refs = 1;
 
 	set = SDL_SetWindowHitTest(window, sdl3_hit_test_call, entry);

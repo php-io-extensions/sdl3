@@ -13,7 +13,7 @@ final class SDL_GLContext
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -27,7 +27,7 @@ final class SDL_MetalView
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -144,8 +144,8 @@ function SDL_Metal_GetLayer(SDL_MetalView $view): int {}
 
 function SDL_Metal_DestroyView(SDL_MetalView $view): void {}
 
-/** Null when SDL has no extension list. */
-function SDL_Vulkan_GetInstanceExtensions(): ?array {}
+/** The list of extension names; null when SDL has none. $count is the C out-parameter. */
+function SDL_Vulkan_GetInstanceExtensions(?int &$count = null): ?array {}
 
 /**
  * $instance and $allocator are addresses. 0 and null are a null pointer; any other address is trusted.

@@ -13,7 +13,7 @@ final class SDL_GPUShader
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 final class SDL_GPUTexture
@@ -22,7 +22,7 @@ final class SDL_GPUTexture
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 final class SDL_GPUBuffer
@@ -31,7 +31,7 @@ final class SDL_GPUBuffer
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 final class SDL_GPUTransferBuffer
@@ -40,7 +40,7 @@ final class SDL_GPUTransferBuffer
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 final class SDL_GPUSampler
@@ -49,7 +49,7 @@ final class SDL_GPUSampler
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**

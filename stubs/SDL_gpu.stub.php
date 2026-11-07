@@ -13,7 +13,7 @@ final class SDL_GPUDevice
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -28,7 +28,7 @@ final class SDL_GPUCommandBuffer
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -42,7 +42,7 @@ final class SDL_GPUCopyPass
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -56,7 +56,7 @@ final class SDL_GPUFence
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 function SDL_CreateGPUDevice(int $format_flags, bool $debug_mode, ?string $name): ?SDL_GPUDevice {}
@@ -104,8 +104,8 @@ function SDL_QueryGPUFence(SDL_GPUDevice $device, SDL_GPUFence $fence): bool {}
 
 function SDL_ReleaseGPUFence(SDL_GPUDevice $device, SDL_GPUFence $fence): void {}
 
-/** An empty list passes NULL and a count of 0. A non-fence element is a TypeError. A released fence is a ValueError. */
-function SDL_WaitForGPUFences(SDL_GPUDevice $device, bool $wait_all, array $fences): bool {}
+/** A non-fence element is a TypeError. $num_fences past the list is a ValueError. A released fence is NULL. */
+function SDL_WaitForGPUFences(SDL_GPUDevice $device, bool $wait_all, array $fences, int $num_fences): bool {}
 
 function SDL_WaitForGPUIdle(SDL_GPUDevice $device): bool {}
 
@@ -130,7 +130,7 @@ final class SDL_GPUGraphicsPipeline
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 /**
@@ -144,7 +144,7 @@ final class SDL_GPURenderPass
 
     public function pointer(): int {}
 
-    public static function fromPointer(int $pointer): static {}
+    public static function fromPointer(int $pointer): ?static {}
 }
 
 function SDL_CreateGPUShader(SDL_GPUDevice $device, SDL_GPUShaderCreateInfo $createinfo): ?SDL_GPUShader {}
@@ -155,8 +155,8 @@ function SDL_CreateGPUGraphicsPipeline(SDL_GPUDevice $device, SDL_GPUGraphicsPip
 
 function SDL_ReleaseGPUGraphicsPipeline(SDL_GPUDevice $device, SDL_GPUGraphicsPipeline $pipeline): void {}
 
-/** An empty list passes NULL and a count of 0. A wrong element is a TypeError. A released handle inside an element is a ValueError. */
-function SDL_BeginGPURenderPass(SDL_GPUCommandBuffer $command_buffer, array $color_target_infos, ?SDL_GPUDepthStencilTargetInfo $depth_stencil_target_info): ?SDL_GPURenderPass {}
+/** A wrong element is a TypeError. $num_color_targets past the list is a ValueError. A released handle inside an element is NULL. */
+function SDL_BeginGPURenderPass(SDL_GPUCommandBuffer $command_buffer, array $color_target_infos, int $num_color_targets, ?SDL_GPUDepthStencilTargetInfo $depth_stencil_target_info): ?SDL_GPURenderPass {}
 
 function SDL_EndGPURenderPass(SDL_GPURenderPass $render_pass): void {}
 
@@ -168,13 +168,13 @@ function SDL_SetGPUScissor(SDL_GPURenderPass $render_pass, SDL_Rect $scissor): v
 
 function SDL_SetGPUStencilReference(SDL_GPURenderPass $render_pass, int $reference): void {}
 
-/** An empty list passes NULL and a count of 0. */
-function SDL_BindGPUVertexBuffers(SDL_GPURenderPass $render_pass, int $first_slot, array $bindings): void {}
+/** $num_bindings past the list is a ValueError. */
+function SDL_BindGPUVertexBuffers(SDL_GPURenderPass $render_pass, int $first_slot, array $bindings, int $num_bindings): void {}
 
 function SDL_BindGPUIndexBuffer(SDL_GPURenderPass $render_pass, SDL_GPUBufferBinding $binding, int $index_element_size): void {}
 
-/** An empty list passes NULL and a count of 0. */
-function SDL_BindGPUFragmentSamplers(SDL_GPURenderPass $render_pass, int $first_slot, array $texture_sampler_bindings): void {}
+/** $num_bindings past the list is a ValueError. */
+function SDL_BindGPUFragmentSamplers(SDL_GPURenderPass $render_pass, int $first_slot, array $texture_sampler_bindings, int $num_bindings): void {}
 
 function SDL_PushGPUVertexUniformData(SDL_GPUCommandBuffer $command_buffer, int $slot_index, string $data, int $length): void {}
 

@@ -42,7 +42,7 @@ ZEND_FUNCTION(SDL_DestroyGPUDevice)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -61,7 +61,7 @@ ZEND_FUNCTION(SDL_GetGPUDeviceDriver)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -82,7 +82,7 @@ ZEND_FUNCTION(SDL_GetGPUShaderFormats)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -104,7 +104,7 @@ ZEND_FUNCTION(SDL_CreateGPUTexture)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -130,8 +130,8 @@ ZEND_FUNCTION(SDL_ReleaseGPUTexture)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	texture = device != NULL ? sdl3_handle_ptr(texture_zv, sdl3_ce_SDL_GPUTexture, 2) : NULL;
-	if (device == NULL || texture == NULL) {
+	texture = !EG(exception) ? sdl3_handle_ptr(texture_zv, sdl3_ce_SDL_GPUTexture, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -153,7 +153,7 @@ ZEND_FUNCTION(SDL_GPUTextureSupportsFormat)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -174,7 +174,7 @@ ZEND_FUNCTION(SDL_GPUTextureSupportsSampleCount)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -197,7 +197,7 @@ ZEND_FUNCTION(SDL_CreateGPUSampler)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -223,8 +223,8 @@ ZEND_FUNCTION(SDL_ReleaseGPUSampler)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	sampler = device != NULL ? sdl3_handle_ptr(sampler_zv, sdl3_ce_SDL_GPUSampler, 2) : NULL;
-	if (device == NULL || sampler == NULL) {
+	sampler = !EG(exception) ? sdl3_handle_ptr(sampler_zv, sdl3_ce_SDL_GPUSampler, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -247,7 +247,7 @@ ZEND_FUNCTION(SDL_CreateGPUBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -273,8 +273,8 @@ ZEND_FUNCTION(SDL_ReleaseGPUBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	buffer = device != NULL ? sdl3_handle_ptr(buffer_zv, sdl3_ce_SDL_GPUBuffer, 2) : NULL;
-	if (device == NULL || buffer == NULL) {
+	buffer = !EG(exception) ? sdl3_handle_ptr(buffer_zv, sdl3_ce_SDL_GPUBuffer, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -297,7 +297,7 @@ ZEND_FUNCTION(SDL_CreateGPUTransferBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -323,8 +323,8 @@ ZEND_FUNCTION(SDL_ReleaseGPUTransferBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	transfer = device != NULL ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
-	if (device == NULL || transfer == NULL) {
+	transfer = !EG(exception) ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -347,8 +347,8 @@ ZEND_FUNCTION(SDL_MapGPUTransferBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	transfer = device != NULL ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
-	if (device == NULL || transfer == NULL) {
+	transfer = !EG(exception) ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -368,8 +368,8 @@ ZEND_FUNCTION(SDL_UnmapGPUTransferBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	transfer = device != NULL ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
-	if (device == NULL || transfer == NULL) {
+	transfer = !EG(exception) ? sdl3_handle_ptr(transfer_zv, sdl3_ce_SDL_GPUTransferBuffer, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -386,7 +386,7 @@ ZEND_FUNCTION(SDL_AcquireGPUCommandBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -404,7 +404,7 @@ ZEND_FUNCTION(SDL_SubmitGPUCommandBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	command_buffer = sdl3_handle_ptr(command_zv, sdl3_ce_SDL_GPUCommandBuffer, 1);
-	if (command_buffer == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -424,7 +424,7 @@ ZEND_FUNCTION(SDL_SubmitGPUCommandBufferAndAcquireFence)
 	ZEND_PARSE_PARAMETERS_END();
 
 	command_buffer = sdl3_handle_ptr(command_zv, sdl3_ce_SDL_GPUCommandBuffer, 1);
-	if (command_buffer == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -444,7 +444,7 @@ ZEND_FUNCTION(SDL_CancelGPUCommandBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	command_buffer = sdl3_handle_ptr(command_zv, sdl3_ce_SDL_GPUCommandBuffer, 1);
-	if (command_buffer == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -465,8 +465,8 @@ ZEND_FUNCTION(SDL_QueryGPUFence)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	fence = device != NULL ? sdl3_handle_ptr(fence_zv, sdl3_ce_SDL_GPUFence, 2) : NULL;
-	if (device == NULL || fence == NULL) {
+	fence = !EG(exception) ? sdl3_handle_ptr(fence_zv, sdl3_ce_SDL_GPUFence, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -485,8 +485,8 @@ ZEND_FUNCTION(SDL_ReleaseGPUFence)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	fence = device != NULL ? sdl3_handle_ptr(fence_zv, sdl3_ce_SDL_GPUFence, 2) : NULL;
-	if (device == NULL || fence == NULL) {
+	fence = !EG(exception) ? sdl3_handle_ptr(fence_zv, sdl3_ce_SDL_GPUFence, 2) : NULL;
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -503,19 +503,24 @@ ZEND_FUNCTION(SDL_WaitForGPUFences)
 	uint32_t count, index;
 	SDL_GPUFence **native = NULL;
 	bool waited;
+	zend_long num_fences;
 
-	ZEND_PARSE_PARAMETERS_START(3, 3)
+	ZEND_PARSE_PARAMETERS_START(4, 4)
 		Z_PARAM_OBJECT_OF_CLASS(device_zv, sdl3_ce_SDL_GPUDevice)
 		Z_PARAM_BOOL(wait_all)
 		Z_PARAM_ARRAY(fences_zv)
+		Z_PARAM_LONG(num_fences)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
 	count = zend_hash_num_elements(Z_ARRVAL_P(fences_zv));
+	if (!sdl3_list_count(num_fences, count, 4, 3)) {
+		RETURN_THROWS();
+	}
 	sdl3_scratch_init(&scratch);
 	if (count > 0) {
 		native = sdl3_scratch_alloc(&scratch, sizeof(SDL_GPUFence *) * count);
@@ -527,7 +532,7 @@ ZEND_FUNCTION(SDL_WaitForGPUFences)
 				RETURN_THROWS();
 			}
 			native[index] = sdl3_handle_ptr(item, sdl3_ce_SDL_GPUFence, 0);
-			if (native[index] == NULL) {
+			if (EG(exception)) {
 				sdl3_scratch_free(&scratch);
 				RETURN_THROWS();
 			}
@@ -535,7 +540,7 @@ ZEND_FUNCTION(SDL_WaitForGPUFences)
 		} ZEND_HASH_FOREACH_END();
 	}
 
-	waited = SDL_WaitForGPUFences(device, wait_all, (SDL_GPUFence *const *) native, count);
+	waited = SDL_WaitForGPUFences(device, wait_all, (SDL_GPUFence *const *) native, (Uint32) num_fences);
 	sdl3_scratch_free(&scratch);
 	RETURN_BOOL(waited);
 }
@@ -550,7 +555,7 @@ ZEND_FUNCTION(SDL_WaitForGPUIdle)
 	ZEND_PARSE_PARAMETERS_END();
 
 	device = sdl3_handle_ptr(device_zv, sdl3_ce_SDL_GPUDevice, 1);
-	if (device == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -567,7 +572,7 @@ ZEND_FUNCTION(SDL_BeginGPUCopyPass)
 	ZEND_PARSE_PARAMETERS_END();
 
 	command_buffer = sdl3_handle_ptr(command_zv, sdl3_ce_SDL_GPUCommandBuffer, 1);
-	if (command_buffer == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -592,7 +597,7 @@ ZEND_FUNCTION(SDL_UploadToGPUTexture)
 	ZEND_PARSE_PARAMETERS_END();
 
 	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
-	if (pass == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -624,7 +629,7 @@ ZEND_FUNCTION(SDL_UploadToGPUBuffer)
 	ZEND_PARSE_PARAMETERS_END();
 
 	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
-	if (pass == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -654,7 +659,7 @@ ZEND_FUNCTION(SDL_DownloadFromGPUTexture)
 	ZEND_PARSE_PARAMETERS_END();
 
 	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
-	if (pass == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 
@@ -678,7 +683,7 @@ ZEND_FUNCTION(SDL_EndGPUCopyPass)
 	ZEND_PARSE_PARAMETERS_END();
 
 	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
-	if (pass == NULL) {
+	if (EG(exception)) {
 		RETURN_THROWS();
 	}
 

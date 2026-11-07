@@ -1,7 +1,10 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 75ff32aee44f8b0a3944d44aced960a7a6889232 */
+ * Stub hash: 5e658a51d674f8e05723a9340e5f96c59d57af2b */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_GetKeyboardFocus, 0, 0, SDL_Window, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetModState, 0, 0, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_StartTextInput, 0, 1, _IS_BOOL, 0)
@@ -136,20 +139,20 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_Gamepad___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Gamepad_pointer, 0, 0, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_SDL_Gamepad_pointer arginfo_SDL_GetModState
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Gamepad_fromPointer, 0, 1, IS_STATIC, 0)
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_Gamepad_fromPointer, 0, 1, IS_STATIC, 1)
 	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_class_SDL_Joystick___construct arginfo_class_SDL_Gamepad___construct
 
-#define arginfo_class_SDL_Joystick_pointer arginfo_class_SDL_Gamepad_pointer
+#define arginfo_class_SDL_Joystick_pointer arginfo_SDL_GetModState
 
 #define arginfo_class_SDL_Joystick_fromPointer arginfo_class_SDL_Gamepad_fromPointer
 
 ZEND_FUNCTION(SDL_GetKeyboardFocus);
+ZEND_FUNCTION(SDL_GetModState);
 ZEND_FUNCTION(SDL_StartTextInput);
 ZEND_FUNCTION(SDL_StopTextInput);
 ZEND_FUNCTION(SDL_TextInputActive);
@@ -195,6 +198,7 @@ ZEND_METHOD(SDL_Joystick, fromPointer);
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_GetKeyboardFocus, arginfo_SDL_GetKeyboardFocus)
+	ZEND_FE(SDL_GetModState, arginfo_SDL_GetModState)
 	ZEND_FE(SDL_StartTextInput, arginfo_SDL_StartTextInput)
 	ZEND_FE(SDL_StopTextInput, arginfo_SDL_StopTextInput)
 	ZEND_FE(SDL_TextInputActive, arginfo_SDL_TextInputActive)

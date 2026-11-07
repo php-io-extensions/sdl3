@@ -8,10 +8,10 @@ zend_class_entry *sdl3_ce_SDL_VirtualJoystickDesc;
 SDL3_POINTER_METHODS(SDL_Gamepad)
 SDL3_POINTER_METHODS(SDL_Joystick)
 
-/* The live pointer of handle argument 1, or the function throws. */
+/* The pointer of handle argument 1 (NULL once released), or the function throws on a wrong type. */
 #define SDL3_ARG_HANDLE(var, type, zv, ce) \
 	type *var = sdl3_handle_ptr((zv), (ce), 1); \
-	if (var == NULL) { RETURN_THROWS(); }
+	if (EG(exception)) { RETURN_THROWS(); }
 
 /* One more open of the handle in return_value: SDL counts opens of a device and returns the same pointer. */
 static void sdl3_opened(zval *return_value)
@@ -58,6 +58,12 @@ ZEND_FUNCTION(SDL_GetKeyboardFocus)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
 	sdl3_box(return_value, SDL_GetKeyboardFocus(), sdl3_ce_SDL_Window);
+}
+
+ZEND_FUNCTION(SDL_GetModState)
+{
+	ZEND_PARSE_PARAMETERS_NONE();
+	RETURN_LONG((zend_long) SDL_GetModState());
 }
 
 ZEND_FUNCTION(SDL_StartTextInput)

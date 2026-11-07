@@ -73,11 +73,26 @@ bool sdl3_prop_object(zend_object *obj, const char *name, zend_class_entry *ce, 
 bool sdl3_prop_list(zend_object *obj, const char *name, zend_class_entry *ce, zend_object ***items, uint32_t *count, sdl3_scratch *scratch);
 void sdl3_init_nested(zend_object *obj, const char *name, zend_class_entry *ce);
 
-/* pointer() and fromPointer() for a handle class. An address other than 0 is trusted. */
+/*
+ * The probe switch. A kept refusal site reads `if (!SDL3_PROBE_OFF("<id>") && (<check>))`.
+ * A build configured with --enable-sdl3-probes lets env SDL3_PROBE_OFF=<id> turn that one
+ * site off, so tests/Probes can show the crash the site prevents; any other build compiles
+ * the switch out.
+ */
+#ifdef SDL3_PROBES
+bool sdl3_probe_off(const char *id);
+# define SDL3_PROBE_OFF(id) sdl3_probe_off(id)
+#else
+# define SDL3_PROBE_OFF(id) 0
+#endif
+
+/* A list's C count, given as its own parameter: false (and a ValueError) when it is past the list. */
+bool sdl3_list_count(zend_long given, uint32_t length, uint32_t count_arg, uint32_t list_arg);
+
+/* pointer() and fromPointer() for a handle class. The address is trusted; 0 (and a released handle) is NULL. */
 #define SDL3_POINTER_METHODS(cls) \
-	ZEND_METHOD(cls, pointer) { ZEND_PARSE_PARAMETERS_NONE(); void *p = sdl3_handle_ptr(ZEND_THIS, Z_OBJCE_P(ZEND_THIS), 0); if (!p) RETURN_THROWS(); RETURN_LONG((zend_long) (uintptr_t) p); } \
+	ZEND_METHOD(cls, pointer) { ZEND_PARSE_PARAMETERS_NONE(); RETURN_LONG((zend_long) (uintptr_t) sdl3_handle_from(Z_OBJ_P(ZEND_THIS))->ptr); } \
 	ZEND_METHOD(cls, fromPointer) { zend_long p; ZEND_PARSE_PARAMETERS_START(1, 1) Z_PARAM_LONG(p) ZEND_PARSE_PARAMETERS_END(); \
-		if (p == 0) { zend_argument_value_error(1, "must not be a null address"); RETURN_THROWS(); } \
 		sdl3_box(return_value, (void *) (uintptr_t) p, zend_get_called_scope(execute_data)); } \
 	ZEND_METHOD(cls, __construct) { ZEND_PARSE_PARAMETERS_NONE(); zend_throw_error(NULL, "%s cannot be constructed", #cls); RETURN_THROWS(); }
 

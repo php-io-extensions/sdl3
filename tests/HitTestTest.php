@@ -6,7 +6,7 @@ it('sets, replaces and clears a hit test', function (): void {
     $window = hiddenWindow();
 
     expect(SDL_SetWindowHitTest($window, fn (): int => SDL_HITTEST_NORMAL))->toBeTrue()
-        ->and(SDL_SetWindowHitTest($window, fn (): int => SDL_HITTEST_DRAGGABLE, ['data']))->toBeTrue()
+        ->and(SDL_SetWindowHitTest($window, fn (): int => SDL_HITTEST_DRAGGABLE))->toBeTrue()
         ->and(SDL_SetWindowHitTest($window, null))->toBeTrue()
         ->and(fn () => SDL_SetWindowHitTest($window, 'no_such_function'))->toThrow(TypeError::class);
 
@@ -17,7 +17,10 @@ it('drops a hit test with its window', function (): void {
     $window = hiddenWindow();
     $held = new stdClass();
     $ref = WeakReference::create($held);
-    SDL_SetWindowHitTest($window, fn (): int => SDL_HITTEST_NORMAL, $held);
+    // The closure's capture is the data it carries.
+    SDL_SetWindowHitTest($window, function () use ($held): int {
+        return SDL_HITTEST_NORMAL;
+    });
     unset($held);
 
     // Booleans only: an expectation holding the object would keep it alive.
@@ -37,14 +40,15 @@ it('calls the PHP hit test on a click and uses what it returns', function (): vo
     $calls = [];
     $armed = false;
     // Only the synthesized click counts: the real cursor passing over the window calls the hit test too.
-    SDL_SetWindowHitTest($window, function (SDL_Window $win, SDL_Point $area, mixed $data) use (&$calls, &$armed): int {
+    $data = 'title bar';
+    SDL_SetWindowHitTest($window, function (SDL_Window $win, SDL_Point $area) use (&$calls, &$armed, $data): int {
         if (! $armed) {
             return SDL_HITTEST_NORMAL;
         }
         $calls[] = [$win, $area->x, $area->y, $data];
 
         return SDL_HITTEST_DRAGGABLE;
-    }, 'title bar');
+    });
     try {
         $nswindow = nsWindowOf($window);
         $number = objcMsg('long objc_msgSend(id, SEL)')->objc_msgSend($nswindow, sel('windowNumber'));

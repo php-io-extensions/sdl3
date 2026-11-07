@@ -168,17 +168,30 @@ void *sdl3_handle_ptr(zval *zv, zend_class_entry *ce, uint32_t arg_num)
 		return NULL;
 	}
 
+	/* A released handle is NULL, which SDL itself rejects. */
 	intern = sdl3_handle_from(Z_OBJ_P(zv));
-	if (intern->ptr == NULL) {
-		if (arg_num == 0) {
-			zend_value_error("%s has been destroyed", ZSTR_VAL(ce->name));
-		} else {
-			zend_argument_value_error(arg_num, "%s has been destroyed", ZSTR_VAL(ce->name));
-		}
-		return NULL;
-	}
 
 	return intern->ptr;
+}
+
+#ifdef SDL3_PROBES
+bool sdl3_probe_off(const char *id)
+{
+	const char *off = getenv("SDL3_PROBE_OFF");
+
+	return off != NULL && strcmp(off, id) == 0;
+}
+#endif
+
+bool sdl3_list_count(zend_long given, uint32_t length, uint32_t count_arg, uint32_t list_arg)
+{
+	/* SDL reads count elements of the native array built from the list. */
+	if (!SDL3_PROBE_OFF("sdl3-list-count") && (given < 0 || (zend_ulong) given > length)) {
+		zend_argument_value_error(count_arg, "must be between 0 and the length of argument #%u ($%s)", list_arg, get_active_function_arg_name(list_arg)); /* binding:sdl3-list-count */
+		return false;
+	}
+
+	return true;
 }
 
 void sdl3_scratch_init(sdl3_scratch *scratch)
@@ -304,7 +317,7 @@ bool sdl3_prop_handle(zend_object *obj, const char *name, zend_class_entry *ce, 
 	}
 
 	*out = sdl3_handle_ptr(zv, ce, 0);
-	return *out != NULL;
+	return !EG(exception);
 }
 
 bool sdl3_prop_object(zend_object *obj, const char *name, zend_class_entry *ce, zend_object **out)

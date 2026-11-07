@@ -23,6 +23,15 @@ it('answers the window with keyboard focus as the handle it already gave out, or
     SDL_DestroyWindow($window);
 });
 
+it('reads the modifier keys held as SDL_Keymod bits', function (): void {
+    video();
+    $mod = SDL_GetModState();
+
+    expect($mod)->toBeInt()
+        ->and($mod & ~0xFFFF)->toBe(0)
+        ->and(SDL_KMOD_SHIFT)->toBe(SDL_KMOD_LSHIFT | SDL_KMOD_RSHIFT);
+});
+
 it('numbers scancodes by USB HID position', function (): void {
     expect([SDL_SCANCODE_A, SDL_SCANCODE_Z, SDL_SCANCODE_1, SDL_SCANCODE_0, SDL_SCANCODE_RETURN, SDL_SCANCODE_F12])->toBe([4, 29, 30, 39, 40, 69])
         ->and([SDL_SCANCODE_KP_0, SDL_SCANCODE_APPLICATION, SDL_SCANCODE_KP_EQUALS, SDL_SCANCODE_CLEAR])->toBe([98, 101, 103, 156])

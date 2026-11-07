@@ -20,7 +20,9 @@ it('creates a GL context on a GL window, the core profile on the Mac and GLES on
         ->and(SDL_GL_SwapWindow($window))->toBeBool()
         ->and(SDL_GL_MakeCurrent($window, null))->toBeTrue()
         ->and(SDL_GL_DestroyContext($context))->toBeTrue()
-        ->and(fn () => SDL_GL_MakeCurrent($window, $context))->toThrow(ValueError::class, 'SDL_GLContext has been destroyed');
+        // A destroyed context is NULL: SDL makes no context current, as with null.
+        ->and($context->pointer())->toBe(0)
+        ->and(SDL_GL_MakeCurrent($window, $context))->toBeTrue();
 
     SDL_DestroyWindow($window);
 });
@@ -41,7 +43,8 @@ it('makes a Metal view whose layer ext-metal can take', function (): void {
 
 it('lists the Vulkan instance extensions a window surface needs', function (): void {
     video();
-    $extensions = SDL_Vulkan_GetInstanceExtensions();
+    $extensions = SDL_Vulkan_GetInstanceExtensions($count);
 
-    expect($extensions)->toBeArray()->toContain('VK_KHR_surface');
+    expect($extensions)->toBeArray()->toContain('VK_KHR_surface')
+        ->and($count)->toBe(count($extensions));
 })->skip(PHP_OS_FAMILY === 'Darwin', 'the Mac has no Vulkan loader on its default path until slice 5');

@@ -125,8 +125,8 @@ it('fills a triangle by stencil-then-cover into a 4x target, resolves, blits and
     $binding = new SDL_GPUBufferBinding();
     $binding->buffer = $vertices;
 
-    $pass = SDL_BeginGPURenderPass($commands, [$color], $depthStencil);
-    SDL_BindGPUVertexBuffers($pass, 0, [$binding]);
+    $pass = SDL_BeginGPURenderPass($commands, [$color], 1, $depthStencil);
+    SDL_BindGPUVertexBuffers($pass, 0, [$binding], 1);
     // Stencil: invert where the triangle covers, no colour written.
     SDL_BindGPUGraphicsPipeline($pass, $stencilPipeline);
     SDL_DrawGPUPrimitives($pass, 3, 1, 0, 0);
@@ -159,7 +159,7 @@ it('fills a triangle by stencil-then-cover into a 4x target, resolves, blits and
     }
     SDL_EndGPUCopyPass($copy);
     $fence = SDL_SubmitGPUCommandBufferAndAcquireFence($commands);
-    SDL_WaitForGPUFences(gpu(), true, [$fence]);
+    SDL_WaitForGPUFences(gpu(), true, [$fence], 1);
 
     $both = readMapped($download, 512);
     [$pixels, $copied] = [substr($both, 0, 256), substr($both, 256)];

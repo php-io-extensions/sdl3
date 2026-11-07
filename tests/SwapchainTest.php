@@ -17,7 +17,8 @@ it('claims a window, sets its swapchain and acquires a texture or none, without 
     }
     SDL_SubmitGPUCommandBuffer($commands);
     if ($texture !== null) {
-        expect(fn () => $texture->pointer())->toThrow(ValueError::class);
+        // Released with its command buffer: the handle is NULL now.
+        expect($texture->pointer())->toBe(0);
     }
 
     SDL_WaitForGPUIdle(gpu());
@@ -40,7 +41,7 @@ it('waits for a swapchain texture, acquires one waiting, bounds frames in flight
         ->and($texture)->toBeInstanceOf(SDL_GPUTexture::class)
         ->and($w)->toBeGreaterThan(0);
     SDL_SubmitGPUCommandBuffer($commands);
-    expect(fn () => $texture->pointer())->toThrow(ValueError::class);
+    expect($texture->pointer())->toBe(0);
 
     SDL_SetGPUAllowedFramesInFlight(gpu(), 2);
     SDL_WaitForGPUIdle(gpu());
