@@ -187,50 +187,8 @@ function driver(): string
     return SDL_GetCurrentVideoDriver() ?? '';
 }
 
-/**
- * objc_msgSend under one concrete prototype; arm64 cannot call it through the variadic one.
- * $signature is a C declaration of objc_msgSend, e.g. 'id objc_msgSend(id, SEL)'.
- */
-function objcMsg(string $signature): FFI
+/** The window's NSWindow, as ext-appkit holds it. */
+function nsWindowOf(SDL_Window $window): NSWindow
 {
-    static $by = [];
-
-    return $by[$signature] ??= FFI::cdef(
-        'typedef void *id; typedef void *SEL; typedef struct { double x; double y; } NSPoint; '.$signature.';',
-        '/usr/lib/libobjc.A.dylib',
-    );
-}
-
-function objc(): FFI
-{
-    static $ffi = null;
-
-    return $ffi ??= FFI::cdef(
-        'typedef void *id; typedef void *SEL; id objc_getClass(const char *name); SEL sel_registerName(const char *name);',
-        '/usr/lib/libobjc.A.dylib',
-    );
-}
-
-function sel(string $name): FFI\CData
-{
-    return objc()->sel_registerName($name);
-}
-
-function nsApp(): FFI\CData
-{
-    return objcMsg('id objc_msgSend(id, SEL)')->objc_msgSend(objc()->objc_getClass('NSApplication'), sel('sharedApplication'));
-}
-
-/** An Objective-C id holding $address. */
-function objcId(int $address): FFI\CData
-{
-    $id = objc()->new('id');
-    FFI::cdef()->cast('uintptr_t*', FFI::addr($id))[0] = $address;
-
-    return $id;
-}
-
-function nsWindowOf(SDL_Window $window): FFI\CData
-{
-    return objcId(SDL_GetPointerProperty(SDL_GetWindowProperties($window), SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, null));
+    return NSWindow::fromPointer(SDL_GetPointerProperty(SDL_GetWindowProperties($window), SDL_PROP_WINDOW_COCOA_WINDOW_POINTER, null));
 }

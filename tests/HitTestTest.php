@@ -51,20 +51,14 @@ it('calls the PHP hit test on a click and uses what it returns', function (): vo
     });
     try {
         $nswindow = nsWindowOf($window);
-        $number = objcMsg('long objc_msgSend(id, SEL)')->objc_msgSend($nswindow, sel('windowNumber'));
-        $mouse = objcMsg('id objc_msgSend(id, SEL, unsigned long, NSPoint, unsigned long, double, long, id, long, long, float)');
-        $event = function (int $type) use ($mouse, $number): FFI\CData {
-            $point = $mouse->new('NSPoint');
-            $point->x = 80.0;
-            $point->y = 100.0;
-
-            return $mouse->objc_msgSend(objc()->objc_getClass('NSEvent'), sel('mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:'),
-                $type, $point, 0, 0.0, $number, null, 0, 1, 1.0);
-        };
+        $number = $nswindow->windowNumber();
+        $event = fn (NSEventType $type): NSEvent => NSEvent::mouseEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberClickCountPressure(
+            $type, new NSPoint(80.0, 100.0), 0, 0.0, $number, null, 0, 1, 1.0);
         // The mouse-up waits in the queue so a drag NSWindow starts on the mouse-down ends at once.
-        objcMsg('void objc_msgSend(id, SEL, id, signed char)')->objc_msgSend(nsApp(), sel('postEvent:atStart:'), $event(2), 0);
+        NSApplication::sharedApplication()->postEventAtStart($event(NSEventType::LEFT_MOUSE_UP), false);
         $armed = true;
-        objcMsg('void objc_msgSend(id, SEL, id)')->objc_msgSend($nswindow, sel('sendEvent:'), $event(1));
+        // (the application hands a mouse event to the window its number names, as the window's own sendEvent: would take it)
+        NSApplication::sharedApplication()->sendEvent($event(NSEventType::LEFT_MOUSE_DOWN));
         $armed = false;
 
         expect($calls)->not->toBeEmpty()
@@ -75,7 +69,7 @@ it('calls the PHP hit test on a click and uses what it returns', function (): vo
     } finally {
         SDL_DestroyWindow($window);
     }
-})->skip(PHP_OS_FAMILY !== 'Darwin', 'the click is synthesized through AppKit');
+})->skip(PHP_OS_FAMILY !== 'Darwin' || ! extension_loaded('appkit'), 'the click is synthesized through ext-appkit');
 
 it('treats a throwing or non-int hit test as SDL_HITTEST_NORMAL and surfaces the error', function (): void {
     // An inactive window spends the first click on activation unless click-through is on.
@@ -89,19 +83,14 @@ it('treats a throwing or non-int hit test as SDL_HITTEST_NORMAL and surfaces the
         return $armed ? 'not an int' : SDL_HITTEST_NORMAL;
     });
     try {
-        $nswindow = nsWindowOf($window);
-        $number = objcMsg('long objc_msgSend(id, SEL)')->objc_msgSend($nswindow, sel('windowNumber'));
-        $mouse = objcMsg('id objc_msgSend(id, SEL, unsigned long, NSPoint, unsigned long, double, long, id, long, long, float)');
-        $point = $mouse->new('NSPoint');
-        $point->x = 10.0;
-        $point->y = 10.0;
-        $down = $mouse->objc_msgSend(objc()->objc_getClass('NSEvent'), sel('mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:'),
-            1, $point, 0, 0.0, $number, null, 0, 1, 1.0);
+        $number = nsWindowOf($window)->windowNumber();
+        $down = NSEvent::mouseEventWithTypeLocationModifierFlagsTimestampWindowNumberContextEventNumberClickCountPressure(
+            NSEventType::LEFT_MOUSE_DOWN, new NSPoint(10.0, 10.0), 0, 0.0, $number, null, 0, 1, 1.0);
 
-        $send = function () use ($nswindow, $down, &$armed): void {
+        $send = function () use ($down, &$armed): void {
             $armed = true;
             try {
-                objcMsg('void objc_msgSend(id, SEL, id)')->objc_msgSend($nswindow, sel('sendEvent:'), $down);
+                NSApplication::sharedApplication()->sendEvent($down);
             } finally {
                 $armed = false;
             }
@@ -111,4 +100,4 @@ it('treats a throwing or non-int hit test as SDL_HITTEST_NORMAL and surfaces the
     } finally {
         SDL_DestroyWindow($window);
     }
-})->skip(PHP_OS_FAMILY !== 'Darwin', 'the click is synthesized through AppKit');
+})->skip(PHP_OS_FAMILY !== 'Darwin' || ! extension_loaded('appkit'), 'the click is synthesized through ext-appkit');
