@@ -95,6 +95,8 @@ const SDL_SCALEMODE_NEAREST = UNKNOWN;
  */
 const SDL_SCALEMODE_LINEAR = UNKNOWN;
 
+function SDL_IOFromFile(string $file, string $mode): ?SDL_IOStream {}
+
 /** $mem other than 0 is trusted. */
 function SDL_IOFromMem(int $mem, int $size): ?SDL_IOStream {}
 

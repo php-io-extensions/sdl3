@@ -37,3 +37,17 @@ it('starts structs at zero with their nested structs made', function (): void {
 
     expect([$event->type, $event->window->windowID, $event->window->data1])->toBe([0, 0, 0]);
 });
+
+it('brings the audio subsystem up and down', function (): void {
+    $before = getenv('SDL_AUDIO_DRIVER');
+    putenv('SDL_AUDIO_DRIVER=dummy');
+    try {
+        expect(SDL_INIT_AUDIO)->toBe(0x10)
+            ->and(SDL_InitSubSystem(SDL_INIT_AUDIO))->toBeTrue()
+            ->and(SDL_WasInit(SDL_INIT_AUDIO))->toBe(SDL_INIT_AUDIO);
+        SDL_QuitSubSystem(SDL_INIT_AUDIO);
+        expect(SDL_WasInit(SDL_INIT_AUDIO))->toBe(0);
+    } finally {
+        putenv($before === false ? 'SDL_AUDIO_DRIVER' : "SDL_AUDIO_DRIVER=$before");
+    }
+});

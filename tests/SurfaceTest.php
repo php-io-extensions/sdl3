@@ -47,5 +47,5 @@ it('exposes every class, enum and method the stubs declare', function (): void {
 });
 
 it('reports its version', function (): void {
-    expect(phpversion('sdl3'))->toBe('0.11.1');
+    expect(phpversion('sdl3'))->toBe('0.11.2');
 });

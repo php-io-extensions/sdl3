@@ -4,6 +4,12 @@
 
 /**
  * @var int
+ * @cvalue SDL_INIT_AUDIO
+ */
+const SDL_INIT_AUDIO = UNKNOWN;
+
+/**
+ * @var int
  * @cvalue SDL_INIT_VIDEO
  */
 const SDL_INIT_VIDEO = UNKNOWN;
@@ -624,6 +630,8 @@ final class SDL_Event
 function SDL_Init(int $flags): bool {}
 
 function SDL_InitSubSystem(int $flags): bool {}
+
+function SDL_WasInit(int $flags): int {}
 
 /** Once the gamepad subsystem is down, every SDL_Gamepad handle is released; once the joystick subsystem is, every SDL_Joystick. */
 function SDL_QuitSubSystem(int $flags): void {}

@@ -43,4 +43,10 @@ A handle is `sdl3_handle { void *ptr; zval keep; zend_object std; }`. `ptr` is t
 
 Module global `hit_tests` maps a window address to the entry SDL holds as `callback_data`: the callable's `zend_fcall_info_cache` and a reference count; a closure carries its own data. The trampoline-safe `zend_fcc_dup`/`zend_fcc_dtor` pair owns the callable. A call takes a reference for its duration, so a callback that replaces or removes its own hit test frees the entry after it returns. `SDL_DestroyWindow` drops the window's entry. `SDL_Quit` and RSHUTDOWN clear SDL's callback on every window in the table and empty it, so SDL never calls into request memory that is gone.
 
+# Public API
+
+`php_sdl3_api.h` includes `src/runtime.h`; both installers copy it, `php_sdl3.h` and `src/runtime.h` into `$(php-config --include-dir)/ext/sdl3/`. Another extension adds that directory to its include path, declares `ZEND_MOD_REQUIRED("sdl3")` and loads after sdl3. Its handle classes use `sdl3_handle_setup` and `SDL3_POINTER_METHODS`, live in the same identity table (`sdl3_box`, `sdl3_release`, `sdl3_release_all`), and take sdl3's handles through `sdl3_handle_ptr` (`sdl3_ce_SDL_IOStream` and the rest). The symbols resolve against the loaded `sdl3.so`.[^runtime]
+
+`sdl3_add_audio_quit_hooks(before, after)`, at most 4 pairs, from MINIT. `SDL_QuitSubSystem` and `SDL_Quit` run every before hook while `SDL_INIT_AUDIO` is up, call SDL, and run every after hook once audio is down. SDL destroys every audio stream at that point, so the after hook releases them.
+
 [^runtime]: `src/runtime.h`

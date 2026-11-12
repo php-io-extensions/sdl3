@@ -42,6 +42,16 @@ void sdl3_drop_kept(zend_object *owner);
 
 /* Releases every live handle of class ce: SDL destroyed them all (a subsystem went down). */
 void sdl3_release_all(zend_class_entry *ce);
+
+/*
+ * SDL_QuitSubSystem and SDL_Quit run every before hook while SDL_INIT_AUDIO is still up,
+ * and every after hook once the call has taken it down: SDL destroys every audio stream
+ * then. Registered in MINIT; at most 4 pairs. Either hook may be NULL.
+ */
+typedef void (*sdl3_quit_hook)(void);
+void sdl3_add_audio_quit_hooks(sdl3_quit_hook before, sdl3_quit_hook after);
+void sdl3_audio_quit_before(void);
+void sdl3_audio_quit_after(void);
 /* Replaces keep with a copy of a PHP string the native object borrows. */
 void sdl3_keep_string(zend_object *obj, zend_string *str);
 /* Remembers a handle whose native lifetime ends with owner's. A second keep of the same object is a no-op. */

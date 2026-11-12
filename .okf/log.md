@@ -1,5 +1,12 @@
 # Log
 
+## 2026-11-11
+
+* **Public API, 0.11.2**: `php_sdl3_api.h` (includes `src/runtime.h`) is installed with `php_sdl3.h` into `$(php-config --include-dir)/ext/sdl3/` by both installers and by `PHP_INSTALL_HEADERS`. An extension that requires sdl3 compiles against it and boxes its handles in sdl3's registry. `sdl3_add_audio_quit_hooks(before, after)`: `SDL_QuitSubSystem` and `SDL_Quit` run the before hooks while audio is up and the after hooks once audio is down, since SDL destroys every audio stream then. `ApiHeaderTest`; suite 90 passed, 7 skipped on Homebrew PHP 8.4 NTS and ZTS. [handles](architecture/handles.md)
+* **`SDL_INIT_AUDIO`, `SDL_WasInit`** bound 1:1 (SDL_init.h, in 3.2). `InitTest` brings audio up and down on the dummy output. 217 / 1233. Suite 91 passed, 7 skipped on NTS and ZTS.
+* **`SDL_IOFromFile`** bound 1:1 (SDL_iostream.h, in 3.2): a path and an fopen mode; `null` and `SDL_GetError()` when SDL cannot open it. `SurfaceBytesTest` reads a file back through it. 218 / 1233. Suite 92 passed, 7 skipped on NTS and ZTS.
+* **Debian installer**: `-isystem /usr/include`, not `-I`. GCC drops `-I` for a system directory, so a `/usr/local` SDL build (3.4.9 on the Pi) shadowed the distro 3.2.10 headers the library came from.
+
 ## 2026-11-06
 
 * **`SDL_GetModState`** bound 1:1 (SDL_keyboard.h:186, in 3.2): returns the `SDL_Keymod` bits held now as an int, the `SDL_KMOD_*` constants name them. `KeyboardTest` has a behaviour test; NTS and ZTS built and installed. 216 / 1233.

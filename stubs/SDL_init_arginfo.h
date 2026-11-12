@@ -1,11 +1,15 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 7481b26acbdedea2fd4487a2d2943d1d447f61af */
+ * Stub hash: 6cce31b758a2df5373e13f00f063aeee891afbb8 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_Init, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
 #define arginfo_SDL_InitSubSystem arginfo_SDL_Init
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_WasInit, 0, 1, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_QuitSubSystem, 0, 1, IS_VOID, 0)
 	ZEND_ARG_TYPE_INFO(0, flags, IS_LONG, 0)
@@ -57,6 +61,7 @@ ZEND_END_ARG_INFO()
 
 ZEND_FUNCTION(SDL_Init);
 ZEND_FUNCTION(SDL_InitSubSystem);
+ZEND_FUNCTION(SDL_WasInit);
 ZEND_FUNCTION(SDL_QuitSubSystem);
 ZEND_FUNCTION(SDL_Quit);
 ZEND_FUNCTION(SDL_GetError);
@@ -74,6 +79,7 @@ ZEND_METHOD(SDL_Event, __construct);
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_Init, arginfo_SDL_Init)
 	ZEND_FE(SDL_InitSubSystem, arginfo_SDL_InitSubSystem)
+	ZEND_FE(SDL_WasInit, arginfo_SDL_WasInit)
 	ZEND_FE(SDL_QuitSubSystem, arginfo_SDL_QuitSubSystem)
 	ZEND_FE(SDL_Quit, arginfo_SDL_Quit)
 	ZEND_FE(SDL_GetError, arginfo_SDL_GetError)
@@ -96,6 +102,7 @@ static const zend_function_entry class_SDL_Event_methods[] = {
 
 static void register_SDL_init_symbols(int module_number)
 {
+	REGISTER_LONG_CONSTANT("SDL_INIT_AUDIO", SDL_INIT_AUDIO, CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("SDL_INIT_VIDEO", SDL_INIT_VIDEO, CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("SDL_EVENT_QUIT", SDL_EVENT_QUIT, CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("SDL_EVENT_WINDOW_CLOSE_REQUESTED", SDL_EVENT_WINDOW_CLOSE_REQUESTED, CONST_PERSISTENT);

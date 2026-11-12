@@ -73,3 +73,18 @@ it('updates a window surface', function (): void {
 
     SDL_DestroyWindow($window);
 });
+
+it('opens a file as a stream and reads it back', function (): void {
+    $file = tempnam(sys_get_temp_dir(), 'sdl3-io');
+    file_put_contents($file, 'abcdef');
+
+    $io = SDL_IOFromFile($file, 'rb');
+    $read = $io === null ? '' : readIO($io, 6);
+
+    expect($io)->toBeInstanceOf(SDL_IOStream::class)
+        ->and($read)->toBe('abcdef')
+        ->and(SDL_CloseIO($io))->toBeTrue()
+        ->and(SDL_IOFromFile($file.'.missing', 'rb'))->toBeNull()
+        ->and(SDL_GetError())->not->toBe('');
+    unlink($file);
+});

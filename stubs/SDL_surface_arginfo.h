@@ -1,5 +1,10 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6d7fa436d45ebe2f2e0f911cd7f3aeff383ebdbf */
+ * Stub hash: 4d04c2ee22c3e8c8793234a11010406b9fc10180 */
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_IOFromFile, 0, 2, SDL_IOStream, 1)
+	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
+	ZEND_ARG_TYPE_INFO(0, mode, IS_STRING, 0)
+ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_IOFromMem, 0, 2, SDL_IOStream, 1)
 	ZEND_ARG_TYPE_INFO(0, mem, IS_LONG, 0)
@@ -125,6 +130,7 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_Point___construct, 0, 0, 0)
 	ZEND_ARG_TYPE_INFO_WITH_DEFAULT_VALUE(0, y, IS_LONG, 0, "0")
 ZEND_END_ARG_INFO()
 
+ZEND_FUNCTION(SDL_IOFromFile);
 ZEND_FUNCTION(SDL_IOFromMem);
 ZEND_FUNCTION(SDL_IOFromConstMem);
 ZEND_FUNCTION(SDL_ReadIO);
@@ -158,6 +164,7 @@ ZEND_METHOD(SDL_Rect, __construct);
 ZEND_METHOD(SDL_Point, __construct);
 
 static const zend_function_entry ext_functions[] = {
+	ZEND_FE(SDL_IOFromFile, arginfo_SDL_IOFromFile)
 	ZEND_FE(SDL_IOFromMem, arginfo_SDL_IOFromMem)
 	ZEND_FE(SDL_IOFromConstMem, arginfo_SDL_IOFromConstMem)
 	ZEND_FE(SDL_ReadIO, arginfo_SDL_ReadIO)

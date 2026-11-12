@@ -279,6 +279,17 @@ ZEND_FUNCTION(SDL_InitSubSystem)
 	RETURN_BOOL(SDL_InitSubSystem((SDL_InitFlags) flags));
 }
 
+ZEND_FUNCTION(SDL_WasInit)
+{
+	zend_long flags;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_LONG(flags)
+	ZEND_PARSE_PARAMETERS_END();
+
+	RETURN_LONG((zend_long) SDL_WasInit((SDL_InitFlags) flags));
+}
+
 ZEND_FUNCTION(SDL_QuitSubSystem)
 {
 	zend_long flags;
@@ -287,7 +298,15 @@ ZEND_FUNCTION(SDL_QuitSubSystem)
 		Z_PARAM_LONG(flags)
 	ZEND_PARSE_PARAMETERS_END();
 
+	bool audio = (SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO) != 0;
+
+	if (audio) {
+		sdl3_audio_quit_before();
+	}
 	SDL_QuitSubSystem((SDL_InitFlags) flags);
+	if (audio && (SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO) == 0) {
+		sdl3_audio_quit_after();
+	}
 	sdl3_input_subsystems_gone();
 	if ((SDL_WasInit(SDL_INIT_EVENTS) & SDL_INIT_EVENTS) == 0) {
 		sdl3_pushed_texts_clear();
@@ -297,8 +316,16 @@ ZEND_FUNCTION(SDL_QuitSubSystem)
 ZEND_FUNCTION(SDL_Quit)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
+	bool audio = (SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO) != 0;
+
 	sdl3_hit_tests_clear();
+	if (audio) {
+		sdl3_audio_quit_before();
+	}
 	SDL_Quit();
+	if (audio) {
+		sdl3_audio_quit_after();
+	}
 	sdl3_input_subsystems_gone();
 	sdl3_pushed_texts_clear();
 }

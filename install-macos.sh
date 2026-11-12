@@ -64,6 +64,12 @@ for PHP_BIN in "${PHP_BINS[@]}"; do
     codesign --force --sign - "${EXT_DIR}/sdl3.so" >/dev/null 2>&1
     printf 'extension=sdl3\n' > "${SCAN_DIR}/${INI_NAME}"
 
+    # The headers an extension built on sdl3 compiles against (php_sdl3_api.h).
+    INC_DIR="$("$PHP_CONFIG" --include-dir)/ext/sdl3"
+    install -d "${INC_DIR}/src"
+    install -m 0644 "${SCRIPT_DIR}/php_sdl3.h" "${SCRIPT_DIR}/php_sdl3_api.h" "${INC_DIR}/"
+    install -m 0644 "${SCRIPT_DIR}/src/runtime.h" "${INC_DIR}/src/"
+
     "$PHP_BIN" -r 'exit(extension_loaded("sdl3") ? 0 : 1);' || die "sdl3 did not load in ${PHP_BIN}"
     step "Installed ${EXT_DIR}/sdl3.so, enabled by ${SCAN_DIR}/${INI_NAME}"
 

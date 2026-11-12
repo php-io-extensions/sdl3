@@ -117,6 +117,18 @@ ZEND_FUNCTION(SDL_IOFromMem)
 	sdl3_box(return_value, io, sdl3_ce_SDL_IOStream);
 }
 
+ZEND_FUNCTION(SDL_IOFromFile)
+{
+	zend_string *file, *mode;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_PATH_STR(file)
+		Z_PARAM_STR(mode)
+	ZEND_PARSE_PARAMETERS_END();
+
+	sdl3_box(return_value, SDL_IOFromFile(ZSTR_VAL(file), ZSTR_VAL(mode)), sdl3_ce_SDL_IOStream);
+}
+
 ZEND_FUNCTION(SDL_IOFromConstMem)
 {
 	zend_long mem, size;

@@ -388,6 +388,39 @@ void sdl3_init_nested(zend_object *obj, const char *name, zend_class_entry *ce)
 	zval_ptr_dtor(&nested);
 }
 
+#define SDL3_AUDIO_QUIT_HOOKS 4
+static sdl3_quit_hook sdl3_audio_before[SDL3_AUDIO_QUIT_HOOKS];
+static sdl3_quit_hook sdl3_audio_after[SDL3_AUDIO_QUIT_HOOKS];
+static uint32_t sdl3_audio_hooks;
+
+void sdl3_add_audio_quit_hooks(sdl3_quit_hook before, sdl3_quit_hook after)
+{
+	ZEND_ASSERT(sdl3_audio_hooks < SDL3_AUDIO_QUIT_HOOKS);
+	if (sdl3_audio_hooks < SDL3_AUDIO_QUIT_HOOKS) {
+		sdl3_audio_before[sdl3_audio_hooks] = before;
+		sdl3_audio_after[sdl3_audio_hooks] = after;
+		sdl3_audio_hooks++;
+	}
+}
+
+void sdl3_audio_quit_before(void)
+{
+	for (uint32_t i = 0; i < sdl3_audio_hooks; i++) {
+		if (sdl3_audio_before[i] != NULL) {
+			sdl3_audio_before[i]();
+		}
+	}
+}
+
+void sdl3_audio_quit_after(void)
+{
+	for (uint32_t i = 0; i < sdl3_audio_hooks; i++) {
+		if (sdl3_audio_after[i] != NULL) {
+			sdl3_audio_after[i]();
+		}
+	}
+}
+
 void sdl3_release_all(zend_class_entry *ce)
 {
 	zend_object *obj;

@@ -161,10 +161,10 @@ if ! "$PHP_BIN_REAL" build/gen_stub.php stubs >>"$LOG_FILE" 2>&1; then
     die "gen_stub.php failed. See ${LOG_FILE}."
 fi
 # The distro SDL is the one with Wayland. A /usr/local build has no video device.
-# -I/usr/include is listed before the compiler's default /usr/local/include, so the
-# headers match the library pkg-config selected.
+# -isystem /usr/include moves it before the compiler's default /usr/local/include (GCC
+# drops -I for a system directory), so the headers match the library pkg-config selected.
 export PKG_CONFIG_PATH="/usr/lib/$(gcc -dumpmachine)/pkgconfig"
-export CFLAGS="-I/usr/include${CFLAGS:+ $CFLAGS}"
+export CFLAGS="-isystem /usr/include${CFLAGS:+ $CFLAGS}"
 export LDFLAGS="-L$(pkg-config --variable=libdir sdl3)${LDFLAGS:+ $LDFLAGS}"
 # SDL3_CONFIGURE="--enable-sdl3-probes" makes a probe build (tests/Probes); never ship one.
 if ! ./configure --enable-sdl3 ${SDL3_CONFIGURE:-} "--with-php-config=${RESOLVED_PHP_CONFIG}" >>"$LOG_FILE" 2>&1; then
@@ -189,6 +189,13 @@ $SUDO mkdir -p "$PHP_EXT_DIR"
 $SUDO cp -f "$BUILD_SO" "${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
 $SUDO chmod 755 "${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
 ok "Copied to: ${PHP_EXT_DIR}/${EXTENSION_NAME}.so"
+
+# The headers an extension built on sdl3 compiles against (php_sdl3_api.h).
+PHP_INC_DIR="$("$RESOLVED_PHP_CONFIG" --include-dir)/ext/sdl3"
+$SUDO install -d "${PHP_INC_DIR}/src"
+$SUDO install -m 0644 "${SCRIPT_DIR}/php_sdl3.h" "${SCRIPT_DIR}/php_sdl3_api.h" "${PHP_INC_DIR}/"
+$SUDO install -m 0644 "${SCRIPT_DIR}/src/runtime.h" "${PHP_INC_DIR}/src/"
+ok "Headers in: ${PHP_INC_DIR}"
 
 clean_build_tree || die "Installed, but could not remove build artifacts from ${SCRIPT_DIR}."
 ok "Build artifacts removed"
