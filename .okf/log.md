@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-13
+
+* **`SDL_SetSurfaceBlendMode`, `SDL_GetSurfaceBlendMode`** bound 1:1 (SDL_surface.h, in 3.2), with the `SDL_BLENDMODE_*` constants and six more pixel formats: `ARGB32`, `ABGR32`, `RGB24`, `BGR24`, `RGB565`, `BGR565`. With `SDL_BLENDMODE_NONE` on the source, `SDL_BlitSurface` copies translucent pixels unchanged. `SurfaceBytesTest` checks NONE against BLEND, and fills and copies in the 24- and 16-bit formats. 220 / 1233.
+
 ## 2026-11-11
 
 * **Public API, 0.11.2**: `php_sdl3_api.h` (includes `src/runtime.h`) is installed with `php_sdl3.h` into `$(php-config --include-dir)/ext/sdl3/` by both installers and by `PHP_INSTALL_HEADERS`. An extension that requires sdl3 compiles against it and boxes its handles in sdl3's registry. `sdl3_add_audio_quit_hooks(before, after)`: `SDL_QuitSubSystem` and `SDL_Quit` run the before hooks while audio is up and the after hooks once audio is down, since SDL destroys every audio stream then. `ApiHeaderTest`; suite 90 passed, 7 skipped on Homebrew PHP 8.4 NTS and ZTS. [handles](architecture/handles.md)

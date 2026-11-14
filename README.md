@@ -1,7 +1,7 @@
 # sdl3
 
 [![CI](https://img.shields.io/github/actions/workflow/status/php-io-extensions/sdl3/ci.yml?style=flat-square&label=CI)](https://github.com/php-io-extensions/sdl3/actions/workflows/ci.yml)
-[![SDL API](https://img.shields.io/badge/SDL_API-17.7%25_%28218%2F1233%29-blue?style=flat-square)](SUPPORT.md)
+[![SDL API](https://img.shields.io/badge/SDL_API-17.8%25_%28220%2F1233%29-blue?style=flat-square)](SUPPORT.md)
 
 1:1 PHP bindings of SDL 3 at the 3.2 API: windows, displays and fullscreen modes, surfaces, the GL, Metal and Vulkan hooks, and SDL_GPU. Version 0.11.2. Linux and macOS.
 

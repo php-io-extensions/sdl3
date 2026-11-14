@@ -88,3 +88,44 @@ it('opens a file as a stream and reads it back', function (): void {
         ->and(SDL_GetError())->not->toBe('');
     unlink($file);
 });
+
+it('copies a translucent pixel unchanged with SDL_BLENDMODE_NONE and blends it with SDL_BLENDMODE_BLEND', function (): void {
+    $pixel = "\xff\x00\x00\x80";
+    $source = SDL_CreateSurfaceFrom(1, 1, SDL_PIXELFORMAT_RGBA32, $pixel, 4);
+    $target = SDL_CreateSurfaceFrom(1, 1, SDL_PIXELFORMAT_RGBA32, "\x00\x00\xff\xff", 4);
+
+    expect(SDL_GetSurfaceBlendMode($source, $mode))->toBeTrue()
+        ->and($mode)->toBe(SDL_BLENDMODE_BLEND);
+    SDL_BlitSurface($source, null, $target, null);
+    expect(surfaceBytes($target))->not->toBe($pixel);
+
+    expect(SDL_SetSurfaceBlendMode($source, SDL_BLENDMODE_NONE))->toBeTrue()
+        ->and(SDL_GetSurfaceBlendMode($source, $mode))->toBeTrue()
+        ->and($mode)->toBe(SDL_BLENDMODE_NONE);
+    SDL_BlitSurface($source, null, $target, null);
+    expect(surfaceBytes($target))->toBe($pixel)
+        ->and(SDL_SetSurfaceBlendMode($source, SDL_BLENDMODE_INVALID))->toBeFalse();
+
+    SDL_DestroySurface($source);
+    SDL_DestroySurface($target);
+});
+
+it('fills and copies the 24- and 16-bit formats byte for byte', function (int $format, int $bytes): void {
+    $pitch = 3 * $bytes;
+    $source = SDL_CreateSurfaceFrom(3, 1, $format, substr("\x11\x22\x33\x44\x55\x66\x77\x88\x99", 0, $pitch), $pitch);
+    $target = SDL_CreateSurfaceFrom(3, 1, $format, str_repeat("\0", $pitch), $pitch);
+    SDL_SetSurfaceBlendMode($source, SDL_BLENDMODE_NONE);
+
+    SDL_FillSurfaceRect($target, new SDL_Rect(0, 0, 1, 1), unpack('V', str_pad(substr("\xaa\xbb\xcc", 0, $bytes), 4, "\0"))[1]);
+    SDL_BlitSurface($source, new SDL_Rect(0, 0, 2, 1), $target, new SDL_Rect(1, 0, 2, 1));
+
+    expect(surfaceBytes($target))->toBe(substr("\xaa\xbb\xcc", 0, $bytes).substr("\x11\x22\x33\x44\x55\x66", 0, 2 * $bytes));
+
+    SDL_DestroySurface($source);
+    SDL_DestroySurface($target);
+})->with([
+    'RGB24' => [SDL_PIXELFORMAT_RGB24, 3],
+    'BGR24' => [SDL_PIXELFORMAT_BGR24, 3],
+    'RGB565' => [SDL_PIXELFORMAT_RGB565, 2],
+    'BGR565' => [SDL_PIXELFORMAT_BGR565, 2],
+]);

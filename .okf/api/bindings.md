@@ -40,7 +40,7 @@ Struct `SDL_DisplayMode` (a copy; SDL's driver data is not carried, and SDL matc
 
 # Surfaces and streams
 
-Handles `SDL_IOStream`, `SDL_Surface`. Struct `SDL_Rect`. `SDL_IOFromMem`, `SDL_IOFromConstMem`, `SDL_ReadIO`, `SDL_WriteIO`, `SDL_CloseIO`. `SDL_GetWindowSurface`, `SDL_UpdateWindowSurface`, `SDL_UpdateWindowSurfaceRects`, `SDL_WindowHasSurface`, `SDL_DestroyWindowSurface`, `SDL_SetWindowSurfaceVSync` and `SDL_GetWindowSurfaceVSync` with `SDL_WINDOW_SURFACE_VSYNC_DISABLED`/`ADAPTIVE`, `SDL_CreateSurfaceFrom`, `SDL_DestroySurface`, `SDL_BlitSurface`, `SDL_BlitSurfaceScaled`, `SDL_FillSurfaceRect`. `SDL_PIXELFORMAT_RGBA32`, `SDL_PIXELFORMAT_BGRA32`, `SDL_SCALEMODE_NEAREST`, `SDL_SCALEMODE_LINEAR`.
+Handles `SDL_IOStream`, `SDL_Surface`. Struct `SDL_Rect`. `SDL_IOFromMem`, `SDL_IOFromConstMem`, `SDL_ReadIO`, `SDL_WriteIO`, `SDL_CloseIO`. `SDL_GetWindowSurface`, `SDL_UpdateWindowSurface`, `SDL_UpdateWindowSurfaceRects`, `SDL_WindowHasSurface`, `SDL_DestroyWindowSurface`, `SDL_SetWindowSurfaceVSync` and `SDL_GetWindowSurfaceVSync` with `SDL_WINDOW_SURFACE_VSYNC_DISABLED`/`ADAPTIVE`, `SDL_CreateSurfaceFrom`, `SDL_DestroySurface`, `SDL_BlitSurface`, `SDL_BlitSurfaceScaled`, `SDL_FillSurfaceRect`, `SDL_SetSurfaceBlendMode`, `SDL_GetSurfaceBlendMode`. `SDL_PIXELFORMAT_RGBA32`, `SDL_PIXELFORMAT_BGRA32`, `SDL_PIXELFORMAT_ARGB32`, `SDL_PIXELFORMAT_ABGR32`, `SDL_PIXELFORMAT_RGB24`, `SDL_PIXELFORMAT_BGR24`, `SDL_PIXELFORMAT_RGB565`, `SDL_PIXELFORMAT_BGR565`, the `SDL_BLENDMODE_*` constants of 3.2 (`NONE`, `BLEND`, `BLEND_PREMULTIPLIED`, `ADD`, `ADD_PREMULTIPLIED`, `MOD`, `MUL`, `INVALID`), `SDL_SCALEMODE_NEAREST`, `SDL_SCALEMODE_LINEAR`.
 
 `SDL_MapGPUTransferBuffer` returns the address. These stream calls are how bytes move.
 

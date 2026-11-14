@@ -85,6 +85,90 @@ const SDL_PIXELFORMAT_BGRA32 = UNKNOWN;
 
 /**
  * @var int
+ * @cvalue SDL_PIXELFORMAT_ARGB32
+ */
+const SDL_PIXELFORMAT_ARGB32 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_PIXELFORMAT_ABGR32
+ */
+const SDL_PIXELFORMAT_ABGR32 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_PIXELFORMAT_RGB24
+ */
+const SDL_PIXELFORMAT_RGB24 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_PIXELFORMAT_BGR24
+ */
+const SDL_PIXELFORMAT_BGR24 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_PIXELFORMAT_RGB565
+ */
+const SDL_PIXELFORMAT_RGB565 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_PIXELFORMAT_BGR565
+ */
+const SDL_PIXELFORMAT_BGR565 = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_NONE
+ */
+const SDL_BLENDMODE_NONE = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_BLEND
+ */
+const SDL_BLENDMODE_BLEND = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_BLEND_PREMULTIPLIED
+ */
+const SDL_BLENDMODE_BLEND_PREMULTIPLIED = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_ADD
+ */
+const SDL_BLENDMODE_ADD = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_ADD_PREMULTIPLIED
+ */
+const SDL_BLENDMODE_ADD_PREMULTIPLIED = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_MOD
+ */
+const SDL_BLENDMODE_MOD = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_MUL
+ */
+const SDL_BLENDMODE_MUL = UNKNOWN;
+
+/**
+ * @var int
+ * @cvalue SDL_BLENDMODE_INVALID
+ */
+const SDL_BLENDMODE_INVALID = UNKNOWN;
+
+/**
+ * @var int
  * @cvalue SDL_SCALEMODE_NEAREST
  */
 const SDL_SCALEMODE_NEAREST = UNKNOWN;
@@ -136,5 +220,9 @@ function SDL_DestroySurface(SDL_Surface $surface): void {}
 function SDL_BlitSurface(SDL_Surface $src, ?SDL_Rect $srcrect, SDL_Surface $dst, ?SDL_Rect $dstrect): bool {}
 
 function SDL_BlitSurfaceScaled(SDL_Surface $src, ?SDL_Rect $srcrect, SDL_Surface $dst, ?SDL_Rect $dstrect, int $scaleMode): bool {}
+
+function SDL_SetSurfaceBlendMode(SDL_Surface $surface, int $blendMode): bool {}
+
+function SDL_GetSurfaceBlendMode(SDL_Surface $surface, ?int &$blendMode): bool {}
 
 function SDL_FillSurfaceRect(SDL_Surface $dst, ?SDL_Rect $rect, int $color): bool {}

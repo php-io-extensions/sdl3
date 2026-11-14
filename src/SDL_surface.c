@@ -504,6 +504,51 @@ ZEND_FUNCTION(SDL_BlitSurfaceScaled)
 	RETURN_BOOL(SDL_BlitSurfaceScaled(src, src_ptr, dst, dst_ptr, (SDL_ScaleMode) scale_mode));
 }
 
+ZEND_FUNCTION(SDL_SetSurfaceBlendMode)
+{
+	zval *surface_zv;
+	zend_long blend_mode;
+	SDL_Surface *surface;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_LONG(blend_mode)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_SetSurfaceBlendMode(surface, (SDL_BlendMode) blend_mode));
+}
+
+ZEND_FUNCTION(SDL_GetSurfaceBlendMode)
+{
+	zval *surface_zv, *blend_mode_zv;
+	SDL_Surface *surface;
+	SDL_BlendMode blend_mode = SDL_BLENDMODE_NONE;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_ZVAL(blend_mode_zv)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	if (!SDL_GetSurfaceBlendMode(surface, &blend_mode)) {
+		RETURN_FALSE;
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(blend_mode_zv, (zend_long) blend_mode);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	RETURN_TRUE;
+}
+
 ZEND_FUNCTION(SDL_FillSurfaceRect)
 {
 	zval *dst_zv;
