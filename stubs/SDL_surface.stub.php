@@ -226,3 +226,19 @@ function SDL_SetSurfaceBlendMode(SDL_Surface $surface, int $blendMode): bool {}
 function SDL_GetSurfaceBlendMode(SDL_Surface $surface, ?int &$blendMode): bool {}
 
 function SDL_FillSurfaceRect(SDL_Surface $dst, ?SDL_Rect $rect, int $color): bool {}
+
+/** A surface with SDL's own zeroed pixel memory, freed by SDL_DestroySurface(). */
+function SDL_CreateSurface(int $width, int $height, int $format): ?SDL_Surface {}
+
+/** A new surface holding $surface's pixels in $format; $surface is unchanged. */
+function SDL_ConvertSurface(SDL_Surface $surface, int $format): ?SDL_Surface {}
+
+/** $alpha is an Uint8: its low 8 bits are used. */
+function SDL_SetSurfaceAlphaMod(SDL_Surface $surface, int $alpha): bool {}
+
+function SDL_GetSurfaceAlphaMod(SDL_Surface $surface, ?int &$alpha): bool {}
+
+/** $r, $g and $b are Uint8s: their low 8 bits are used. */
+function SDL_SetSurfaceColorMod(SDL_Surface $surface, int $r, int $g, int $b): bool {}
+
+function SDL_GetSurfaceColorMod(SDL_Surface $surface, ?int &$r, ?int &$g, ?int &$b): bool {}

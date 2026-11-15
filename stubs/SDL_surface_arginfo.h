@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 387a936461653fff1553b6daf19939905b511934 */
+ * Stub hash: 6ba2c08e5b75cf472ec08624c54932f651b78d67 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_IOFromFile, 0, 2, SDL_IOStream, 1)
 	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
@@ -100,6 +100,41 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_FillSurfaceRect, 0, 3, _IS_B
 	ZEND_ARG_TYPE_INFO(0, color, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateSurface, 0, 3, SDL_Surface, 1)
+	ZEND_ARG_TYPE_INFO(0, width, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, height, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, format, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_ConvertSurface, 0, 2, SDL_Surface, 1)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_TYPE_INFO(0, format, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetSurfaceAlphaMod, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_TYPE_INFO(0, alpha, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetSurfaceAlphaMod, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_TYPE_INFO(1, alpha, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetSurfaceColorMod, 0, 4, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_TYPE_INFO(0, r, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, g, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, b, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetSurfaceColorMod, 0, 4, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_TYPE_INFO(1, r, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(1, g, IS_LONG, 1)
+	ZEND_ARG_TYPE_INFO(1, b, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_IOStream___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
@@ -160,6 +195,12 @@ ZEND_FUNCTION(SDL_BlitSurfaceScaled);
 ZEND_FUNCTION(SDL_SetSurfaceBlendMode);
 ZEND_FUNCTION(SDL_GetSurfaceBlendMode);
 ZEND_FUNCTION(SDL_FillSurfaceRect);
+ZEND_FUNCTION(SDL_CreateSurface);
+ZEND_FUNCTION(SDL_ConvertSurface);
+ZEND_FUNCTION(SDL_SetSurfaceAlphaMod);
+ZEND_FUNCTION(SDL_GetSurfaceAlphaMod);
+ZEND_FUNCTION(SDL_SetSurfaceColorMod);
+ZEND_FUNCTION(SDL_GetSurfaceColorMod);
 ZEND_METHOD(SDL_IOStream, __construct);
 ZEND_METHOD(SDL_IOStream, pointer);
 ZEND_METHOD(SDL_IOStream, fromPointer);
@@ -196,6 +237,12 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_SetSurfaceBlendMode, arginfo_SDL_SetSurfaceBlendMode)
 	ZEND_FE(SDL_GetSurfaceBlendMode, arginfo_SDL_GetSurfaceBlendMode)
 	ZEND_FE(SDL_FillSurfaceRect, arginfo_SDL_FillSurfaceRect)
+	ZEND_FE(SDL_CreateSurface, arginfo_SDL_CreateSurface)
+	ZEND_FE(SDL_ConvertSurface, arginfo_SDL_ConvertSurface)
+	ZEND_FE(SDL_SetSurfaceAlphaMod, arginfo_SDL_SetSurfaceAlphaMod)
+	ZEND_FE(SDL_GetSurfaceAlphaMod, arginfo_SDL_GetSurfaceAlphaMod)
+	ZEND_FE(SDL_SetSurfaceColorMod, arginfo_SDL_SetSurfaceColorMod)
+	ZEND_FE(SDL_GetSurfaceColorMod, arginfo_SDL_GetSurfaceColorMod)
 	ZEND_FE_END
 };
 

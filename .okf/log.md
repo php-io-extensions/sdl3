@@ -1,5 +1,11 @@
 # Log
 
+## 2026-11-14
+
+* **Software renderer and surface mods** bound 1:1 (SDL_surface.h and SDL_render.h, in 3.2): `SDL_CreateSurface`, `SDL_ConvertSurface`, `SDL_Set/GetSurfaceAlphaMod`, `SDL_Set/GetSurfaceColorMod`; handles `SDL_Renderer`, `SDL_Texture`; structs `SDL_FPoint`, `SDL_Vertex`; `SDL_CreateSoftwareRenderer`, `SDL_DestroyRenderer`, `SDL_CreateTextureFromSurface`, `SDL_DestroyTexture`, `SDL_SetTextureBlendMode`, `SDL_SetTextureScaleMode`, `SDL_SetTextureAlphaMod`, `SDL_SetTextureColorMod`, `SDL_SetRenderClipRect`, `SDL_RenderGeometry`, `SDL_FlushRenderer`. `RendererTest` covers them. 237 / 1233. Suite 107 passed, 8 skipped on Homebrew PHP 8.4 NTS and ZTS; the probe for `SDL_RenderGeometry`'s vertex count passes on a probe build (SIGSEGV under libgmalloc without the refusal).
+* **Measured**: a software renderer needs no `SDL_Init()`. Drawn into a surface it rasterises a rotated textured quad with no video up. Over a transparent surface `SDL_BLENDMODE_BLEND` leaves the colour scaled by alpha (a quad at alpha 0.5 reads `80000080` for red), as the blend sums `src * a + dst * (1 - a)` without dividing by the result alpha. The software renderer takes colour and alpha from the vertices: a texture's own `SDL_SetTextureAlphaMod` and `SDL_SetTextureColorMod` succeed and change nothing in `SDL_RenderGeometry`. With no indices, `SDL_RenderGeometry` refuses a vertex count that is not a multiple of 3 ("Parameter 'num_vertices' is invalid").
+* **Lifetime**: `SDL_DestroyRenderer` destroys the renderer's textures, so the renderer's handle keeps its textures and releases them with it; `SDL_DestroyTexture` drops its texture from that list. A surface a software renderer draws into must outlive the renderer. [handles](architecture/handles.md)
+
 ## 2026-11-13
 
 * **`SDL_SetSurfaceBlendMode`, `SDL_GetSurfaceBlendMode`** bound 1:1 (SDL_surface.h, in 3.2), with the `SDL_BLENDMODE_*` constants and six more pixel formats: `ARGB32`, `ABGR32`, `RGB24`, `BGR24`, `RGB565`, `BGR565`. With `SDL_BLENDMODE_NONE` on the source, `SDL_BlitSurface` copies translucent pixels unchanged. `SurfaceBytesTest` checks NONE against BLEND, and fills and copies in the 24- and 16-bit formats. 220 / 1233.

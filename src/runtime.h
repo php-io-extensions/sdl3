@@ -99,6 +99,9 @@ bool sdl3_probe_off(const char *id);
 /* A list's C count, given as its own parameter: false (and a ValueError) when it is past the list. */
 bool sdl3_list_count(zend_long given, uint32_t length, uint32_t count_arg, uint32_t list_arg);
 
+/* One element of a list parameter is an object of class ce: false (and a TypeError naming argument arg_num) when it is not. */
+bool sdl3_list_element(zval *item, zend_class_entry *ce, uint32_t arg_num);
+
 /* pointer() and fromPointer() for a handle class. The address is trusted; 0 (and a released handle) is NULL. */
 #define SDL3_POINTER_METHODS(cls) \
 	ZEND_METHOD(cls, pointer) { ZEND_PARSE_PARAMETERS_NONE(); RETURN_LONG((zend_long) (uintptr_t) sdl3_handle_from(Z_OBJ_P(ZEND_THIS))->ptr); } \
@@ -141,6 +144,7 @@ void sdl3_input_subsystems_gone(void);
 void sdl3_register_SDL_init(int module_number);
 void sdl3_register_SDL_video(int module_number);
 void sdl3_register_SDL_surface(int module_number);
+void sdl3_register_SDL_render(int module_number);
 void sdl3_register_SDL_hooks(int module_number);
 void sdl3_register_SDL_messagebox(int module_number);
 void sdl3_register_SDL_input(int module_number);

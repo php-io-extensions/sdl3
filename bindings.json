@@ -29,7 +29,9 @@
     "SDL_GPUColorTargetInfo*": ["array"],
     "SDL_GPUBufferBinding*": ["array"],
     "SDL_GPUTextureSamplerBinding*": ["array"],
-    "SDL_Rect*": ["array"]
+    "SDL_Rect*": ["array"],
+    "SDL_Vertex*": ["array"],
+    "int*": ["array"]
 
   }
 }

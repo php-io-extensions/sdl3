@@ -30,6 +30,8 @@ A handle is `sdl3_handle { void *ptr; zval keep; zend_object std; }`. `ptr` is t
 | `SDL_DestroyWindowSurface` | the window surface if `SDL_GetWindowSurface` boxed one; the window stays live | the surface object |
 | `SDL_DestroySurface` | the surface | the pixel string from `SDL_CreateSurfaceFrom` |
 | `SDL_CloseIO` | the stream | |
+| `SDL_DestroyRenderer` | the renderer, and every texture it made | the texture list |
+| `SDL_DestroyTexture` | that texture, and it leaves its renderer's list | |
 | `SDL_GL_DestroyContext` | the context | |
 | `SDL_Metal_DestroyView` | the view | |
 | `SDL_DestroyGPUDevice` | the device only. Children stay live; their release functions then pass a NULL device, which SDL refuses | |

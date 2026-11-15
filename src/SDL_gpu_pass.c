@@ -6,7 +6,7 @@ zend_class_entry *sdl3_ce_SDL_GPURenderPass;
 SDL3_POINTER_METHODS(SDL_GPUGraphicsPipeline)
 SDL3_POINTER_METHODS(SDL_GPURenderPass)
 
-static bool sdl3_list_element(zval *item, zend_class_entry *ce, uint32_t arg_num)
+bool sdl3_list_element(zval *item, zend_class_entry *ce, uint32_t arg_num)
 {
 	if (Z_TYPE_P(item) != IS_OBJECT || !instanceof_function(Z_OBJCE_P(item), ce)) {
 		zend_argument_type_error(arg_num, "must be a list of %s", ZSTR_VAL(ce->name));

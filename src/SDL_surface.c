@@ -578,6 +578,140 @@ ZEND_FUNCTION(SDL_FillSurfaceRect)
 	RETURN_BOOL(SDL_FillSurfaceRect(dst, rect_ptr, (Uint32) color));
 }
 
+ZEND_FUNCTION(SDL_CreateSurface)
+{
+	zend_long width, height, format;
+
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_LONG(width)
+		Z_PARAM_LONG(height)
+		Z_PARAM_LONG(format)
+	ZEND_PARSE_PARAMETERS_END();
+
+	sdl3_box(return_value, SDL_CreateSurface((int) width, (int) height, (SDL_PixelFormat) format), sdl3_ce_SDL_Surface);
+}
+
+ZEND_FUNCTION(SDL_ConvertSurface)
+{
+	zval *surface_zv;
+	zend_long format;
+	SDL_Surface *surface;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_LONG(format)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_box(return_value, SDL_ConvertSurface(surface, (SDL_PixelFormat) format), sdl3_ce_SDL_Surface);
+}
+
+ZEND_FUNCTION(SDL_SetSurfaceAlphaMod)
+{
+	zval *surface_zv;
+	zend_long alpha;
+	SDL_Surface *surface;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_LONG(alpha)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_SetSurfaceAlphaMod(surface, (Uint8) alpha));
+}
+
+ZEND_FUNCTION(SDL_GetSurfaceAlphaMod)
+{
+	zval *surface_zv, *alpha_zv;
+	SDL_Surface *surface;
+	Uint8 alpha = 0;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_ZVAL(alpha_zv)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	if (!SDL_GetSurfaceAlphaMod(surface, &alpha)) {
+		RETURN_FALSE;
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(alpha_zv, (zend_long) alpha);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	RETURN_TRUE;
+}
+
+ZEND_FUNCTION(SDL_SetSurfaceColorMod)
+{
+	zval *surface_zv;
+	zend_long r, g, b;
+	SDL_Surface *surface;
+
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_LONG(r)
+		Z_PARAM_LONG(g)
+		Z_PARAM_LONG(b)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	RETURN_BOOL(SDL_SetSurfaceColorMod(surface, (Uint8) r, (Uint8) g, (Uint8) b));
+}
+
+ZEND_FUNCTION(SDL_GetSurfaceColorMod)
+{
+	zval *surface_zv, *r_zv, *g_zv, *b_zv;
+	SDL_Surface *surface;
+	Uint8 r = 0, g = 0, b = 0;
+
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_ZVAL(r_zv)
+		Z_PARAM_ZVAL(g_zv)
+		Z_PARAM_ZVAL(b_zv)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	if (!SDL_GetSurfaceColorMod(surface, &r, &g, &b)) {
+		RETURN_FALSE;
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(r_zv, (zend_long) r);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(g_zv, (zend_long) g);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	ZEND_TRY_ASSIGN_REF_LONG(b_zv, (zend_long) b);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	RETURN_TRUE;
+}
+
 void sdl3_register_SDL_surface(int module_number)
 {
 	zend_register_functions(NULL, ext_functions, NULL, MODULE_PERSISTENT);

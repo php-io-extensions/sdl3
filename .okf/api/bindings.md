@@ -40,9 +40,13 @@ Struct `SDL_DisplayMode` (a copy; SDL's driver data is not carried, and SDL matc
 
 # Surfaces and streams
 
-Handles `SDL_IOStream`, `SDL_Surface`. Struct `SDL_Rect`. `SDL_IOFromMem`, `SDL_IOFromConstMem`, `SDL_ReadIO`, `SDL_WriteIO`, `SDL_CloseIO`. `SDL_GetWindowSurface`, `SDL_UpdateWindowSurface`, `SDL_UpdateWindowSurfaceRects`, `SDL_WindowHasSurface`, `SDL_DestroyWindowSurface`, `SDL_SetWindowSurfaceVSync` and `SDL_GetWindowSurfaceVSync` with `SDL_WINDOW_SURFACE_VSYNC_DISABLED`/`ADAPTIVE`, `SDL_CreateSurfaceFrom`, `SDL_DestroySurface`, `SDL_BlitSurface`, `SDL_BlitSurfaceScaled`, `SDL_FillSurfaceRect`, `SDL_SetSurfaceBlendMode`, `SDL_GetSurfaceBlendMode`. `SDL_PIXELFORMAT_RGBA32`, `SDL_PIXELFORMAT_BGRA32`, `SDL_PIXELFORMAT_ARGB32`, `SDL_PIXELFORMAT_ABGR32`, `SDL_PIXELFORMAT_RGB24`, `SDL_PIXELFORMAT_BGR24`, `SDL_PIXELFORMAT_RGB565`, `SDL_PIXELFORMAT_BGR565`, the `SDL_BLENDMODE_*` constants of 3.2 (`NONE`, `BLEND`, `BLEND_PREMULTIPLIED`, `ADD`, `ADD_PREMULTIPLIED`, `MOD`, `MUL`, `INVALID`), `SDL_SCALEMODE_NEAREST`, `SDL_SCALEMODE_LINEAR`.
+Handles `SDL_IOStream`, `SDL_Surface`. Struct `SDL_Rect`. `SDL_IOFromMem`, `SDL_IOFromConstMem`, `SDL_ReadIO`, `SDL_WriteIO`, `SDL_CloseIO`. `SDL_GetWindowSurface`, `SDL_UpdateWindowSurface`, `SDL_UpdateWindowSurfaceRects`, `SDL_WindowHasSurface`, `SDL_DestroyWindowSurface`, `SDL_SetWindowSurfaceVSync` and `SDL_GetWindowSurfaceVSync` with `SDL_WINDOW_SURFACE_VSYNC_DISABLED`/`ADAPTIVE`, `SDL_CreateSurfaceFrom`, `SDL_DestroySurface`, `SDL_BlitSurface`, `SDL_BlitSurfaceScaled`, `SDL_FillSurfaceRect`, `SDL_SetSurfaceBlendMode`, `SDL_GetSurfaceBlendMode`, `SDL_CreateSurface`, `SDL_ConvertSurface`, `SDL_SetSurfaceAlphaMod`, `SDL_GetSurfaceAlphaMod`, `SDL_SetSurfaceColorMod`, `SDL_GetSurfaceColorMod`. `SDL_PIXELFORMAT_RGBA32`, `SDL_PIXELFORMAT_BGRA32`, `SDL_PIXELFORMAT_ARGB32`, `SDL_PIXELFORMAT_ABGR32`, `SDL_PIXELFORMAT_RGB24`, `SDL_PIXELFORMAT_BGR24`, `SDL_PIXELFORMAT_RGB565`, `SDL_PIXELFORMAT_BGR565`, the `SDL_BLENDMODE_*` constants of 3.2 (`NONE`, `BLEND`, `BLEND_PREMULTIPLIED`, `ADD`, `ADD_PREMULTIPLIED`, `MOD`, `MUL`, `INVALID`), `SDL_SCALEMODE_NEAREST`, `SDL_SCALEMODE_LINEAR`.
 
 `SDL_MapGPUTransferBuffer` returns the address. These stream calls are how bytes move.
+
+# Software renderer
+
+Handles `SDL_Renderer`, `SDL_Texture`. Structs `SDL_FPoint`, `SDL_Vertex` (position, colour as `SDL_FColor`, texture coordinate). `SDL_CreateSoftwareRenderer`, `SDL_DestroyRenderer`, `SDL_CreateTextureFromSurface`, `SDL_DestroyTexture`, `SDL_SetTextureBlendMode`, `SDL_SetTextureScaleMode`, `SDL_SetTextureAlphaMod`, `SDL_SetTextureColorMod`, `SDL_SetRenderClipRect`, `SDL_RenderGeometry` (a list of `SDL_Vertex` and its count, an optional list of ints and its count), `SDL_FlushRenderer`. A software renderer draws into a surface and needs no `SDL_Init()`; it takes colour and alpha from the vertices, not from a texture's mods.
 
 # GL, Metal, Vulkan
 

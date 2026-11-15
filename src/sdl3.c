@@ -41,6 +41,7 @@ PHP_MINIT_FUNCTION(sdl3)
 	sdl3_register_SDL_messagebox(module_number);
 	sdl3_register_SDL_input(module_number);
 	sdl3_register_SDL_gpu_types(module_number);
+	sdl3_register_SDL_render(module_number);
 	sdl3_register_SDL_gpu(module_number);
 #ifdef SDL3_PROBES
 	REGISTER_BOOL_CONSTANT("SDL3_PROBES", true, CONST_PERSISTENT);
