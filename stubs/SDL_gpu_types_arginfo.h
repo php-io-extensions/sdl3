@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 50422d25e45d733e1d8c560f434373077ebaaf05 */
+ * Stub hash: 82a16f642ceea6e5730c6fd69017ec0c36cfe624 */
 
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_GPUShader___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
@@ -1684,6 +1684,222 @@ static zend_class_entry *register_class_SDL_GPUBlitInfo(void)
 	zend_string *property_cycle_name = zend_string_init("cycle", sizeof("cycle") - 1, 1);
 	zend_declare_typed_property(class_entry, property_cycle_name, &property_cycle_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
 	zend_string_release(property_cycle_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUComputePipelineCreateInfo(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUComputePipelineCreateInfo", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	zval property_code_default_value;
+	ZVAL_EMPTY_STRING(&property_code_default_value);
+	zend_string *property_code_name = zend_string_init("code", sizeof("code") - 1, 1);
+	zend_declare_typed_property(class_entry, property_code_name, &property_code_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_code_name);
+
+	zval property_entrypoint_default_value;
+	ZVAL_EMPTY_STRING(&property_entrypoint_default_value);
+	zend_string *property_entrypoint_name = zend_string_init("entrypoint", sizeof("entrypoint") - 1, 1);
+	zend_declare_typed_property(class_entry, property_entrypoint_name, &property_entrypoint_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_STRING));
+	zend_string_release(property_entrypoint_name);
+
+	zval property_format_default_value;
+	ZVAL_LONG(&property_format_default_value, 0);
+	zend_string *property_format_name = zend_string_init("format", sizeof("format") - 1, 1);
+	zend_declare_typed_property(class_entry, property_format_name, &property_format_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_format_name);
+
+	zval property_num_samplers_default_value;
+	ZVAL_LONG(&property_num_samplers_default_value, 0);
+	zend_string *property_num_samplers_name = zend_string_init("num_samplers", sizeof("num_samplers") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_samplers_name, &property_num_samplers_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_samplers_name);
+
+	zval property_num_readonly_storage_textures_default_value;
+	ZVAL_LONG(&property_num_readonly_storage_textures_default_value, 0);
+	zend_string *property_num_readonly_storage_textures_name = zend_string_init("num_readonly_storage_textures", sizeof("num_readonly_storage_textures") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_readonly_storage_textures_name, &property_num_readonly_storage_textures_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_readonly_storage_textures_name);
+
+	zval property_num_readonly_storage_buffers_default_value;
+	ZVAL_LONG(&property_num_readonly_storage_buffers_default_value, 0);
+	zend_string *property_num_readonly_storage_buffers_name = zend_string_init("num_readonly_storage_buffers", sizeof("num_readonly_storage_buffers") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_readonly_storage_buffers_name, &property_num_readonly_storage_buffers_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_readonly_storage_buffers_name);
+
+	zval property_num_readwrite_storage_textures_default_value;
+	ZVAL_LONG(&property_num_readwrite_storage_textures_default_value, 0);
+	zend_string *property_num_readwrite_storage_textures_name = zend_string_init("num_readwrite_storage_textures", sizeof("num_readwrite_storage_textures") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_readwrite_storage_textures_name, &property_num_readwrite_storage_textures_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_readwrite_storage_textures_name);
+
+	zval property_num_readwrite_storage_buffers_default_value;
+	ZVAL_LONG(&property_num_readwrite_storage_buffers_default_value, 0);
+	zend_string *property_num_readwrite_storage_buffers_name = zend_string_init("num_readwrite_storage_buffers", sizeof("num_readwrite_storage_buffers") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_readwrite_storage_buffers_name, &property_num_readwrite_storage_buffers_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_readwrite_storage_buffers_name);
+
+	zval property_num_uniform_buffers_default_value;
+	ZVAL_LONG(&property_num_uniform_buffers_default_value, 0);
+	zend_string *property_num_uniform_buffers_name = zend_string_init("num_uniform_buffers", sizeof("num_uniform_buffers") - 1, 1);
+	zend_declare_typed_property(class_entry, property_num_uniform_buffers_name, &property_num_uniform_buffers_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_num_uniform_buffers_name);
+
+	zval property_threadcount_x_default_value;
+	ZVAL_LONG(&property_threadcount_x_default_value, 0);
+	zend_string *property_threadcount_x_name = zend_string_init("threadcount_x", sizeof("threadcount_x") - 1, 1);
+	zend_declare_typed_property(class_entry, property_threadcount_x_name, &property_threadcount_x_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_threadcount_x_name);
+
+	zval property_threadcount_y_default_value;
+	ZVAL_LONG(&property_threadcount_y_default_value, 0);
+	zend_string *property_threadcount_y_name = zend_string_init("threadcount_y", sizeof("threadcount_y") - 1, 1);
+	zend_declare_typed_property(class_entry, property_threadcount_y_name, &property_threadcount_y_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_threadcount_y_name);
+
+	zval property_threadcount_z_default_value;
+	ZVAL_LONG(&property_threadcount_z_default_value, 0);
+	zend_string *property_threadcount_z_name = zend_string_init("threadcount_z", sizeof("threadcount_z") - 1, 1);
+	zend_declare_typed_property(class_entry, property_threadcount_z_name, &property_threadcount_z_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_threadcount_z_name);
+
+	zval property_props_default_value;
+	ZVAL_LONG(&property_props_default_value, 0);
+	zend_string *property_props_name = zend_string_init("props", sizeof("props") - 1, 1);
+	zend_declare_typed_property(class_entry, property_props_name, &property_props_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_props_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUStorageBufferReadWriteBinding(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUStorageBufferReadWriteBinding", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	zval property_buffer_default_value;
+	ZVAL_NULL(&property_buffer_default_value);
+	zend_string *property_buffer_name = zend_string_init("buffer", sizeof("buffer") - 1, 1);
+	zend_string *property_buffer_class_SDL_GPUBuffer = zend_string_init("SDL_GPUBuffer", sizeof("SDL_GPUBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_buffer_name, &property_buffer_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_buffer_class_SDL_GPUBuffer, 0, MAY_BE_NULL));
+	zend_string_release(property_buffer_name);
+
+	zval property_cycle_default_value;
+	ZVAL_FALSE(&property_cycle_default_value);
+	zend_string *property_cycle_name = zend_string_init("cycle", sizeof("cycle") - 1, 1);
+	zend_declare_typed_property(class_entry, property_cycle_name, &property_cycle_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
+	zend_string_release(property_cycle_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUStorageTextureReadWriteBinding(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUStorageTextureReadWriteBinding", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	zval property_texture_default_value;
+	ZVAL_NULL(&property_texture_default_value);
+	zend_string *property_texture_name = zend_string_init("texture", sizeof("texture") - 1, 1);
+	zend_string *property_texture_class_SDL_GPUTexture = zend_string_init("SDL_GPUTexture", sizeof("SDL_GPUTexture")-1, 1);
+	zend_declare_typed_property(class_entry, property_texture_name, &property_texture_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_texture_class_SDL_GPUTexture, 0, MAY_BE_NULL));
+	zend_string_release(property_texture_name);
+
+	zval property_mip_level_default_value;
+	ZVAL_LONG(&property_mip_level_default_value, 0);
+	zend_string *property_mip_level_name = zend_string_init("mip_level", sizeof("mip_level") - 1, 1);
+	zend_declare_typed_property(class_entry, property_mip_level_name, &property_mip_level_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_mip_level_name);
+
+	zval property_layer_default_value;
+	ZVAL_LONG(&property_layer_default_value, 0);
+	zend_string *property_layer_name = zend_string_init("layer", sizeof("layer") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layer_name, &property_layer_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_layer_name);
+
+	zval property_cycle_default_value;
+	ZVAL_FALSE(&property_cycle_default_value);
+	zend_string *property_cycle_name = zend_string_init("cycle", sizeof("cycle") - 1, 1);
+	zend_declare_typed_property(class_entry, property_cycle_name, &property_cycle_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_BOOL));
+	zend_string_release(property_cycle_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUTextureLocation(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUTextureLocation", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	zval property_texture_default_value;
+	ZVAL_NULL(&property_texture_default_value);
+	zend_string *property_texture_name = zend_string_init("texture", sizeof("texture") - 1, 1);
+	zend_string *property_texture_class_SDL_GPUTexture = zend_string_init("SDL_GPUTexture", sizeof("SDL_GPUTexture")-1, 1);
+	zend_declare_typed_property(class_entry, property_texture_name, &property_texture_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_texture_class_SDL_GPUTexture, 0, MAY_BE_NULL));
+	zend_string_release(property_texture_name);
+
+	zval property_mip_level_default_value;
+	ZVAL_LONG(&property_mip_level_default_value, 0);
+	zend_string *property_mip_level_name = zend_string_init("mip_level", sizeof("mip_level") - 1, 1);
+	zend_declare_typed_property(class_entry, property_mip_level_name, &property_mip_level_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_mip_level_name);
+
+	zval property_layer_default_value;
+	ZVAL_LONG(&property_layer_default_value, 0);
+	zend_string *property_layer_name = zend_string_init("layer", sizeof("layer") - 1, 1);
+	zend_declare_typed_property(class_entry, property_layer_name, &property_layer_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_layer_name);
+
+	zval property_x_default_value;
+	ZVAL_LONG(&property_x_default_value, 0);
+	zend_string *property_x_name = zend_string_init("x", sizeof("x") - 1, 1);
+	zend_declare_typed_property(class_entry, property_x_name, &property_x_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_x_name);
+
+	zval property_y_default_value;
+	ZVAL_LONG(&property_y_default_value, 0);
+	zend_string *property_y_name = zend_string_init("y", sizeof("y") - 1, 1);
+	zend_declare_typed_property(class_entry, property_y_name, &property_y_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_y_name);
+
+	zval property_z_default_value;
+	ZVAL_LONG(&property_z_default_value, 0);
+	zend_string *property_z_name = zend_string_init("z", sizeof("z") - 1, 1);
+	zend_declare_typed_property(class_entry, property_z_name, &property_z_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_z_name);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUBufferLocation(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUBufferLocation", NULL);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	zval property_buffer_default_value;
+	ZVAL_NULL(&property_buffer_default_value);
+	zend_string *property_buffer_name = zend_string_init("buffer", sizeof("buffer") - 1, 1);
+	zend_string *property_buffer_class_SDL_GPUBuffer = zend_string_init("SDL_GPUBuffer", sizeof("SDL_GPUBuffer")-1, 1);
+	zend_declare_typed_property(class_entry, property_buffer_name, &property_buffer_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_CLASS(property_buffer_class_SDL_GPUBuffer, 0, MAY_BE_NULL));
+	zend_string_release(property_buffer_name);
+
+	zval property_offset_default_value;
+	ZVAL_LONG(&property_offset_default_value, 0);
+	zend_string *property_offset_name = zend_string_init("offset", sizeof("offset") - 1, 1);
+	zend_declare_typed_property(class_entry, property_offset_name, &property_offset_default_value, ZEND_ACC_PUBLIC, NULL, (zend_type) ZEND_TYPE_INIT_MASK(MAY_BE_LONG));
+	zend_string_release(property_offset_name);
 
 	return class_entry;
 }

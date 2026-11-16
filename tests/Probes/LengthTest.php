@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-// Sites sdl3-surface-pixels-length, sdl3-uniform-length and sdl3-write-io-length (outcome 1): SDL reads
+// Sites sdl3-surface-pixels-length, sdl3-uniform-length, sdl3-compute-uniform-length and sdl3-write-io-length (outcome 1): SDL reads
 // the byte count the caller gives from the string. A count past the string makes it read past the end of
 // PHP's memory. The child runs under libgmalloc, so the over-read faults at the guard page.
 
@@ -37,6 +37,25 @@ it('refuses uniform data shorter than its length, which SDL copies past (SIGSEGV
 
     $kept = sdl3Probe($code, null, gmalloc: true);
     $off = sdl3Probe($code, 'sdl3-uniform-length', gmalloc: true);
+
+    expect($kept['signal'])->toBeNull()
+        ->and($kept['stdout'])->toContain('REFUSED ValueError')
+        ->and($off['signal'])->toBeIn([PROBE_SIGSEGV, PROBE_SIGBUS]);
+});
+
+it('refuses compute uniform data shorter than its length, which SDL copies past (SIGSEGV) without the refusal', function (): void {
+    $code = <<<'PHP'
+        $device = SDL_CreateGPUDevice(SDL_GPU_SHADERFORMAT_MSL | SDL_GPU_SHADERFORMAT_SPIRV, false, null);
+        $commands = SDL_AcquireGPUCommandBuffer($device);
+        try {
+            SDL_PushGPUComputeUniformData($commands, 0, 'ab', 1 << 16);
+        } finally {
+            SDL_CancelGPUCommandBuffer($commands);
+        }
+    PHP;
+
+    $kept = sdl3Probe($code, null, gmalloc: true);
+    $off = sdl3Probe($code, 'sdl3-compute-uniform-length', gmalloc: true);
 
     expect($kept['signal'])->toBeNull()
         ->and($kept['stdout'])->toContain('REFUSED ValueError')

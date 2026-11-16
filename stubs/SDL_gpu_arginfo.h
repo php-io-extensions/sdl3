@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 9c1645aad339a2eb41dd39f53d5c54ec06bdcd64 */
+ * Stub hash: 3eaf7d02d25ba4e50ca3632d947b37b740bfdd96 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateGPUDevice, 0, 3, SDL_GPUDevice, 1)
 	ZEND_ARG_TYPE_INFO(0, format_flags, IS_LONG, 0)
@@ -296,11 +296,117 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_SDL_AcquireGPUSwapchainTexture arginfo_SDL_WaitAndAcquireGPUSwapchainTexture
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetNumGPUDrivers, 0, 0, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetGPUDriver, 0, 1, IS_STRING, 1)
+	ZEND_ARG_TYPE_INFO(0, index, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GPUSupportsShaderFormats, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_TYPE_INFO(0, format_flags, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, name, IS_STRING, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateGPUComputePipeline, 0, 2, SDL_GPUComputePipeline, 1)
+	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
+	ZEND_ARG_OBJ_INFO(0, createinfo, SDL_GPUComputePipelineCreateInfo, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_ReleaseGPUComputePipeline, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, device, SDL_GPUDevice, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pipeline, SDL_GPUComputePipeline, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_BeginGPUComputePass, 0, 5, SDL_GPUComputePass, 1)
+	ZEND_ARG_OBJ_INFO(0, command_buffer, SDL_GPUCommandBuffer, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_texture_bindings, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_storage_texture_bindings, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_buffer_bindings, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_storage_buffer_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_EndGPUComputePass, 0, 1, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+ZEND_END_ARG_INFO()
+
+#define arginfo_SDL_PushGPUComputeUniformData arginfo_SDL_PushGPUVertexUniformData
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUComputePipeline, 0, 2, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pipeline, SDL_GPUComputePipeline, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUComputeStorageBuffers, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_buffers, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUComputeStorageTextures, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_textures, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUComputeSamplers, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, texture_sampler_bindings, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_DispatchGPUCompute, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, compute_pass, SDL_GPUComputePass, 0)
+	ZEND_ARG_TYPE_INFO(0, groupcount_x, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, groupcount_y, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, groupcount_z, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUFragmentStorageBuffers, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, render_pass, SDL_GPURenderPass, 0)
+	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_buffers, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_BindGPUFragmentStorageTextures, 0, 4, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, render_pass, SDL_GPURenderPass, 0)
+	ZEND_ARG_TYPE_INFO(0, first_slot, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, storage_textures, IS_ARRAY, 0)
+	ZEND_ARG_TYPE_INFO(0, num_bindings, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_CopyGPUTextureToTexture, 0, 7, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, copy_pass, SDL_GPUCopyPass, 0)
+	ZEND_ARG_OBJ_INFO(0, source, SDL_GPUTextureLocation, 0)
+	ZEND_ARG_OBJ_INFO(0, destination, SDL_GPUTextureLocation, 0)
+	ZEND_ARG_TYPE_INFO(0, w, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, h, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, d, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, cycle, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_CopyGPUBufferToBuffer, 0, 5, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, copy_pass, SDL_GPUCopyPass, 0)
+	ZEND_ARG_OBJ_INFO(0, source, SDL_GPUBufferLocation, 0)
+	ZEND_ARG_OBJ_INFO(0, destination, SDL_GPUBufferLocation, 0)
+	ZEND_ARG_TYPE_INFO(0, size, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, cycle, _IS_BOOL, 0)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_DownloadFromGPUBuffer, 0, 3, IS_VOID, 0)
+	ZEND_ARG_OBJ_INFO(0, copy_pass, SDL_GPUCopyPass, 0)
+	ZEND_ARG_OBJ_INFO(0, source, SDL_GPUBufferRegion, 0)
+	ZEND_ARG_OBJ_INFO(0, destination, SDL_GPUTransferBufferLocation, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_INFO_EX(arginfo_class_SDL_GPUDevice___construct, 0, 0, 0)
 ZEND_END_ARG_INFO()
 
-ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_GPUDevice_pointer, 0, 0, IS_LONG, 0)
-ZEND_END_ARG_INFO()
+#define arginfo_class_SDL_GPUDevice_pointer arginfo_SDL_GetNumGPUDrivers
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_class_SDL_GPUDevice_fromPointer, 0, 1, IS_STATIC, 1)
 	ZEND_ARG_TYPE_INFO(0, pointer, IS_LONG, 0)
@@ -308,33 +414,45 @@ ZEND_END_ARG_INFO()
 
 #define arginfo_class_SDL_GPUCommandBuffer___construct arginfo_class_SDL_GPUDevice___construct
 
-#define arginfo_class_SDL_GPUCommandBuffer_pointer arginfo_class_SDL_GPUDevice_pointer
+#define arginfo_class_SDL_GPUCommandBuffer_pointer arginfo_SDL_GetNumGPUDrivers
 
 #define arginfo_class_SDL_GPUCommandBuffer_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
 
 #define arginfo_class_SDL_GPUCopyPass___construct arginfo_class_SDL_GPUDevice___construct
 
-#define arginfo_class_SDL_GPUCopyPass_pointer arginfo_class_SDL_GPUDevice_pointer
+#define arginfo_class_SDL_GPUCopyPass_pointer arginfo_SDL_GetNumGPUDrivers
 
 #define arginfo_class_SDL_GPUCopyPass_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
 
 #define arginfo_class_SDL_GPUFence___construct arginfo_class_SDL_GPUDevice___construct
 
-#define arginfo_class_SDL_GPUFence_pointer arginfo_class_SDL_GPUDevice_pointer
+#define arginfo_class_SDL_GPUFence_pointer arginfo_SDL_GetNumGPUDrivers
 
 #define arginfo_class_SDL_GPUFence_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
 
 #define arginfo_class_SDL_GPUGraphicsPipeline___construct arginfo_class_SDL_GPUDevice___construct
 
-#define arginfo_class_SDL_GPUGraphicsPipeline_pointer arginfo_class_SDL_GPUDevice_pointer
+#define arginfo_class_SDL_GPUGraphicsPipeline_pointer arginfo_SDL_GetNumGPUDrivers
 
 #define arginfo_class_SDL_GPUGraphicsPipeline_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
 
 #define arginfo_class_SDL_GPURenderPass___construct arginfo_class_SDL_GPUDevice___construct
 
-#define arginfo_class_SDL_GPURenderPass_pointer arginfo_class_SDL_GPUDevice_pointer
+#define arginfo_class_SDL_GPURenderPass_pointer arginfo_SDL_GetNumGPUDrivers
 
 #define arginfo_class_SDL_GPURenderPass_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
+
+#define arginfo_class_SDL_GPUComputePipeline___construct arginfo_class_SDL_GPUDevice___construct
+
+#define arginfo_class_SDL_GPUComputePipeline_pointer arginfo_SDL_GetNumGPUDrivers
+
+#define arginfo_class_SDL_GPUComputePipeline_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
+
+#define arginfo_class_SDL_GPUComputePass___construct arginfo_class_SDL_GPUDevice___construct
+
+#define arginfo_class_SDL_GPUComputePass_pointer arginfo_SDL_GetNumGPUDrivers
+
+#define arginfo_class_SDL_GPUComputePass_fromPointer arginfo_class_SDL_GPUDevice_fromPointer
 
 ZEND_FUNCTION(SDL_CreateGPUDevice);
 ZEND_FUNCTION(SDL_DestroyGPUDevice);
@@ -393,6 +511,24 @@ ZEND_FUNCTION(SDL_SetGPUSwapchainParameters);
 ZEND_FUNCTION(SDL_GetGPUSwapchainTextureFormat);
 ZEND_FUNCTION(SDL_WaitAndAcquireGPUSwapchainTexture);
 ZEND_FUNCTION(SDL_AcquireGPUSwapchainTexture);
+ZEND_FUNCTION(SDL_GetNumGPUDrivers);
+ZEND_FUNCTION(SDL_GetGPUDriver);
+ZEND_FUNCTION(SDL_GPUSupportsShaderFormats);
+ZEND_FUNCTION(SDL_CreateGPUComputePipeline);
+ZEND_FUNCTION(SDL_ReleaseGPUComputePipeline);
+ZEND_FUNCTION(SDL_BeginGPUComputePass);
+ZEND_FUNCTION(SDL_EndGPUComputePass);
+ZEND_FUNCTION(SDL_PushGPUComputeUniformData);
+ZEND_FUNCTION(SDL_BindGPUComputePipeline);
+ZEND_FUNCTION(SDL_BindGPUComputeStorageBuffers);
+ZEND_FUNCTION(SDL_BindGPUComputeStorageTextures);
+ZEND_FUNCTION(SDL_BindGPUComputeSamplers);
+ZEND_FUNCTION(SDL_DispatchGPUCompute);
+ZEND_FUNCTION(SDL_BindGPUFragmentStorageBuffers);
+ZEND_FUNCTION(SDL_BindGPUFragmentStorageTextures);
+ZEND_FUNCTION(SDL_CopyGPUTextureToTexture);
+ZEND_FUNCTION(SDL_CopyGPUBufferToBuffer);
+ZEND_FUNCTION(SDL_DownloadFromGPUBuffer);
 ZEND_METHOD(SDL_GPUDevice, __construct);
 ZEND_METHOD(SDL_GPUDevice, pointer);
 ZEND_METHOD(SDL_GPUDevice, fromPointer);
@@ -411,6 +547,12 @@ ZEND_METHOD(SDL_GPUGraphicsPipeline, fromPointer);
 ZEND_METHOD(SDL_GPURenderPass, __construct);
 ZEND_METHOD(SDL_GPURenderPass, pointer);
 ZEND_METHOD(SDL_GPURenderPass, fromPointer);
+ZEND_METHOD(SDL_GPUComputePipeline, __construct);
+ZEND_METHOD(SDL_GPUComputePipeline, pointer);
+ZEND_METHOD(SDL_GPUComputePipeline, fromPointer);
+ZEND_METHOD(SDL_GPUComputePass, __construct);
+ZEND_METHOD(SDL_GPUComputePass, pointer);
+ZEND_METHOD(SDL_GPUComputePass, fromPointer);
 
 static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_CreateGPUDevice, arginfo_SDL_CreateGPUDevice)
@@ -470,6 +612,24 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_GetGPUSwapchainTextureFormat, arginfo_SDL_GetGPUSwapchainTextureFormat)
 	ZEND_FE(SDL_WaitAndAcquireGPUSwapchainTexture, arginfo_SDL_WaitAndAcquireGPUSwapchainTexture)
 	ZEND_FE(SDL_AcquireGPUSwapchainTexture, arginfo_SDL_AcquireGPUSwapchainTexture)
+	ZEND_FE(SDL_GetNumGPUDrivers, arginfo_SDL_GetNumGPUDrivers)
+	ZEND_FE(SDL_GetGPUDriver, arginfo_SDL_GetGPUDriver)
+	ZEND_FE(SDL_GPUSupportsShaderFormats, arginfo_SDL_GPUSupportsShaderFormats)
+	ZEND_FE(SDL_CreateGPUComputePipeline, arginfo_SDL_CreateGPUComputePipeline)
+	ZEND_FE(SDL_ReleaseGPUComputePipeline, arginfo_SDL_ReleaseGPUComputePipeline)
+	ZEND_FE(SDL_BeginGPUComputePass, arginfo_SDL_BeginGPUComputePass)
+	ZEND_FE(SDL_EndGPUComputePass, arginfo_SDL_EndGPUComputePass)
+	ZEND_FE(SDL_PushGPUComputeUniformData, arginfo_SDL_PushGPUComputeUniformData)
+	ZEND_FE(SDL_BindGPUComputePipeline, arginfo_SDL_BindGPUComputePipeline)
+	ZEND_FE(SDL_BindGPUComputeStorageBuffers, arginfo_SDL_BindGPUComputeStorageBuffers)
+	ZEND_FE(SDL_BindGPUComputeStorageTextures, arginfo_SDL_BindGPUComputeStorageTextures)
+	ZEND_FE(SDL_BindGPUComputeSamplers, arginfo_SDL_BindGPUComputeSamplers)
+	ZEND_FE(SDL_DispatchGPUCompute, arginfo_SDL_DispatchGPUCompute)
+	ZEND_FE(SDL_BindGPUFragmentStorageBuffers, arginfo_SDL_BindGPUFragmentStorageBuffers)
+	ZEND_FE(SDL_BindGPUFragmentStorageTextures, arginfo_SDL_BindGPUFragmentStorageTextures)
+	ZEND_FE(SDL_CopyGPUTextureToTexture, arginfo_SDL_CopyGPUTextureToTexture)
+	ZEND_FE(SDL_CopyGPUBufferToBuffer, arginfo_SDL_CopyGPUBufferToBuffer)
+	ZEND_FE(SDL_DownloadFromGPUBuffer, arginfo_SDL_DownloadFromGPUBuffer)
 	ZEND_FE_END
 };
 
@@ -512,6 +672,20 @@ static const zend_function_entry class_SDL_GPURenderPass_methods[] = {
 	ZEND_ME(SDL_GPURenderPass, __construct, arginfo_class_SDL_GPURenderPass___construct, ZEND_ACC_PRIVATE)
 	ZEND_ME(SDL_GPURenderPass, pointer, arginfo_class_SDL_GPURenderPass_pointer, ZEND_ACC_PUBLIC)
 	ZEND_ME(SDL_GPURenderPass, fromPointer, arginfo_class_SDL_GPURenderPass_fromPointer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+static const zend_function_entry class_SDL_GPUComputePipeline_methods[] = {
+	ZEND_ME(SDL_GPUComputePipeline, __construct, arginfo_class_SDL_GPUComputePipeline___construct, ZEND_ACC_PRIVATE)
+	ZEND_ME(SDL_GPUComputePipeline, pointer, arginfo_class_SDL_GPUComputePipeline_pointer, ZEND_ACC_PUBLIC)
+	ZEND_ME(SDL_GPUComputePipeline, fromPointer, arginfo_class_SDL_GPUComputePipeline_fromPointer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
+	ZEND_FE_END
+};
+
+static const zend_function_entry class_SDL_GPUComputePass_methods[] = {
+	ZEND_ME(SDL_GPUComputePass, __construct, arginfo_class_SDL_GPUComputePass___construct, ZEND_ACC_PRIVATE)
+	ZEND_ME(SDL_GPUComputePass, pointer, arginfo_class_SDL_GPUComputePass_pointer, ZEND_ACC_PUBLIC)
+	ZEND_ME(SDL_GPUComputePass, fromPointer, arginfo_class_SDL_GPUComputePass_fromPointer, ZEND_ACC_PUBLIC|ZEND_ACC_STATIC)
 	ZEND_FE_END
 };
 
@@ -570,6 +744,26 @@ static zend_class_entry *register_class_SDL_GPURenderPass(void)
 	zend_class_entry ce, *class_entry;
 
 	INIT_CLASS_ENTRY(ce, "SDL_GPURenderPass", class_SDL_GPURenderPass_methods);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUComputePipeline(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUComputePipeline", class_SDL_GPUComputePipeline_methods);
+	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
+
+	return class_entry;
+}
+
+static zend_class_entry *register_class_SDL_GPUComputePass(void)
+{
+	zend_class_entry ce, *class_entry;
+
+	INIT_CLASS_ENTRY(ce, "SDL_GPUComputePass", class_SDL_GPUComputePass_methods);
 	class_entry = zend_register_internal_class_with_flags(&ce, NULL, ZEND_ACC_FINAL|ZEND_ACC_NOT_SERIALIZABLE);
 
 	return class_entry;

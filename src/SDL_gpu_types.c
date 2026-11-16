@@ -34,6 +34,11 @@ zend_class_entry *sdl3_ce_SDL_GPUDepthStencilTargetInfo;
 zend_class_entry *sdl3_ce_SDL_GPUBufferBinding;
 zend_class_entry *sdl3_ce_SDL_GPUTextureSamplerBinding;
 zend_class_entry *sdl3_ce_SDL_GPUBlitInfo;
+zend_class_entry *sdl3_ce_SDL_GPUComputePipelineCreateInfo;
+zend_class_entry *sdl3_ce_SDL_GPUStorageBufferReadWriteBinding;
+zend_class_entry *sdl3_ce_SDL_GPUStorageTextureReadWriteBinding;
+zend_class_entry *sdl3_ce_SDL_GPUTextureLocation;
+zend_class_entry *sdl3_ce_SDL_GPUBufferLocation;
 
 SDL3_POINTER_METHODS(SDL_GPUShader)
 SDL3_POINTER_METHODS(SDL_GPUTexture)
@@ -1350,6 +1355,223 @@ bool sdl3_SDL_GPUBlitInfo_from(zend_object *obj, SDL_GPUBlitInfo *out, sdl3_scra
 	return true;
 }
 
+bool sdl3_SDL_GPUComputePipelineCreateInfo_from(zend_object *obj, SDL_GPUComputePipelineCreateInfo *out, sdl3_scratch *scratch)
+{
+	memset(out, 0, sizeof(*out));
+	(void) scratch;
+	{
+		zend_string *value;
+		if (!sdl3_prop_string(obj, "code", &value)) {
+			return false;
+		}
+		out->code = (const Uint8 *) ZSTR_VAL(value);
+		out->code_size = ZSTR_LEN(value);
+	}
+	{
+		zend_string *value;
+		if (!sdl3_prop_string(obj, "entrypoint", &value)) {
+			return false;
+		}
+		out->entrypoint = ZSTR_VAL(value);
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "format", &value)) {
+			return false;
+		}
+		out->format = (SDL_GPUShaderFormat) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_samplers", &value)) {
+			return false;
+		}
+		out->num_samplers = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_readonly_storage_textures", &value)) {
+			return false;
+		}
+		out->num_readonly_storage_textures = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_readonly_storage_buffers", &value)) {
+			return false;
+		}
+		out->num_readonly_storage_buffers = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_readwrite_storage_textures", &value)) {
+			return false;
+		}
+		out->num_readwrite_storage_textures = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_readwrite_storage_buffers", &value)) {
+			return false;
+		}
+		out->num_readwrite_storage_buffers = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "num_uniform_buffers", &value)) {
+			return false;
+		}
+		out->num_uniform_buffers = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "threadcount_x", &value)) {
+			return false;
+		}
+		out->threadcount_x = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "threadcount_y", &value)) {
+			return false;
+		}
+		out->threadcount_y = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "threadcount_z", &value)) {
+			return false;
+		}
+		out->threadcount_z = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "props", &value)) {
+			return false;
+		}
+		out->props = (SDL_PropertiesID) value;
+	}
+	return true;
+}
+
+bool sdl3_SDL_GPUStorageBufferReadWriteBinding_from(zend_object *obj, SDL_GPUStorageBufferReadWriteBinding *out, sdl3_scratch *scratch)
+{
+	memset(out, 0, sizeof(*out));
+	(void) scratch;
+	{
+		void *ptr;
+		if (!sdl3_prop_handle(obj, "buffer", sdl3_ce_SDL_GPUBuffer, &ptr)) {
+			return false;
+		}
+		out->buffer = (SDL_GPUBuffer *) ptr;
+	}
+	if (!sdl3_prop_bool(obj, "cycle", &out->cycle)) {
+		return false;
+	}
+	return true;
+}
+
+bool sdl3_SDL_GPUStorageTextureReadWriteBinding_from(zend_object *obj, SDL_GPUStorageTextureReadWriteBinding *out, sdl3_scratch *scratch)
+{
+	memset(out, 0, sizeof(*out));
+	(void) scratch;
+	{
+		void *ptr;
+		if (!sdl3_prop_handle(obj, "texture", sdl3_ce_SDL_GPUTexture, &ptr)) {
+			return false;
+		}
+		out->texture = (SDL_GPUTexture *) ptr;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "mip_level", &value)) {
+			return false;
+		}
+		out->mip_level = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "layer", &value)) {
+			return false;
+		}
+		out->layer = (Uint32) value;
+	}
+	if (!sdl3_prop_bool(obj, "cycle", &out->cycle)) {
+		return false;
+	}
+	return true;
+}
+
+bool sdl3_SDL_GPUTextureLocation_from(zend_object *obj, SDL_GPUTextureLocation *out, sdl3_scratch *scratch)
+{
+	memset(out, 0, sizeof(*out));
+	(void) scratch;
+	{
+		void *ptr;
+		if (!sdl3_prop_handle(obj, "texture", sdl3_ce_SDL_GPUTexture, &ptr)) {
+			return false;
+		}
+		out->texture = (SDL_GPUTexture *) ptr;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "mip_level", &value)) {
+			return false;
+		}
+		out->mip_level = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "layer", &value)) {
+			return false;
+		}
+		out->layer = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "x", &value)) {
+			return false;
+		}
+		out->x = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "y", &value)) {
+			return false;
+		}
+		out->y = (Uint32) value;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "z", &value)) {
+			return false;
+		}
+		out->z = (Uint32) value;
+	}
+	return true;
+}
+
+bool sdl3_SDL_GPUBufferLocation_from(zend_object *obj, SDL_GPUBufferLocation *out, sdl3_scratch *scratch)
+{
+	memset(out, 0, sizeof(*out));
+	(void) scratch;
+	{
+		void *ptr;
+		if (!sdl3_prop_handle(obj, "buffer", sdl3_ce_SDL_GPUBuffer, &ptr)) {
+			return false;
+		}
+		out->buffer = (SDL_GPUBuffer *) ptr;
+	}
+	{
+		zend_long value;
+		if (!sdl3_prop_long(obj, "offset", &value)) {
+			return false;
+		}
+		out->offset = (Uint32) value;
+	}
+	return true;
+}
+
 ZEND_METHOD(SDL_GPUDepthStencilState, __construct)
 {
 	ZEND_PARSE_PARAMETERS_NONE();
@@ -1457,4 +1679,14 @@ void sdl3_register_SDL_gpu_types(int module_number)
 	sdl3_struct_setup(sdl3_ce_SDL_GPUTextureSamplerBinding);
 	sdl3_ce_SDL_GPUBlitInfo = register_class_SDL_GPUBlitInfo();
 	sdl3_struct_setup(sdl3_ce_SDL_GPUBlitInfo);
+	sdl3_ce_SDL_GPUComputePipelineCreateInfo = register_class_SDL_GPUComputePipelineCreateInfo();
+	sdl3_struct_setup(sdl3_ce_SDL_GPUComputePipelineCreateInfo);
+	sdl3_ce_SDL_GPUStorageBufferReadWriteBinding = register_class_SDL_GPUStorageBufferReadWriteBinding();
+	sdl3_struct_setup(sdl3_ce_SDL_GPUStorageBufferReadWriteBinding);
+	sdl3_ce_SDL_GPUStorageTextureReadWriteBinding = register_class_SDL_GPUStorageTextureReadWriteBinding();
+	sdl3_struct_setup(sdl3_ce_SDL_GPUStorageTextureReadWriteBinding);
+	sdl3_ce_SDL_GPUTextureLocation = register_class_SDL_GPUTextureLocation();
+	sdl3_struct_setup(sdl3_ce_SDL_GPUTextureLocation);
+	sdl3_ce_SDL_GPUBufferLocation = register_class_SDL_GPUBufferLocation();
+	sdl3_struct_setup(sdl3_ce_SDL_GPUBufferLocation);
 }

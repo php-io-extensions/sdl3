@@ -36,6 +36,11 @@ extern zend_class_entry *sdl3_ce_SDL_GPUDepthStencilTargetInfo;
 extern zend_class_entry *sdl3_ce_SDL_GPUBufferBinding;
 extern zend_class_entry *sdl3_ce_SDL_GPUTextureSamplerBinding;
 extern zend_class_entry *sdl3_ce_SDL_GPUBlitInfo;
+extern zend_class_entry *sdl3_ce_SDL_GPUComputePipelineCreateInfo;
+extern zend_class_entry *sdl3_ce_SDL_GPUStorageBufferReadWriteBinding;
+extern zend_class_entry *sdl3_ce_SDL_GPUStorageTextureReadWriteBinding;
+extern zend_class_entry *sdl3_ce_SDL_GPUTextureLocation;
+extern zend_class_entry *sdl3_ce_SDL_GPUBufferLocation;
 
 bool sdl3_SDL_FColor_from(zend_object *obj, SDL_FColor *out, sdl3_scratch *scratch);
 bool sdl3_SDL_GPUViewport_from(zend_object *obj, SDL_GPUViewport *out, sdl3_scratch *scratch);
@@ -65,6 +70,11 @@ bool sdl3_SDL_GPUDepthStencilTargetInfo_from(zend_object *obj, SDL_GPUDepthStenc
 bool sdl3_SDL_GPUBufferBinding_from(zend_object *obj, SDL_GPUBufferBinding *out, sdl3_scratch *scratch);
 bool sdl3_SDL_GPUTextureSamplerBinding_from(zend_object *obj, SDL_GPUTextureSamplerBinding *out, sdl3_scratch *scratch);
 bool sdl3_SDL_GPUBlitInfo_from(zend_object *obj, SDL_GPUBlitInfo *out, sdl3_scratch *scratch);
+bool sdl3_SDL_GPUComputePipelineCreateInfo_from(zend_object *obj, SDL_GPUComputePipelineCreateInfo *out, sdl3_scratch *scratch);
+bool sdl3_SDL_GPUStorageBufferReadWriteBinding_from(zend_object *obj, SDL_GPUStorageBufferReadWriteBinding *out, sdl3_scratch *scratch);
+bool sdl3_SDL_GPUStorageTextureReadWriteBinding_from(zend_object *obj, SDL_GPUStorageTextureReadWriteBinding *out, sdl3_scratch *scratch);
+bool sdl3_SDL_GPUTextureLocation_from(zend_object *obj, SDL_GPUTextureLocation *out, sdl3_scratch *scratch);
+bool sdl3_SDL_GPUBufferLocation_from(zend_object *obj, SDL_GPUBufferLocation *out, sdl3_scratch *scratch);
 
 void sdl3_register_SDL_gpu_types(int module_number);
 
@@ -74,6 +84,11 @@ extern zend_class_entry *sdl3_ce_SDL_GPUCopyPass;
 extern zend_class_entry *sdl3_ce_SDL_GPUFence;
 extern zend_class_entry *sdl3_ce_SDL_GPUGraphicsPipeline;
 extern zend_class_entry *sdl3_ce_SDL_GPURenderPass;
+extern zend_class_entry *sdl3_ce_SDL_GPUComputePipeline;
+extern zend_class_entry *sdl3_ce_SDL_GPUComputePass;
+
+/* A PHP list of handles of class ce as an array of native pointers in scratch: false when an exception is set (a wrong element, or given past the list). */
+bool sdl3_handle_list(zval *list_zv, zend_class_entry *ce, uint32_t list_arg, zend_long given, uint32_t count_arg, sdl3_scratch *scratch, void ***out);
 
 void sdl3_register_SDL_gpu(int module_number);
 

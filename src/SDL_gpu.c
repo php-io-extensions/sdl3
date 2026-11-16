@@ -673,6 +673,140 @@ ZEND_FUNCTION(SDL_DownloadFromGPUTexture)
 	sdl3_scratch_free(&scratch);
 }
 
+ZEND_FUNCTION(SDL_DownloadFromGPUBuffer)
+{
+	zval *pass_zv;
+	zend_object *source_obj, *destination_obj;
+	SDL_GPUCopyPass *pass;
+	SDL_GPUBufferRegion source;
+	SDL_GPUTransferBufferLocation destination;
+	sdl3_scratch scratch;
+
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_OBJECT_OF_CLASS(pass_zv, sdl3_ce_SDL_GPUCopyPass)
+		Z_PARAM_OBJ_OF_CLASS(source_obj, sdl3_ce_SDL_GPUBufferRegion)
+		Z_PARAM_OBJ_OF_CLASS(destination_obj, sdl3_ce_SDL_GPUTransferBufferLocation)
+	ZEND_PARSE_PARAMETERS_END();
+
+	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_scratch_init(&scratch);
+	if (!sdl3_SDL_GPUBufferRegion_from(source_obj, &source, &scratch)
+		|| !sdl3_SDL_GPUTransferBufferLocation_from(destination_obj, &destination, &scratch)) {
+		sdl3_scratch_free(&scratch);
+		RETURN_THROWS();
+	}
+	SDL_DownloadFromGPUBuffer(pass, &source, &destination);
+	sdl3_scratch_free(&scratch);
+}
+
+ZEND_FUNCTION(SDL_CopyGPUTextureToTexture)
+{
+	zval *pass_zv;
+	zend_object *source_obj, *destination_obj;
+	zend_long w, h, d;
+	bool cycle;
+	SDL_GPUCopyPass *pass;
+	SDL_GPUTextureLocation source, destination;
+	sdl3_scratch scratch;
+
+	ZEND_PARSE_PARAMETERS_START(7, 7)
+		Z_PARAM_OBJECT_OF_CLASS(pass_zv, sdl3_ce_SDL_GPUCopyPass)
+		Z_PARAM_OBJ_OF_CLASS(source_obj, sdl3_ce_SDL_GPUTextureLocation)
+		Z_PARAM_OBJ_OF_CLASS(destination_obj, sdl3_ce_SDL_GPUTextureLocation)
+		Z_PARAM_LONG(w)
+		Z_PARAM_LONG(h)
+		Z_PARAM_LONG(d)
+		Z_PARAM_BOOL(cycle)
+	ZEND_PARSE_PARAMETERS_END();
+
+	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_scratch_init(&scratch);
+	if (!sdl3_SDL_GPUTextureLocation_from(source_obj, &source, &scratch)
+		|| !sdl3_SDL_GPUTextureLocation_from(destination_obj, &destination, &scratch)) {
+		sdl3_scratch_free(&scratch);
+		RETURN_THROWS();
+	}
+	SDL_CopyGPUTextureToTexture(pass, &source, &destination, (Uint32) w, (Uint32) h, (Uint32) d, cycle);
+	sdl3_scratch_free(&scratch);
+}
+
+ZEND_FUNCTION(SDL_CopyGPUBufferToBuffer)
+{
+	zval *pass_zv;
+	zend_object *source_obj, *destination_obj;
+	zend_long size;
+	bool cycle;
+	SDL_GPUCopyPass *pass;
+	SDL_GPUBufferLocation source, destination;
+	sdl3_scratch scratch;
+
+	ZEND_PARSE_PARAMETERS_START(5, 5)
+		Z_PARAM_OBJECT_OF_CLASS(pass_zv, sdl3_ce_SDL_GPUCopyPass)
+		Z_PARAM_OBJ_OF_CLASS(source_obj, sdl3_ce_SDL_GPUBufferLocation)
+		Z_PARAM_OBJ_OF_CLASS(destination_obj, sdl3_ce_SDL_GPUBufferLocation)
+		Z_PARAM_LONG(size)
+		Z_PARAM_BOOL(cycle)
+	ZEND_PARSE_PARAMETERS_END();
+
+	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPUCopyPass, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_scratch_init(&scratch);
+	if (!sdl3_SDL_GPUBufferLocation_from(source_obj, &source, &scratch)
+		|| !sdl3_SDL_GPUBufferLocation_from(destination_obj, &destination, &scratch)) {
+		sdl3_scratch_free(&scratch);
+		RETURN_THROWS();
+	}
+	SDL_CopyGPUBufferToBuffer(pass, &source, &destination, (Uint32) size, cycle);
+	sdl3_scratch_free(&scratch);
+}
+
+ZEND_FUNCTION(SDL_GetNumGPUDrivers)
+{
+	ZEND_PARSE_PARAMETERS_NONE();
+
+	RETURN_LONG(SDL_GetNumGPUDrivers());
+}
+
+ZEND_FUNCTION(SDL_GetGPUDriver)
+{
+	zend_long index;
+	const char *name;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_LONG(index)
+	ZEND_PARSE_PARAMETERS_END();
+
+	name = SDL_GetGPUDriver((int) index);
+	if (name == NULL) {
+		RETURN_NULL();
+	}
+	RETURN_STRING(name);
+}
+
+ZEND_FUNCTION(SDL_GPUSupportsShaderFormats)
+{
+	zend_long format_flags;
+	zend_string *name = NULL;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_LONG(format_flags)
+		Z_PARAM_STR_OR_NULL(name)
+	ZEND_PARSE_PARAMETERS_END();
+
+	RETURN_BOOL(SDL_GPUSupportsShaderFormats((SDL_GPUShaderFormat) format_flags, name != NULL ? ZSTR_VAL(name) : NULL));
+}
+
 ZEND_FUNCTION(SDL_EndGPUCopyPass)
 {
 	zval *pass_zv;
@@ -709,4 +843,8 @@ void sdl3_register_SDL_gpu(int module_number)
 	sdl3_handle_setup(sdl3_ce_SDL_GPUGraphicsPipeline);
 	sdl3_ce_SDL_GPURenderPass = register_class_SDL_GPURenderPass();
 	sdl3_handle_setup(sdl3_ce_SDL_GPURenderPass);
+	sdl3_ce_SDL_GPUComputePipeline = register_class_SDL_GPUComputePipeline();
+	sdl3_handle_setup(sdl3_ce_SDL_GPUComputePipeline);
+	sdl3_ce_SDL_GPUComputePass = register_class_SDL_GPUComputePass();
+	sdl3_handle_setup(sdl3_ce_SDL_GPUComputePass);
 }

@@ -444,6 +444,91 @@ ZEND_FUNCTION(SDL_PushGPUFragmentUniformData)
 	sdl3_push_uniform(INTERNAL_FUNCTION_PARAM_PASSTHRU, SDL_PushGPUFragmentUniformData);
 }
 
+ZEND_FUNCTION(SDL_PushGPUComputeUniformData)
+{
+	zval *command_zv;
+	zend_long slot, length;
+	zend_string *data;
+	SDL_GPUCommandBuffer *command_buffer;
+
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_OBJECT_OF_CLASS(command_zv, sdl3_ce_SDL_GPUCommandBuffer)
+		Z_PARAM_LONG(slot)
+		Z_PARAM_STR(data)
+		Z_PARAM_LONG(length)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if (!SDL3_PROBE_OFF("sdl3-compute-uniform-length") && (length < 0 || (size_t) length > ZSTR_LEN(data))) {
+		zend_argument_value_error(3, "must hold " ZEND_LONG_FMT " bytes, %zu given", length, ZSTR_LEN(data)); /* binding:sdl3-compute-uniform-length */
+		RETURN_THROWS();
+	}
+
+	command_buffer = sdl3_handle_ptr(command_zv, sdl3_ce_SDL_GPUCommandBuffer, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	SDL_PushGPUComputeUniformData(command_buffer, (Uint32) slot, ZSTR_VAL(data), (Uint32) length);
+}
+
+ZEND_FUNCTION(SDL_BindGPUFragmentStorageBuffers)
+{
+	zval *pass_zv, *list_zv;
+	zend_long first_slot, num_bindings;
+	SDL_GPURenderPass *pass;
+	sdl3_scratch scratch;
+	void **native = NULL;
+
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_OBJECT_OF_CLASS(pass_zv, sdl3_ce_SDL_GPURenderPass)
+		Z_PARAM_LONG(first_slot)
+		Z_PARAM_ARRAY(list_zv)
+		Z_PARAM_LONG(num_bindings)
+	ZEND_PARSE_PARAMETERS_END();
+
+	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPURenderPass, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_scratch_init(&scratch);
+	if (!sdl3_handle_list(list_zv, sdl3_ce_SDL_GPUBuffer, 3, num_bindings, 4, &scratch, &native)) {
+		sdl3_scratch_free(&scratch);
+		RETURN_THROWS();
+	}
+	SDL_BindGPUFragmentStorageBuffers(pass, (Uint32) first_slot, (SDL_GPUBuffer *const *) native, (Uint32) num_bindings);
+	sdl3_scratch_free(&scratch);
+}
+
+ZEND_FUNCTION(SDL_BindGPUFragmentStorageTextures)
+{
+	zval *pass_zv, *list_zv;
+	zend_long first_slot, num_bindings;
+	SDL_GPURenderPass *pass;
+	sdl3_scratch scratch;
+	void **native = NULL;
+
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_OBJECT_OF_CLASS(pass_zv, sdl3_ce_SDL_GPURenderPass)
+		Z_PARAM_LONG(first_slot)
+		Z_PARAM_ARRAY(list_zv)
+		Z_PARAM_LONG(num_bindings)
+	ZEND_PARSE_PARAMETERS_END();
+
+	pass = sdl3_handle_ptr(pass_zv, sdl3_ce_SDL_GPURenderPass, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+
+	sdl3_scratch_init(&scratch);
+	if (!sdl3_handle_list(list_zv, sdl3_ce_SDL_GPUTexture, 3, num_bindings, 4, &scratch, &native)) {
+		sdl3_scratch_free(&scratch);
+		RETURN_THROWS();
+	}
+	SDL_BindGPUFragmentStorageTextures(pass, (Uint32) first_slot, (SDL_GPUTexture *const *) native, (Uint32) num_bindings);
+	sdl3_scratch_free(&scratch);
+}
+
 ZEND_FUNCTION(SDL_DrawGPUPrimitives)
 {
 	zval *pass_zv;

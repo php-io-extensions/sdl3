@@ -552,6 +552,90 @@ final class SDL_GPUBlitInfo
 }
 
 /**
+ * @not-serializable
+ */
+final class SDL_GPUComputePipelineCreateInfo
+{
+    public string $code = '';
+
+    public string $entrypoint = '';
+
+    public int $format = 0;
+
+    public int $num_samplers = 0;
+
+    public int $num_readonly_storage_textures = 0;
+
+    public int $num_readonly_storage_buffers = 0;
+
+    public int $num_readwrite_storage_textures = 0;
+
+    public int $num_readwrite_storage_buffers = 0;
+
+    public int $num_uniform_buffers = 0;
+
+    public int $threadcount_x = 0;
+
+    public int $threadcount_y = 0;
+
+    public int $threadcount_z = 0;
+
+    public int $props = 0;
+}
+
+/**
+ * @not-serializable
+ */
+final class SDL_GPUStorageBufferReadWriteBinding
+{
+    public ?SDL_GPUBuffer $buffer = null;
+
+    public bool $cycle = false;
+}
+
+/**
+ * @not-serializable
+ */
+final class SDL_GPUStorageTextureReadWriteBinding
+{
+    public ?SDL_GPUTexture $texture = null;
+
+    public int $mip_level = 0;
+
+    public int $layer = 0;
+
+    public bool $cycle = false;
+}
+
+/**
+ * @not-serializable
+ */
+final class SDL_GPUTextureLocation
+{
+    public ?SDL_GPUTexture $texture = null;
+
+    public int $mip_level = 0;
+
+    public int $layer = 0;
+
+    public int $x = 0;
+
+    public int $y = 0;
+
+    public int $z = 0;
+}
+
+/**
+ * @not-serializable
+ */
+final class SDL_GPUBufferLocation
+{
+    public ?SDL_GPUBuffer $buffer = null;
+
+    public int $offset = 0;
+}
+
+/**
  * @var int
  * @cvalue SDL_GPU_PRIMITIVETYPE_TRIANGLELIST
  */

@@ -1,5 +1,12 @@
 # Log
 
+## 2026-11-15
+
+* **`SDL_BeginGPUComputePass`, `SDL_PushGPUComputeUniformData`** bound 1:1 (SDL_gpu.h, in 3.2), after `typemap` entries for the two binding lists and the `sdl3-compute-uniform-length` site. `GpuComputeTest` dispatches two MSL kernels: one writes a storage buffer from a pushed uniform, one writes a storage texture; both read back exact. The probe for the new site passes on a probe build (SIGSEGV under libgmalloc without the refusal). 255 / 1233. Measured: SDL's Metal backend numbers a compute kernel's `[[buffer]]` slots uniform buffers first, then read-write storage buffers.
+
+* **SDL_GPU compute, storage binds and GPU-to-GPU copies** bound 1:1 (SDL_gpu.h, in 3.2): handles `SDL_GPUComputePipeline`, `SDL_GPUComputePass`; structs `SDL_GPUComputePipelineCreateInfo`, `SDL_GPUStorageBufferReadWriteBinding`, `SDL_GPUStorageTextureReadWriteBinding`, `SDL_GPUTextureLocation`, `SDL_GPUBufferLocation`; 16 functions, listed in [bindings](api/bindings.md). `GpuComputeTest` covers them. 253 / 1233. Suite 112 passed, 8 skipped on Homebrew PHP 8.4 NTS and ZTS. Two wait on `bindings.json`: `SDL_BeginGPUComputePass` on `typemap` entries for `SDL_GPUStorageTextureReadWriteBinding*` and `SDL_GPUStorageBufferReadWriteBinding*`, and `SDL_PushGPUComputeUniformData` on a `sites` entry of its own for its length check (one id marks one site).
+* **Measured**: `SDL_GPUSupportsShaderFormats` answers false for every format until video is initialised. With video up it is true for MSL and METALLIB on `metal`, SPIR-V on `vulkan`, and any of them with no name. `SDL_CreateGPUComputePipeline` with a bad kernel or a missing entry point returns NULL and logs the Metal compiler's message; `SDL_GetError()` stays empty.
+
 ## 2026-11-14
 
 * **Software renderer and surface mods** bound 1:1 (SDL_surface.h and SDL_render.h, in 3.2): `SDL_CreateSurface`, `SDL_ConvertSurface`, `SDL_Set/GetSurfaceAlphaMod`, `SDL_Set/GetSurfaceColorMod`; handles `SDL_Renderer`, `SDL_Texture`; structs `SDL_FPoint`, `SDL_Vertex`; `SDL_CreateSoftwareRenderer`, `SDL_DestroyRenderer`, `SDL_CreateTextureFromSurface`, `SDL_DestroyTexture`, `SDL_SetTextureBlendMode`, `SDL_SetTextureScaleMode`, `SDL_SetTextureAlphaMod`, `SDL_SetTextureColorMod`, `SDL_SetRenderClipRect`, `SDL_RenderGeometry`, `SDL_FlushRenderer`. `RendererTest` covers them. 237 / 1233. Suite 107 passed, 8 skipped on Homebrew PHP 8.4 NTS and ZTS; the probe for `SDL_RenderGeometry`'s vertex count passes on a probe build (SIGSEGV under libgmalloc without the refusal).

@@ -60,4 +60,8 @@ Handles named by the structs: `SDL_GPUShader`, `SDL_GPUTexture`, `SDL_GPUBuffer`
 
 Handles `SDL_GPUDevice`, `SDL_GPUCommandBuffer`, `SDL_GPUCopyPass`, `SDL_GPUFence`, `SDL_GPUGraphicsPipeline`, `SDL_GPURenderPass`. Device, texture, sampler, buffer, transfer buffer, shader, and pipeline create/release. Map and unmap. Command buffers, fences, idle. Copy, render, and blit. Swapchain claim, `SDL_WindowSupportsGPUPresentMode`, `SDL_WindowSupportsGPUSwapchainComposition`, parameters, format, acquire and `SDL_WaitAndAcquireGPUSwapchainTexture`, `SDL_WaitForGPUSwapchain`, `SDL_SetGPUAllowedFramesInFlight` (range checked only in SDL's GPU debug mode, measured).
 
+# SDL_GPU compute, storage and GPU-to-GPU copies
+
+Handles `SDL_GPUComputePipeline` and `SDL_GPUComputePass`; structs `SDL_GPUComputePipelineCreateInfo`, `SDL_GPUStorageBufferReadWriteBinding`, `SDL_GPUStorageTextureReadWriteBinding`, `SDL_GPUTextureLocation`, `SDL_GPUBufferLocation`. `SDL_CreateGPUComputePipeline`, `SDL_ReleaseGPUComputePipeline`, `SDL_EndGPUComputePass`, `SDL_BindGPUComputePipeline`, `SDL_BindGPUComputeStorageBuffers`, `SDL_BindGPUComputeStorageTextures`, `SDL_BindGPUComputeSamplers`, `SDL_PushGPUComputeUniformData`, `SDL_DispatchGPUCompute`, `SDL_BeginGPUComputePass`. `SDL_BindGPUFragmentStorageBuffers`, `SDL_BindGPUFragmentStorageTextures`. `SDL_CopyGPUTextureToTexture`, `SDL_CopyGPUBufferToBuffer`, `SDL_DownloadFromGPUBuffer`. `SDL_GetNumGPUDrivers`, `SDL_GetGPUDriver`, `SDL_GPUSupportsShaderFormats`. A list of buffer or texture handles is a PHP list, its count the next parameter, as `SDL_WaitForGPUFences`. `SDL_PushGPUComputeUniformData` refuses a length past its data (site `sdl3-compute-uniform-length`), as the vertex and fragment pushes do.
+
 [^stubs]: `stubs/*.stub.php`

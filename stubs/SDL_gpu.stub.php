@@ -210,4 +210,75 @@ function SDL_WaitAndAcquireGPUSwapchainTexture(SDL_GPUCommandBuffer $command_buf
 
 function SDL_AcquireGPUSwapchainTexture(SDL_GPUCommandBuffer $command_buffer, SDL_Window $window, ?SDL_GPUTexture &$swapchain_texture, ?int &$swapchain_texture_width, ?int &$swapchain_texture_height): bool {}
 
+/**
+ * An address other than 0 is trusted.
+ *
+ * @not-serializable
+ */
+final class SDL_GPUComputePipeline
+{
+    private function __construct() {}
+
+    public function pointer(): int {}
+
+    public static function fromPointer(int $pointer): ?static {}
+}
+
+/**
+ * An address other than 0 is trusted.
+ * Ended, this handle is released.
+ *
+ * @not-serializable
+ */
+final class SDL_GPUComputePass
+{
+    private function __construct() {}
+
+    public function pointer(): int {}
+
+    public static function fromPointer(int $pointer): ?static {}
+}
+
+function SDL_GetNumGPUDrivers(): int {}
+
+function SDL_GetGPUDriver(int $index): ?string {}
+
+function SDL_GPUSupportsShaderFormats(int $format_flags, ?string $name): bool {}
+
+function SDL_CreateGPUComputePipeline(SDL_GPUDevice $device, SDL_GPUComputePipelineCreateInfo $createinfo): ?SDL_GPUComputePipeline {}
+
+function SDL_ReleaseGPUComputePipeline(SDL_GPUDevice $device, SDL_GPUComputePipeline $compute_pipeline): void {}
+
+/** A wrong element is a TypeError. A count past its list is a ValueError. A released handle inside an element is NULL. */
+function SDL_BeginGPUComputePass(SDL_GPUCommandBuffer $command_buffer, array $storage_texture_bindings, int $num_storage_texture_bindings, array $storage_buffer_bindings, int $num_storage_buffer_bindings): ?SDL_GPUComputePass {}
+
+function SDL_EndGPUComputePass(SDL_GPUComputePass $compute_pass): void {}
+
+function SDL_PushGPUComputeUniformData(SDL_GPUCommandBuffer $command_buffer, int $slot_index, string $data, int $length): void {}
+
+function SDL_BindGPUComputePipeline(SDL_GPUComputePass $compute_pass, SDL_GPUComputePipeline $compute_pipeline): void {}
+
+/** A non-buffer element is a TypeError. $num_bindings past the list is a ValueError. A released buffer is NULL. */
+function SDL_BindGPUComputeStorageBuffers(SDL_GPUComputePass $compute_pass, int $first_slot, array $storage_buffers, int $num_bindings): void {}
+
+/** A non-texture element is a TypeError. $num_bindings past the list is a ValueError. A released texture is NULL. */
+function SDL_BindGPUComputeStorageTextures(SDL_GPUComputePass $compute_pass, int $first_slot, array $storage_textures, int $num_bindings): void {}
+
+/** $num_bindings past the list is a ValueError. */
+function SDL_BindGPUComputeSamplers(SDL_GPUComputePass $compute_pass, int $first_slot, array $texture_sampler_bindings, int $num_bindings): void {}
+
+function SDL_DispatchGPUCompute(SDL_GPUComputePass $compute_pass, int $groupcount_x, int $groupcount_y, int $groupcount_z): void {}
+
+/** A non-buffer element is a TypeError. $num_bindings past the list is a ValueError. A released buffer is NULL. */
+function SDL_BindGPUFragmentStorageBuffers(SDL_GPURenderPass $render_pass, int $first_slot, array $storage_buffers, int $num_bindings): void {}
+
+/** A non-texture element is a TypeError. $num_bindings past the list is a ValueError. A released texture is NULL. */
+function SDL_BindGPUFragmentStorageTextures(SDL_GPURenderPass $render_pass, int $first_slot, array $storage_textures, int $num_bindings): void {}
+
+function SDL_CopyGPUTextureToTexture(SDL_GPUCopyPass $copy_pass, SDL_GPUTextureLocation $source, SDL_GPUTextureLocation $destination, int $w, int $h, int $d, bool $cycle): void {}
+
+function SDL_CopyGPUBufferToBuffer(SDL_GPUCopyPass $copy_pass, SDL_GPUBufferLocation $source, SDL_GPUBufferLocation $destination, int $size, bool $cycle): void {}
+
+function SDL_DownloadFromGPUBuffer(SDL_GPUCopyPass $copy_pass, SDL_GPUBufferRegion $source, SDL_GPUTransferBufferLocation $destination): void {}
+
 
