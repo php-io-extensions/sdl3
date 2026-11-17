@@ -146,12 +146,17 @@ it('makes a compute pipeline from a kernel, and passes a bad one through to SDL'
     expect(SDL_CreateGPUComputePipeline(gpu(), $info))->toBeNull();
 });
 
-function computePipeline(string $msl, int $uniforms, int $textures, int $buffers): SDL_GPUComputePipeline
+/**
+ * A compute pipeline in the language the device takes: $msl (entry point 'run') on Metal, or $spirv (base64 of the
+ * GLSL beside it compiled with glslangValidator -V --target-env vulkan1.1; entry point 'main') on Vulkan.
+ */
+function computePipeline(string $msl, string $spirv, int $uniforms, int $textures, int $buffers): SDL_GPUComputePipeline
 {
+    $metal = (SDL_GetGPUShaderFormats(gpu()) & SDL_GPU_SHADERFORMAT_MSL) !== 0;
     $info = new SDL_GPUComputePipelineCreateInfo();
-    $info->code = $msl;
-    $info->entrypoint = 'run';
-    $info->format = SDL_GPU_SHADERFORMAT_MSL;
+    $info->code = $metal ? $msl : base64_decode($spirv);
+    $info->entrypoint = $metal ? 'run' : 'main';
+    $info->format = $metal ? SDL_GPU_SHADERFORMAT_MSL : SDL_GPU_SHADERFORMAT_SPIRV;
     $info->num_uniform_buffers = $uniforms;
     $info->num_readwrite_storage_textures = $textures;
     $info->num_readwrite_storage_buffers = $buffers;
@@ -162,15 +167,17 @@ function computePipeline(string $msl, int $uniforms, int $textures, int $buffers
 }
 
 it('dispatches a kernel that writes a storage buffer from a pushed uniform', function (): void {
-    if (PHP_OS_FAMILY !== 'Darwin') {
-        $this->markTestSkipped('The kernel here is MSL.');
-    }
-    // SDL's Metal slots: uniform buffers first, then read-write storage buffers.
+    // SDL's Metal slots: uniform buffers first, then read-write storage buffers. SPIR-V (set 1 read-write storage,
+    // set 2 uniforms):
+    //   layout(local_size_x = 8) in;
+    //   layout(set = 1, binding = 0) buffer Out { uint v[]; } o;
+    //   layout(set = 2, binding = 0) uniform Add { uint add; } a;
+    //   void main() { uint id = gl_GlobalInvocationID.x; o.v[id] = id * 3u + a.add; }
     $pipeline = computePipeline(<<<'MSL'
         #include <metal_stdlib>
         using namespace metal;
         kernel void run(constant uint &add [[buffer(0)]], device uint *out [[buffer(1)]], uint id [[thread_position_in_grid]]) { out[id] = id * 3u + add; }
-        MSL, 1, 0, 1);
+        MSL, 'AwIjBwADAQALAAgAJgAAAAAAAAARAAIAAQAAAAsABgABAAAAR0xTTC5zdGQuNDUwAAAAAA4AAwAAAAAAAQAAAA8ABgAFAAAABAAAAG1haW4AAAAACwAAABAABgAEAAAAEQAAAAgAAAABAAAAAQAAAAMAAwACAAAAwgEAAAUABAAEAAAAbWFpbgAAAAAFAAMACAAAAGlkAAAFAAgACwAAAGdsX0dsb2JhbEludm9jYXRpb25JRAAAAAUAAwARAAAAT3V0AAYABAARAAAAAAAAAHYAAAAFAAMAEwAAAG8AAAAFAAMAGgAAAEFkZAAGAAQAGgAAAAAAAABhZGQABQADABwAAABhAAAARwAEAAsAAAALAAAAHAAAAEcABAAQAAAABgAAAAQAAABHAAMAEQAAAAIAAABIAAUAEQAAAAAAAAAjAAAAAAAAAEcABAATAAAAIQAAAAAAAABHAAQAEwAAACIAAAABAAAARwADABoAAAACAAAASAAFABoAAAAAAAAAIwAAAAAAAABHAAQAHAAAACEAAAAAAAAARwAEABwAAAAiAAAAAgAAAEcABAAlAAAACwAAABkAAAATAAIAAgAAACEAAwADAAAAAgAAABUABAAGAAAAIAAAAAAAAAAgAAQABwAAAAcAAAAGAAAAFwAEAAkAAAAGAAAAAwAAACAABAAKAAAAAQAAAAkAAAA7AAQACgAAAAsAAAABAAAAKwAEAAYAAAAMAAAAAAAAACAABAANAAAAAQAAAAYAAAAdAAMAEAAAAAYAAAAeAAMAEQAAABAAAAAgAAQAEgAAAAwAAAARAAAAOwAEABIAAAATAAAADAAAABUABAAUAAAAIAAAAAEAAAArAAQAFAAAABUAAAAAAAAAKwAEAAYAAAAYAAAAAwAAAB4AAwAaAAAABgAAACAABAAbAAAAAgAAABoAAAA7AAQAGwAAABwAAAACAAAAIAAEAB0AAAACAAAABgAAACAABAAhAAAADAAAAAYAAAArAAQABgAAACMAAAAIAAAAKwAEAAYAAAAkAAAAAQAAACwABgAJAAAAJQAAACMAAAAkAAAAJAAAADYABQACAAAABAAAAAAAAAADAAAA+AACAAUAAAA7AAQABwAAAAgAAAAHAAAAQQAFAA0AAAAOAAAACwAAAAwAAAA9AAQABgAAAA8AAAAOAAAAPgADAAgAAAAPAAAAPQAEAAYAAAAWAAAACAAAAD0ABAAGAAAAFwAAAAgAAACEAAUABgAAABkAAAAXAAAAGAAAAEEABQAdAAAAHgAAABwAAAAVAAAAPQAEAAYAAAAfAAAAHgAAAIAABQAGAAAAIAAAABkAAAAfAAAAQQAGACEAAAAiAAAAEwAAABUAAAAWAAAAPgADACIAAAAgAAAA/QABADgAAQA=', 1, 0, 1);
     $out = gpuBuffer(64, SDL_GPU_BUFFERUSAGE_COMPUTE_STORAGE_WRITE);
     $down = transferBuffer(64, SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD);
     $binding = new SDL_GPUStorageBufferReadWriteBinding();
@@ -202,14 +209,15 @@ it('dispatches a kernel that writes a storage buffer from a pushed uniform', fun
 });
 
 it('dispatches a kernel that writes a storage texture', function (): void {
-    if (PHP_OS_FAMILY !== 'Darwin') {
-        $this->markTestSkipped('The kernel here is MSL.');
-    }
+    // SPIR-V:
+    //   layout(local_size_x = 8) in;
+    //   layout(set = 1, binding = 0, rgba8) uniform writeonly image2D img;
+    //   void main() { imageStore(img, ivec2(gl_GlobalInvocationID.xy), vec4(1.0, 0.0, 0.0, 1.0)); }
     $pipeline = computePipeline(<<<'MSL'
         #include <metal_stdlib>
         using namespace metal;
         kernel void run(texture2d<float, access::write> out [[texture(0)]], uint2 id [[thread_position_in_grid]]) { out.write(float4(1.0, 0.0, 0.0, 1.0), id); }
-        MSL, 0, 1, 0);
+        MSL, 'AwIjBwADAQALAAgAHAAAAAAAAAARAAIAAQAAAAsABgABAAAAR0xTTC5zdGQuNDUwAAAAAA4AAwAAAAAAAQAAAA8ABgAFAAAABAAAAG1haW4AAAAADgAAABAABgAEAAAAEQAAAAgAAAABAAAAAQAAAAMAAwACAAAAwgEAAAUABAAEAAAAbWFpbgAAAAAFAAMACQAAAGltZwAFAAgADgAAAGdsX0dsb2JhbEludm9jYXRpb25JRAAAAEcAAwAJAAAAGQAAAEcABAAJAAAAIQAAAAAAAABHAAQACQAAACIAAAABAAAARwAEAA4AAAALAAAAHAAAAEcABAAbAAAACwAAABkAAAATAAIAAgAAACEAAwADAAAAAgAAABYAAwAGAAAAIAAAABkACQAHAAAABgAAAAEAAAAAAAAAAAAAAAAAAAACAAAABAAAACAABAAIAAAAAAAAAAcAAAA7AAQACAAAAAkAAAAAAAAAFQAEAAsAAAAgAAAAAAAAABcABAAMAAAACwAAAAMAAAAgAAQADQAAAAEAAAAMAAAAOwAEAA0AAAAOAAAAAQAAABcABAAPAAAACwAAAAIAAAAVAAQAEgAAACAAAAABAAAAFwAEABMAAAASAAAAAgAAABcABAAVAAAABgAAAAQAAAArAAQABgAAABYAAAAAAIA/KwAEAAYAAAAXAAAAAAAAACwABwAVAAAAGAAAABYAAAAXAAAAFwAAABYAAAArAAQACwAAABkAAAAIAAAAKwAEAAsAAAAaAAAAAQAAACwABgAMAAAAGwAAABkAAAAaAAAAGgAAADYABQACAAAABAAAAAAAAAADAAAA+AACAAUAAAA9AAQABwAAAAoAAAAJAAAAPQAEAAwAAAAQAAAADgAAAE8ABwAPAAAAEQAAABAAAAAQAAAAAAAAAAEAAAB8AAQAEwAAABQAAAARAAAAYwAEAAoAAAAUAAAAGAAAAP0AAQA4AAEA', 0, 1, 0);
     $texture = gpuTexture(8, 1, SDL_GPU_TEXTUREUSAGE_COMPUTE_STORAGE_WRITE);
     $down = transferBuffer(32, SDL_GPU_TRANSFERBUFFERUSAGE_DOWNLOAD);
     $binding = new SDL_GPUStorageTextureReadWriteBinding();
