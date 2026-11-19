@@ -205,6 +205,48 @@ it('refuses a count past its list instead of reading past it', function (): void
     SDL_DestroySurface($target);
 });
 
+it('draws packed triangles with a colour at each corner through SDL_RenderGeometryRaw', function (): void {
+    $target = SDL_CreateSurface(8, 8, SDL_PIXELFORMAT_RGBA32);
+    $renderer = SDL_CreateSoftwareRenderer($target);
+    // one triangle over the top-left half, (0,0) (8,0) (0,8), opaque red at every corner: xy two floats a vertex,
+    // colour four (an SDL_FColor)
+    $xy = pack('g*', 0.0, 0.0, 8.0, 0.0, 0.0, 8.0);
+    $red = pack('g*', 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
+
+    expect(SDL_RenderGeometryRaw($renderer, null, $xy, 8, $red, 16, null, 0, 3, null, 0, 0))->toBeTrue()
+        ->and(SDL_FlushRenderer($renderer))->toBeTrue();
+    $bytes = rendererBytes($target);
+    $at = fn (int $x, int $y): string => bin2hex(substr($bytes, ($y * 8 + $x) * 4, 4));
+
+    // (1,1) is inside; (6,6) is past the diagonal x + y = 8, so untouched
+    expect($at(1, 1))->toBe('ff0000ff')
+        ->and($at(6, 6))->toBe('00000000');
+
+    // the same triangle by index on a fresh surface, with one colour read three times (a stride of 0), 16-bit indices
+    SDL_DestroyRenderer($renderer);
+    SDL_DestroySurface($target);
+    $target = SDL_CreateSurface(8, 8, SDL_PIXELFORMAT_RGBA32);
+    $renderer = SDL_CreateSoftwareRenderer($target);
+    $green = pack('g*', 0.0, 1.0, 0.0, 1.0);
+    expect(SDL_RenderGeometryRaw($renderer, null, $xy, 8, $green, 0, null, 0, 3, pack('v*', 0, 1, 2), 3, 2))->toBeTrue()
+        ->and(SDL_FlushRenderer($renderer))->toBeTrue();
+    $bytes = rendererBytes($target);
+    $at = fn (int $x, int $y): string => bin2hex(substr($bytes, ($y * 8 + $x) * 4, 4));
+    expect($at(1, 1))->toBe('00ff00ff')
+        ->and($at(6, 6))->toBe('00000000');
+
+    // a string shorter than its stride and count reach is refused: 3 vertices of xy need 2 * 8 + 8 = 24 bytes
+    expect(fn () => SDL_RenderGeometryRaw($renderer, null, substr($xy, 0, 20), 8, $red, 16, null, 0, 3, null, 0, 0))
+        ->toThrow(ValueError::class, 'Argument #3 ($xy) must hold 24 bytes, 20 given')
+        ->and(fn () => SDL_RenderGeometryRaw($renderer, null, $xy, 8, $red, 16, null, 0, 3, pack('v*', 0, 1), 3, 2))
+        ->toThrow(ValueError::class, 'Argument #10 ($indices) must hold 6 bytes, 4 given')
+        ->and(fn () => SDL_RenderGeometryRaw($renderer, null, $xy, -8, $red, 16, null, 0, 3, null, 0, 0))
+        ->toThrow(ValueError::class, 'Argument #3 ($xy) must hold the bytes its stride and count reach, with a stride of 0 or more: 24 given');
+
+    SDL_DestroyRenderer($renderer);
+    SDL_DestroySurface($target);
+});
+
 it('does not let textures made and destroyed every frame pile up in their renderer', function (): void {
     $target = SDL_CreateSurface(8, 8, SDL_PIXELFORMAT_RGBA32);
     $source = SDL_CreateSurface(64, 64, SDL_PIXELFORMAT_RGBA32);

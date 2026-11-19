@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: fc3f365f6ffba7e3288b10fe67b9dae3c2c8a5f7 */
+ * Stub hash: 0c205e8a51b162058fe2297111d2b864a84d0935 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_CreateSoftwareRenderer, 0, 1, SDL_Renderer, 1)
 	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
@@ -54,6 +54,21 @@ ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_RenderGeometry, 0, 6, _IS_BO
 	ZEND_ARG_TYPE_INFO(0, num_indices, IS_LONG, 0)
 ZEND_END_ARG_INFO()
 
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_RenderGeometryRaw, 0, 12, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, renderer, SDL_Renderer, 0)
+	ZEND_ARG_OBJ_INFO(0, texture, SDL_Texture, 1)
+	ZEND_ARG_TYPE_MASK(0, xy, MAY_BE_STRING|MAY_BE_LONG, NULL)
+	ZEND_ARG_TYPE_INFO(0, xy_stride, IS_LONG, 0)
+	ZEND_ARG_TYPE_MASK(0, color, MAY_BE_STRING|MAY_BE_LONG, NULL)
+	ZEND_ARG_TYPE_INFO(0, color_stride, IS_LONG, 0)
+	ZEND_ARG_TYPE_MASK(0, uv, MAY_BE_STRING|MAY_BE_LONG|MAY_BE_NULL, NULL)
+	ZEND_ARG_TYPE_INFO(0, uv_stride, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, num_vertices, IS_LONG, 0)
+	ZEND_ARG_TYPE_MASK(0, indices, MAY_BE_STRING|MAY_BE_LONG|MAY_BE_NULL, NULL)
+	ZEND_ARG_TYPE_INFO(0, num_indices, IS_LONG, 0)
+	ZEND_ARG_TYPE_INFO(0, size_indices, IS_LONG, 0)
+ZEND_END_ARG_INFO()
+
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_FlushRenderer, 0, 1, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, renderer, SDL_Renderer, 0)
 ZEND_END_ARG_INFO()
@@ -95,6 +110,7 @@ ZEND_FUNCTION(SDL_SetTextureAlphaMod);
 ZEND_FUNCTION(SDL_SetTextureColorMod);
 ZEND_FUNCTION(SDL_SetRenderClipRect);
 ZEND_FUNCTION(SDL_RenderGeometry);
+ZEND_FUNCTION(SDL_RenderGeometryRaw);
 ZEND_FUNCTION(SDL_FlushRenderer);
 ZEND_METHOD(SDL_Renderer, __construct);
 ZEND_METHOD(SDL_Renderer, pointer);
@@ -116,6 +132,7 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_SetTextureColorMod, arginfo_SDL_SetTextureColorMod)
 	ZEND_FE(SDL_SetRenderClipRect, arginfo_SDL_SetRenderClipRect)
 	ZEND_FE(SDL_RenderGeometry, arginfo_SDL_RenderGeometry)
+	ZEND_FE(SDL_RenderGeometryRaw, arginfo_SDL_RenderGeometryRaw)
 	ZEND_FE(SDL_FlushRenderer, arginfo_SDL_FlushRenderer)
 	ZEND_FE_END
 };

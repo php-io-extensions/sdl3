@@ -388,6 +388,77 @@ ZEND_FUNCTION(SDL_RenderGeometry)
 	RETURN_BOOL(drawn);
 }
 
+ZEND_FUNCTION(SDL_RenderGeometryRaw)
+{
+	zval *renderer_zv, *texture_zv = NULL;
+	zend_string *xy_s = NULL, *color_s = NULL, *uv_s = NULL, *indices_s = NULL;
+	zend_long xy_a = 0, color_a = 0, uv_a = 0, indices_a = 0;
+	zend_long xy_stride, color_stride, uv_stride, num_vertices, num_indices, size_indices;
+	bool uv_null = true, indices_null = true;
+	SDL_Renderer *renderer;
+	SDL_Texture *texture = NULL;
+	const void *xy, *color, *uv = NULL, *indices = NULL;
+
+	ZEND_PARSE_PARAMETERS_START(12, 12)
+		Z_PARAM_OBJECT_OF_CLASS(renderer_zv, sdl3_ce_SDL_Renderer)
+		Z_PARAM_OBJECT_OF_CLASS_OR_NULL(texture_zv, sdl3_ce_SDL_Texture)
+		Z_PARAM_STR_OR_LONG(xy_s, xy_a)
+		Z_PARAM_LONG(xy_stride)
+		Z_PARAM_STR_OR_LONG(color_s, color_a)
+		Z_PARAM_LONG(color_stride)
+		Z_PARAM_STR_OR_LONG_OR_NULL(uv_s, uv_a, uv_null)
+		Z_PARAM_LONG(uv_stride)
+		Z_PARAM_LONG(num_vertices)
+		Z_PARAM_STR_OR_LONG_OR_NULL(indices_s, indices_a, indices_null)
+		Z_PARAM_LONG(num_indices)
+		Z_PARAM_LONG(size_indices)
+	ZEND_PARSE_PARAMETERS_END();
+
+	renderer = sdl3_handle_ptr(renderer_zv, sdl3_ce_SDL_Renderer, 1);
+	if (!EG(exception) && texture_zv != NULL) {
+		texture = sdl3_handle_ptr(texture_zv, sdl3_ce_SDL_Texture, 2);
+	}
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	{
+		/* Each array as a pointer. SDL reads count elements, stride bytes apart, and last bytes of the final one, so
+		 * a string must hold (count - 1) * stride + last bytes with a stride of 0 or more; an address is trusted. */
+		struct { bool given; zend_string *s; zend_long address, count, stride; size_t last; uint32_t arg; const void **out; } arrays[4] = {
+			{ true, xy_s, xy_a, num_vertices, xy_stride, 2 * sizeof(float), 3, &xy },
+			{ true, color_s, color_a, num_vertices, color_stride, sizeof(SDL_FColor), 5, &color },
+			{ !uv_null, uv_s, uv_a, num_vertices, uv_stride, 2 * sizeof(float), 7, &uv },
+			{ !indices_null, indices_s, indices_a, num_indices, size_indices, (size_t) (size_indices < 0 ? 0 : size_indices), 10, &indices },
+		};
+
+		for (int k = 0; k < 4; k++) {
+			size_t need = 0;
+			bool reach;
+
+			if (!arrays[k].given) {
+				continue;
+			}
+			if (arrays[k].s == NULL) {
+				*arrays[k].out = (const void *) (uintptr_t) arrays[k].address;
+				continue;
+			}
+			reach = arrays[k].stride >= 0 && (arrays[k].count <= 0
+				|| (zend_ulong) (arrays[k].count - 1) <= (SIZE_MAX - arrays[k].last) / (arrays[k].stride == 0 ? 1 : (zend_ulong) arrays[k].stride));
+			if (reach && arrays[k].count > 0) {
+				need = (size_t) (arrays[k].count - 1) * (size_t) arrays[k].stride + arrays[k].last;
+			}
+			if (!SDL3_PROBE_OFF("sdl3-geometry-raw-length") && (!reach || ZSTR_LEN(arrays[k].s) < need)) {
+				zend_argument_value_error(arrays[k].arg, reach ? "must hold %zu bytes, %zu given" : "must hold the bytes its stride and count reach, with a stride of 0 or more: %zu given", reach ? need : ZSTR_LEN(arrays[k].s), ZSTR_LEN(arrays[k].s)); /* binding:sdl3-geometry-raw-length */
+				RETURN_THROWS();
+			}
+			*arrays[k].out = ZSTR_VAL(arrays[k].s);
+		}
+	}
+
+	RETURN_BOOL(SDL_RenderGeometryRaw(renderer, texture, (const float *) xy, (int) xy_stride, (const SDL_FColor *) color,
+		(int) color_stride, (const float *) uv, (int) uv_stride, (int) num_vertices, indices, (int) num_indices, (int) size_indices));
+}
+
 ZEND_FUNCTION(SDL_FlushRenderer)
 {
 	zval *renderer_zv;

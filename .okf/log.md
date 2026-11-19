@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-19
+
+* **`SDL_RenderGeometryRaw`** bound 1:1 (SDL_render.h, in 3.2), after Angel's `typemap` entries for `float*` and `SDL_FColor*` and the `sdl3-geometry-raw-length` site. Each array is a packed string or an address. A string must hold `(count - 1) * stride + element` bytes (8 for a position or texture coordinate, 16 for an `SDL_FColor`, `size_indices` for an index) and have a stride of 0 or more; an address is trusted. `tests/RendererTest.php` draws a triangle with corner colours, then by 16-bit index with one colour at stride 0, and checks three refusals; it fails with the call made one vertex short. `tests/Probes/LengthTest.php`: 65,535 vertices read from a 2-byte string are refused with the site on, and fault under libgmalloc with it off. 118 passed and 10 skipped on Homebrew PHP 8.4.27 NTS and ZTS (the skip added is the probe, which needs a probe build); all 8 probes pass on a probe build. Not yet built on Linux.
+
 ## 2026-11-18
 
 * **`SDL_SetSurfaceClipRect`, `SDL_GetSurfaceClipRect`** bound 1:1 (SDL_surface.h, in 3.2). Set takes `?SDL_Rect` (null clears the clip to the whole surface); Get fills a passed `SDL_Rect`. A clip rect silently clips a later `SDL_FillSurfaceRect` on that surface. `SurfaceClipRectTest` checks the clipped fill, the null restore, and the Get values. 118 passed, 9 skipped on NTS and ZTS.

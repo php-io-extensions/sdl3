@@ -90,5 +90,12 @@ function SDL_SetRenderClipRect(SDL_Renderer $renderer, ?SDL_Rect $rect): bool {}
  */
 function SDL_RenderGeometry(SDL_Renderer $renderer, ?SDL_Texture $texture, array $vertices, int $num_vertices, ?array $indices, int $num_indices): bool {}
 
+/**
+ * Each array is a packed string or an address. A string must hold what SDL reads from it: $xy and $uv
+ * (num_vertices - 1) * stride + 8 bytes, $color (num_vertices - 1) * stride + 16 (an SDL_FColor is four floats),
+ * $indices num_indices * size_indices; a string with a negative stride is refused. An address is trusted.
+ */
+function SDL_RenderGeometryRaw(SDL_Renderer $renderer, ?SDL_Texture $texture, string|int $xy, int $xy_stride, string|int $color, int $color_stride, string|int|null $uv, int $uv_stride, int $num_vertices, string|int|null $indices, int $num_indices, int $size_indices): bool {}
+
 /** The software renderer batches: flush before reading the target surface's pixels. */
 function SDL_FlushRenderer(SDL_Renderer $renderer): bool {}

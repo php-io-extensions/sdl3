@@ -20,7 +20,8 @@
     "sdl3-uniform-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
     "sdl3-write-io-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
     "sdl3-list-count": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/ListCountTest.php"},
-    "sdl3-compute-uniform-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"}
+    "sdl3-compute-uniform-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"},
+    "sdl3-geometry-raw-length": {"kind": "refusal", "outcome": 1, "probe": "tests/Probes/LengthTest.php"}
   },
   "typemap": {
     "SDL_EGLDisplay": ["int"],
@@ -34,6 +35,8 @@
     "SDL_GPUStorageBufferReadWriteBinding*": ["array"],
     "SDL_Rect*": ["array"],
     "SDL_Vertex*": ["array"],
+    "float*": ["string", "int"],
+    "SDL_FColor*": ["string", "int"],
     "int*": ["array"]
 
   }

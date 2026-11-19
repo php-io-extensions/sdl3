@@ -46,7 +46,7 @@ Handles `SDL_IOStream`, `SDL_Surface`. Struct `SDL_Rect`. `SDL_IOFromMem`, `SDL_
 
 # Software renderer
 
-Handles `SDL_Renderer`, `SDL_Texture`. Structs `SDL_FPoint`, `SDL_Vertex` (position, colour as `SDL_FColor`, texture coordinate). `SDL_CreateSoftwareRenderer`, `SDL_DestroyRenderer`, `SDL_CreateTextureFromSurface`, `SDL_DestroyTexture`, `SDL_SetTextureBlendMode`, `SDL_SetTextureScaleMode`, `SDL_SetTextureAlphaMod`, `SDL_SetTextureColorMod`, `SDL_SetRenderClipRect`, `SDL_RenderGeometry` (a list of `SDL_Vertex` and its count, an optional list of ints and its count), `SDL_FlushRenderer`. A software renderer draws into a surface and needs no `SDL_Init()`; it takes colour and alpha from the vertices, not from a texture's mods.
+Handles `SDL_Renderer`, `SDL_Texture`. Structs `SDL_FPoint`, `SDL_Vertex` (position, colour as `SDL_FColor`, texture coordinate). `SDL_CreateSoftwareRenderer`, `SDL_DestroyRenderer`, `SDL_CreateTextureFromSurface`, `SDL_DestroyTexture`, `SDL_SetTextureBlendMode`, `SDL_SetTextureScaleMode`, `SDL_SetTextureAlphaMod`, `SDL_SetTextureColorMod`, `SDL_SetRenderClipRect`, `SDL_RenderGeometry` (a list of `SDL_Vertex` and its count, an optional list of ints and its count), `SDL_RenderGeometryRaw` (positions, `SDL_FColor` colours, optional texture coordinates and optional indices, each a packed string checked against the bytes its stride and count reach, or a trusted address), `SDL_FlushRenderer`. A software renderer draws into a surface and needs no `SDL_Init()`; it takes colour and alpha from the vertices, not from a texture's mods.
 
 # GL, Metal, Vulkan
 
