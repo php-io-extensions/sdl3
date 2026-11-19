@@ -549,6 +549,56 @@ ZEND_FUNCTION(SDL_GetSurfaceBlendMode)
 	RETURN_TRUE;
 }
 
+ZEND_FUNCTION(SDL_SetSurfaceClipRect)
+{
+	zval *surface_zv;
+	zend_object *rect = NULL;
+	SDL_Surface *surface;
+	SDL_Rect native;
+	const SDL_Rect *rect_ptr = NULL;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_OBJ_OF_CLASS_OR_NULL(rect, sdl3_ce_SDL_Rect)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	if (rect != NULL) {
+		if (!sdl3_rect_read(rect, &native)) {
+			RETURN_THROWS();
+		}
+		rect_ptr = &native;
+	}
+
+	RETURN_BOOL(SDL_SetSurfaceClipRect(surface, rect_ptr));
+}
+
+ZEND_FUNCTION(SDL_GetSurfaceClipRect)
+{
+	zval *surface_zv;
+	zend_object *rect_obj;
+	SDL_Surface *surface;
+	SDL_Rect rect;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_OBJECT_OF_CLASS(surface_zv, sdl3_ce_SDL_Surface)
+		Z_PARAM_OBJ_OF_CLASS(rect_obj, sdl3_ce_SDL_Rect)
+	ZEND_PARSE_PARAMETERS_END();
+
+	surface = sdl3_handle_ptr(surface_zv, sdl3_ce_SDL_Surface, 1);
+	if (EG(exception)) {
+		RETURN_THROWS();
+	}
+	if (!SDL_GetSurfaceClipRect(surface, &rect)) {
+		RETURN_FALSE;
+	}
+	sdl3_rect_write(rect_obj, &rect);
+	RETURN_TRUE;
+}
+
 ZEND_FUNCTION(SDL_FillSurfaceRect)
 {
 	zval *dst_zv;

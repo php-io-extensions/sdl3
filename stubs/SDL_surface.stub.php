@@ -225,6 +225,10 @@ function SDL_SetSurfaceBlendMode(SDL_Surface $surface, int $blendMode): bool {}
 
 function SDL_GetSurfaceBlendMode(SDL_Surface $surface, ?int &$blendMode): bool {}
 
+function SDL_SetSurfaceClipRect(SDL_Surface $surface, ?SDL_Rect $rect): bool {}
+
+function SDL_GetSurfaceClipRect(SDL_Surface $surface, SDL_Rect $rect): bool {}
+
 function SDL_FillSurfaceRect(SDL_Surface $dst, ?SDL_Rect $rect, int $color): bool {}
 
 /** A surface with SDL's own zeroed pixel memory, freed by SDL_DestroySurface(). */

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-11-18
+
+* **`SDL_SetSurfaceClipRect`, `SDL_GetSurfaceClipRect`** bound 1:1 (SDL_surface.h, in 3.2). Set takes `?SDL_Rect` (null clears the clip to the whole surface); Get fills a passed `SDL_Rect`. A clip rect silently clips a later `SDL_FillSurfaceRect` on that surface. `SurfaceClipRectTest` checks the clipped fill, the null restore, and the Get values. 118 passed, 9 skipped on NTS and ZTS.
+
 ## 2026-11-15
 
 * **Linux**: built and installed on the Pi 5 (Debian trixie, PHP 8.4 ZTS, distro SDL 3.2.10, Mesa V3DV) and on an x86_64 Ubuntu 24.04 box (PHP 8.4 NTS, SDL 3.4.15 in /usr/local, NVIDIA under Vulkan). `GpuComputeTest`'s two dispatches now carry a SPIR-V kernel beside the MSL one (base64 in the test, its GLSL in a comment) and run on Vulkan too: 7 passed, 1 skipped (a bad MSL kernel; a missing SPIR-V entry point is undefined in Vulkan) on both, under `SDL_VIDEODRIVER=offscreen`. The GPU files (Compute, Resource, Types, Gate) pass on the Pi. Over ssh the Pi's SDL found no video device with `WAYLAND_DISPLAY=wayland-0` set, so the display, window and event tests did not run there.

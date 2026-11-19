@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: 6ba2c08e5b75cf472ec08624c54932f651b78d67 */
+ * Stub hash: 3fe07c88d99b87c7297dd29ad749eca81aafac2a */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_SDL_IOFromFile, 0, 2, SDL_IOStream, 1)
 	ZEND_ARG_TYPE_INFO(0, file, IS_STRING, 0)
@@ -92,6 +92,16 @@ ZEND_END_ARG_INFO()
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetSurfaceBlendMode, 0, 2, _IS_BOOL, 0)
 	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
 	ZEND_ARG_TYPE_INFO(1, blendMode, IS_LONG, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_SetSurfaceClipRect, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_OBJ_INFO(0, rect, SDL_Rect, 1)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_GetSurfaceClipRect, 0, 2, _IS_BOOL, 0)
+	ZEND_ARG_OBJ_INFO(0, surface, SDL_Surface, 0)
+	ZEND_ARG_OBJ_INFO(0, rect, SDL_Rect, 0)
 ZEND_END_ARG_INFO()
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_INFO_EX(arginfo_SDL_FillSurfaceRect, 0, 3, _IS_BOOL, 0)
@@ -194,6 +204,8 @@ ZEND_FUNCTION(SDL_BlitSurface);
 ZEND_FUNCTION(SDL_BlitSurfaceScaled);
 ZEND_FUNCTION(SDL_SetSurfaceBlendMode);
 ZEND_FUNCTION(SDL_GetSurfaceBlendMode);
+ZEND_FUNCTION(SDL_SetSurfaceClipRect);
+ZEND_FUNCTION(SDL_GetSurfaceClipRect);
 ZEND_FUNCTION(SDL_FillSurfaceRect);
 ZEND_FUNCTION(SDL_CreateSurface);
 ZEND_FUNCTION(SDL_ConvertSurface);
@@ -236,6 +248,8 @@ static const zend_function_entry ext_functions[] = {
 	ZEND_FE(SDL_BlitSurfaceScaled, arginfo_SDL_BlitSurfaceScaled)
 	ZEND_FE(SDL_SetSurfaceBlendMode, arginfo_SDL_SetSurfaceBlendMode)
 	ZEND_FE(SDL_GetSurfaceBlendMode, arginfo_SDL_GetSurfaceBlendMode)
+	ZEND_FE(SDL_SetSurfaceClipRect, arginfo_SDL_SetSurfaceClipRect)
+	ZEND_FE(SDL_GetSurfaceClipRect, arginfo_SDL_GetSurfaceClipRect)
 	ZEND_FE(SDL_FillSurfaceRect, arginfo_SDL_FillSurfaceRect)
 	ZEND_FE(SDL_CreateSurface, arginfo_SDL_CreateSurface)
 	ZEND_FE(SDL_ConvertSurface, arginfo_SDL_ConvertSurface)
